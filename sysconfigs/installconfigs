@@ -1,0 +1,203 @@
+#!/bin/sh
+
+DEVSDA=${DEVSDA:-/dev/sda}
+
+LILO=${LILO:-/etc/lilo.conf}
+
+PROFILE=${PROFILE:-/etc/profile}
+
+ZPROFILE=${ZPROFILE:-/etc/zprofile}
+
+SUDOERS=${SUDOERS:-/etc/sudoers}
+
+MODULES=${MODULES:-/lib/modules}
+
+RCNTPD=${RCNTPD:-/etc/rc.d/rc.ntpd}
+
+ETCNTP=${ETCNTP:-/etc/ntp.conf}
+
+NTPDRIFT=${NTPDRIFT:-/etc/ntp.drift}
+
+MODULESLOCAL=${MODULESLOCAL:-/etc/rc.d/rc.modules.local}
+
+KVERSION=${KVERSION:-$(ls -t $MODULES | grep -m 1 $(uname -r) | sed 's/\///g';)}
+
+SHAREKEYBOARDEVDEV=${SHAREKEYBOARDEVDEV:-/usr/share/X11/xorg.conf.d/90-keyboard-layout-evdev.conf}
+
+SHAREKEYBOARD=${SHAREKEYBOARD:-/usr/share/X11/xorg.conf.d/90-keyboard-layout.conf}
+
+KEYBOARD=${KEYBOARD:-/etc/X11/xorg.conf.d/90-keyboard-layout.conf}
+
+SDA=${SDA:-$(mount | grep $DEVSDA | cut -c6-8)}
+
+PART=${PART:-$(mount | grep $DEVSDA | cut -c6-9)}
+
+DISK=${DISK:-$(mount | grep $DEVSDA | awk  '{print $1}')}
+
+SYSARQ=${SYSARQ:-$(file -s $DISK | awk '{print $5}')}
+
+GENERIC=${GENERIC:-/boot/vmlinuz-generic}
+
+INITRDZRAM=${INITRDZRAM:-/boot/initrd-$(uname -r)-zram}
+
+ZRAMINITRD=${ZRAMINITRD:-/boot/initrd-zram}
+
+SLVERSION=${SLVERSION:-/etc/slackware-version}
+
+VERSION=${VERSION:-$(cat $SLVERSION)}
+
+ISSUE=${ISSUE:-/etc/issue}
+
+MKINITRDCOMMAND=${MKINITRDCOMMAND:-/usr/share/mkinitrd/mkinitrd_command_generator.sh}
+MKINITRD=${MKINITRD:-$($MKINITRDCOMMAND | grep ^mkinitrd | cut -c47-300 | cut -f1 -d ' ')}
+
+groupadd sudo
+groupadd tar
+
+rm -rf /etc/inittab
+rm -rf /etc/rc.d/rc.{4,M,S}
+rm -rf /etc/profile.d/lang.{csh,sh}
+
+cp sys/{inittab,sysctl.conf} /etc
+cp sys/lang.{csh,sh} /etc/profile.d/
+cp sys/rc.{4,M,S,zram} /etc/rc.d
+mv $ETCNTP $ETCNTP.orig
+cp sys/ntp.conf /etc/
+touch $NTPDRIFT
+mkdir /var/log/ntpstats
+
+if [ -f $SHAREKEYBOARDEVDEV ]; then
+
+cp $SHAREKEYBOARDEVDEV  $KEYBOARD
+
+elif [ -f $SHAREKEYBOARD ]; then
+
+cp $SHAREKEYBOARD $KEYBOARD
+
+fi
+
+# Substitui `hostname` por \u.\h na linha 47
+# Substitui `pwd` por \w na linha 47
+# Substitui @ por ponto na linha 57
+sed -i '47s/`hostname`/\\u.\\h/g;47s/`pwd`/\\w/g;57s/@/./g'  $PROFILE
+rm -rf $ZPROFILE
+
+# Substitui us por br
+#sed -i '/us/ s/us/br/g;' $KEYBOARD
+
+
+# Descomenta Option
+# Substitui us por br
+# Substitui "" por "abnt2"
+sed -i '/#Option/ s/#//g;/us/ s/us/br/g;/""/ s/""/"abnt2"/g;' $KEYBOARD
+
+# Descomenta compact
+sed -i 's/^#compact/compact/g;' $LILO
+
+# Modifica timeout padrao para 5s
+sed -i 's/^timeout =.*/timeout = 50/g;' $LILO
+
+# Modifica label padrao para  SLCKWRLNX
+sed -i 's/^  label =.*/  label = SLCKWRLNX/g;' $LILO
+
+# Adciona suport UTF8 para a partição corrent
+sed -i '6s/append=.*/append="\/dev\/'$PART' vt.default_utf8=1"/g;' $LILO
+
+# Retira quebra de linha da linha 8
+sed -i 'N;8s/\n//g;' $LILO
+
+# Adciona quebra de linha na linha 7
+sed -i '7s/boot = \/dev\/'$SDA'/boot = \/dev\/'$SDA'\n/g;' $LILO
+
+#sed -i '/ALL/ s/ALL=(/ALL=(ALL:/g;' $SUDOERS
+#sed -i '/root/ s/ALL=(/ALL=(ALL:/g;' $SUDOERS
+sed -i '/%sudo/ s/^#//g;/%sudo/ s/^ //g;/ALL/ s/ALL=(/ALL=(ALL:/g;' $SUDOERS
+
+if [ -f $MODULESLOCAL ]; then
+ echo "/sbin/modprobe zram" >> $MODULESLOCAL
+fi
+
+chmod 755 -v /etc/rc.d/rc.{zram,ntpd}
+   /sbin/nmtui
+   ntpdate pool.ntp.br
+   $RCNTPD start
+   #. /etc/rc.d/rc.zram start
+   #. /etc/rc.d/rc.mysqld start
+   #. /etc/rc.d/rc.networkmanager start
+   
+if [ -f $SLVERSION ]; then
+ echo "Welcome to $VERSION \s-\r.\m \l" > $ISSUE
+fi
+
+installpkg python/wxPython-2.8.12.1-x86_64-5_slonly.txz
+installpkg python/python3-3.6.0-x86_64-3_SBo.tgz
+installpkg python/python3-3.5.1-x86_64-1_slack.txz
+installpkg python/python-django-tagging-0.4.3-x86_64-1_slonly.txz
+installpkg python/python-django-1.10-x86_64-1_slonly.txz
+installpkg vlc/flash-player-npapi-26.0.0.151-release.x86_64.tgz
+installpkg vlc/npapi-vlc-20170523-x86_64-1alien.txz
+installpkg vlc/vlc-2.2.6-x86_64-1alien.txz
+installpkg navegadores/mozilla-firefox-56.0b2-x86_64-1.txz
+installpkg navegadores/tor-browser-7.0.4-x86_64-1_SBo.tgz
+
+read -p "Crie um usuario: " usuario
+
+echo -e "\n\t\e[1;31mAdicionando\e[0m $usuario\n"
+
+useradd -m $usuario
+
+passwd $usuario
+
+mkdir -p /home/$usuario/{Documentos,Downloads,Imagens,Músicas,Vídeos,Filmes,Packages,Projetos,Workspace}
+
+touch /home/$usuario/.{bashrc,profile}
+
+chown -R $usuario.$usuario /home/$usuario
+
+usermod -aG sudo,tar,users,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner $usuario 
+
+BASHRCUSER=${BASHRCUSER:-"/home/$usuario/.bashrc"}
+BASHRCADM=${BASHRCADM:-"/root/.bashrc"}
+
+echo "
+if [ -f $PROFILE ]; then
+  . $PROFILE
+fi 
+     " >> $BASHRCUSER
+
+echo "
+if [ -f $PROFILE ]; then
+  . $PROFILE
+fi
+     " >> $BASHRCADM
+     
+echo -e "\n\t\e[0m$usuario \e[1;31mAdicionado com sucesso..\n\e[0m"
+
+mkinitrd -c -k $KVERSION -f $SYSARQ -r $DISK -m $MKINITRD -u -o $INITRDZRAM
+ln -s $INITRDZRAM $ZRAMINITRD
+
+## Adiciona partição após "# End LILO global section"
+sed -i '/# End LILO global section/a # Linux bootable generic partition config begins' $LILO
+sed -i '/# Linux bootable generic partition config begins/a image = '$GENERIC'' $LILO
+sed -i '/^image = \/boot\/vmlinuz-generic/a initrd = '$ZRAMINITRD'' $LILO
+sed -i '/^initrd = \/boot\/initrd-zram/a root = '$DISK'' $LILO
+sed -i '/^root = \/dev\/'$PART'/a label = GNRCLNX' $LILO
+sed -i '/^label = GNRCLNX/a read-only' $LILO
+sed -i '/^read-only/a # Linux bootable generic partition config ends' $LILO
+
+## Adiciona partição no fim de lilo.conf
+#echo "# Linux bootable generic partition config begins" >> $LILO
+#echo "image = $GENERIC" >> $LILO
+#echo "initrd = $ZRAMINITRD" >> $LILO 
+#echo "  root = $DISK" >> $LILO
+#echo "  label = GNRCLNX" >> $LILO
+#echo "  read-only " >> $LILO
+#echo "# Linux bootable generic partition config ends" >> $LILO
+   
+lilo
+
+echo "
+     Após dez minutos teste,
+     se há alguma conexão ativa,
+     com um servidor NTP usando o comando: ntpq -p
+     "

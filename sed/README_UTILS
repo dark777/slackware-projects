@@ -1,0 +1,859 @@
+# usando registradores:
+# \1 para o que está nos parenteses
+# &  para referenciar TODO o conteúdo casado
+
+sed 's@^\(abc\)@#\1@'           # comenta a linha que comeca com abc
+sed 's/^abc/#&/'                # comenta a linha que comeca com abc
+sed 's/^/#/'                    # comenta todas as linhas
+sed 's/$/$/'                    # coloca um $ no final de cada linha
+
+bash-4.3$ echo 'https://comslackwarewww' | sed 's@\(https://\)\(com\)\(slackware\)\(www\)@\1\4.\3.\2 ..!!!@'
+https://www.slackware.com ..!!!
+
+bash-4.3$ echo 'comslackwarehttps://www' | sed 's@\(com\)\(slackware\)\(https://\)\(www\)@\3\4.\2.\1 ..!!!@'
+https://www.slackware.com ..!!!
+
+bash-4.3$ echo 'comhttps://slackwarewww' | sed 's@\(com\)\(https://\)\(slackware\)\(www\)@\2\4.\3.\1 ..!!!@'
+https://www.slackware.com ..!!!
+-----------------------------------------------------------------------------------------
+# Configurando data e hora precisamente pelo terminal linux.
+
+# Mudando a data
+# Faça o comando abaixo como root:
+
+bash-4.3# date -s mm/dd/yyyy
+Ou:
+bash-4.3# date --set=mm/dd/yyyy
+
+# Mudando a hora
+# Faça o comando abaixo como root:
+
+bash-4.3# date -s hh:mm:ss
+ou
+bash-4.3# date -set=hh:mm:ss
+-----------------------------------------------------------------------------------------
+Lista de parâmetros que podem ser usados:
+
+-c – cria um novo arquivo tar;
+-M – cria, lista ou extrai um arquivo multivolume;
+-p – mantém as permissões originais do(s) arquivo(s);
+-r – acrescenta arquivos a um arquivo tar;
+-t – exibe o conteúdo de um arquivo tar;
+-v – exibe detalhes da operação;
+-w – pede confirmação antes de cada ação;
+-x – extrai arquivos de um arquivo tar;
+-z – comprime ou extrai arquivos tar resultante com o gzip;
+-J - comprime ou extrai arquivos tar resultante com o xz
+-j – comprime ou extrai arquivos tar resultante com o bz2;
+-f – especifica o arquivo tar a ser usado;
+-C – especifica o diretório dos arquivos a serem armazenados.
+
+###########################
+comandos que lista o 
+conteudo de um arquivo tar.
+
+tar -tf nome_do_arquivo.tar
+tar -tf nome_do_arquivo.tar.gz
+tar -tf nome_do_arquivo.tar.xz
+tar -tf nome_do_arquivo.tar.bz2
+
+tar -tJvf nome_do_arquivo.tar.xz
+tar -tjvf nome_do_arquivo.tar.bz2
+
+tar -tf nome_do_arquivo.tar | grep file1.txt
+src/arq/file1.txt
+
+##################################
+tar xfz nome_do_arquivo.tgz
+tar xfz nome_do_arquivo.txz
+tar xfz nome_do_arquivo.tlz
+tar xfz nome_do_arquivo.tbz
+tar xfz nome_do_arquivo.tar.gz
+
+# Extract all packages  tgz,txz,tlz,tbz,tar.gz
+
+for f in *.t*; do tar xfz $f; done
+
+#################################################
+#Extract tar, tar.gz e tar.bz2
+
+tar xvf nome_do_arquivo.tar
+tar xvf nome_do_arquivo.tgz
+tar xvf nome_do_arquivo.txz
+tar xvf nome_do_arquivo.tlz
+tar xvf nome_do_arquivo.tbz
+tar xvf nome_do_arquivo.tar.gz
+tar xvf nome_do_arquivo.tar.xz
+tar xvf nome_do_arquivo.tar.bz2
+
+# Extract all packages  tar,tgz,txz,tlz,tbz,tar.{gz,xz,bz2}
+
+for f in *.t*; do tar xvf $f; done
+
+############################################################
+tar xfk nome_do_arquivo.tar
+tar xfk nome_do_arquivo.tgz
+tar xfk nome_do_arquivo.txz
+tar xfk nome_do_arquivo.tlz
+tar xfk nome_do_arquivo.tbz
+tar xfk nome_do_arquivo.tar.gz
+tar xfk nome_do_arquivo.tar.xz
+tar xfk nome_do_arquivo.tar.bz2
+
+# Extract all packages  tar,tgz,txz,tlz,tbz,tar.{gz,xz,bz2}
+
+for f in *.t*; do tar xfk $f; done
+
+#############################################################
+#Extract tar.xz e tar.bz2
+
+tar -zxf nome_do_arquivo.tar.gz
+tar -Jxf nome_do_arquivo.tar.xz
+tar -jxf nome_do_arquivo.tar.bz2
+
+#################################
+#Compact 
+tar -cf nome_do_arquivo.tar nome_do_arquivo/
+tar -czf nome_do_arquivo.txz nome_do_arquivo/
+tar -czf nome_do_arquivo.tgz nome_do_arquivo/
+tar -czf nome_do_arquivo.tlz nome_do_arquivo/
+tar -czf nome_do_arquivo.tbz nome_do_arquivo/
+tar -czf nome_do_arquivo.tar.gz nome_do_arquivo/
+tar -Jcf nome_do_arquivo.tar.xz nome_do_arquivo/
+tar -cjf nome_do_arquivo.tar.bz2 nome_do_arquivo/
+
+#####################################################
+# Extract especific extension in tar.
+
+tar -xv -f nome_do_arquivo.tar --wildcards "*.txt"
+tar -xv -f nome_do_arquivo.tar.gz --wildcards "*.txt"
+tar -xv -f nome_do_arquivo.tar.xz --wildcards "*.txt"
+tar -xv -f nome_do_arquivo.tar.bz2 --wildcards "*.txt"
+
+#####################################################
+# Extrai apenas um arquivo especifico do tar.
+
+tar xf nome_do_arquivo.tar  src/arq/file.txt
+tar xf nome_do_arquivo.tgz  src/arq/file.txt
+tar xf nome_do_arquivo.txz  src/arq/file.txt
+tar xf nome_do_arquivo.tlz  src/arq/file.txt
+tar xf nome_do_arquivo.tbz  src/arq/file.txt
+tar xf nome_do_arquivo.tar.gz  src/arq/file.txt
+tar xf nome_do_arquivo.tar.xz  src/arq/file.txt
+tar xf nome_do_arquivo.tar.bz2  src/arq/file.txt
+
+# Extrai mais de um arquivo expecifico
+tar xf nome_do_arquivo.tar src/arq/file1.txt src/arq/file2.txt
+tar xf nome_do_arquivo.tgz  src/arq/file1.txt src/arq/file2.txt
+tar xf nome_do_arquivo.txz  src/arq/file1.txt src/arq/file2.txt
+tar xf nome_do_arquivo.tlz  src/arq/file1.txt src/arq/file2.txt
+tar xf nome_do_arquivo.tbz  src/arq/file1.txt src/arq/file2.txt
+tar xf nome_do_arquivo.tar.gz  src/arq/file1.txt src/arq/file2.txt
+tar xf nome_do_arquivo.tar.xz  src/arq/file1.txt src/arq/file2.txt
+tar xf nome_do_arquivo.tar.bz2  src/arq/file1.txt src/arq/file2.txt
+
+tar -xv -f nome_do_arquivo.tar "src/arq/file.txt"
+tar -xv -f nome_do_arquivo.tar.gz "src/arq/file.txt"
+tar -xv -f nome_do_arquivo.tar.xz "src/arq/file.txt"
+tar -xv -f nome_do_arquivo.tar.bz2 "src/arq/file.txt"
+
+#Onde
+tar -tf nome_do_arquivo.{tar,tgz,txz,tlz,tbz}
+tar -tf nome_do_arquivo.tar.{gz,xz,bz2}
+src/
+src/arq/
+src/arq/file.c
+src/arq/file.txt
+
+###############################################################################
+# Adicionando arquivo ou pasta a um tar existente.
+
+ tar -rf nome_do_arquivo.tar file3.txt
+ tar -rf nome_do_arquivo.tar files/
+ tar -rv -zf abc.tar abc.txt
+###############################################################################
+# Fazendo uma verificação quando criar seus arquivos tar
+
+tar -cvWf backup$(date +%Y%m%d).tar.gz backup/
+tar -cvzw -f backup$(date +%Y%m%d).tar.gz backup/
+
+#Testando arquivo de backup
+
+tar -tvf backup$(date +%Y%m%d).tar.gz
+tar -tvzf backup$(date +%Y%m%d).tar.gz
+tar -tvwf backup$(date +%Y%m%d).tar.gz
+
+
+gzip -tv backup$(date +%Y%m%d).tar.gz 
+backup$(date +%Y%m%d).tar.gz:   OK
+
+ou
+bzip2 -tv backup$(date +%Y%m%d).tar.bz 
+backup$(date +%Y%m%d).tar.bz:   OK
+
+bzip2 -tv backup$(date +%Y%m%d).tar.bz2
+backup$(date +%Y%m%d).tar.bz2:   OK
+
+#https://devblog.drall.com.br/extraindo-um-determinado-arquivo-ou-diretorio-de-um-arquivo-tar
+#https://www.blogdainformatica.com.br/usando-o-tar-no-linux-de-forma-descomplicada/
+#https://elias.praciano.com/2014/02/o-comando-tar-em-9-exemplos/
+#https://www.linuxdescomplicado.com.br/2015/05/10-exemplos-do-comando-tar-para-comprimirextrair-arquivos-no-linux.html
+
+--------------------------------------------------------------------------------------------------------------------------
+
+# Mostra da linha 11 a linha 14 do arquivo /etc/profile
+sed -n '11,14p' /etc/profile
+# If the user doesn't have a .inputrc, use the one in /etc.
+if [ ! -r "$HOME/.inputrc" ]; then
+  export INPUTRC=/etc/inputrc
+fi
+
+------------------------------------------------------------------------------------------
+# Substitui o numero 3 por asterisco em inittab
+sed '/id/ s/3/*/g;' /etc/inittab
+
+# Comenta da linha 54 a 58 e modifica tty1 em inittab
+sed '54,58s/^/#/g;/--noclear/ s/ --noclear.* / tty1 /g;' /etc/inittab
+
+# Substitui numero 3 por asterisco e comenta da linha 52 a 56
+sed '/id/ s/4/*/g;52,56s/^/#/g;' /etc/inittab
+
+# Comenta as linhas onde se encontra a teg otmiza
+sed '/otimiza/,+2 s/^/#/'
+#if [ -x /etc/rc.d/rc.otimiza ]; then
+#. /etc/rc.d/rc.otimiza dir
+#fi
+
+------------------------------------------------------------------------------------------
+# Adiciona função sleep para executar após 10 minutos em rc.ntpd
+sed '/\/usr\/sbin\/ntpd -g -u ntp:ntp/a  sleep 10m' /etc/rc.d/rc.ntpd
+
+# Retira função sleep e adiciona quebra de linha na linha 7 e 8
+sed '7s/sleep 10m//g;N;8s/\n//g;' /etc/rc.d/rc.ntpd
+
+# Centraliza função sleep na linha 8
+sed '8s/sleep 10m/  sleep 10m/g;' /etc/rc.d/rc.ntpd
+
+# Adiciona o comando ntpq -p após sleep 10m
+sed '/  sleep 10m/a ntpq -p' /etc/rc.d/rc.ntpd
+
+# Centraliza o comando ntpq -p 
+sed '9s/ntpq -p/  ntpq -p/g;' /etc/rc.d/rc.ntpd
+     
+------------------------------------------------------------------------------------------
+#Substituindo compact, timeout e label no lilo:
+
+sed 's/^#compact/compact/g' /etc/lilo.conf
+sed 's/^timeout =.*/timeout = 00/g' /etc/lilo.conf
+sed 's/^  label =.*/  label = SLCKWRLNX/g' /etc/lilo.conf
+
+------------------------------------------------------------------------------------------
+#Poderes de supervaca ao seu usuario darkstar:
+
+sed '/root ALL=(ALL) ALL/a darkstar ALL=(ALL) ALL' /etc/sudoers
+
+sed 's/^# %sudo  ALL=(ALL) ALL/ %sudo ALL=(ALL) ALL /g' /etc/sudoers
+
+------------------------------------------------------------------------------------------
+#Eliminando linhas de comentário ou linhas em branco no Linux
+bash-4.3$ grep -v "^#" arquivo | sed '/^$/d' > newarquivo
+
+#Explicação:
+# O "grep -v "^#" arquivo.bkp" retira as linhas que iniciam com "#";
+# sed '/^$/d' apaga as linhas em branco. 
+
+#Acho que não preciso dizer que o "|" (pipe) manda a saída do comando anterior pra 
+#entrada do próximo comando e que o ">" redireciona a saída para o arquivo. 
+
+-----------------------------------------------------------------------------------------
+#Como remover parêntesis dos nomes de arquivos
+
+bash-4.3$ cd ~/files
+bash-4.3$ ls *[\(\)]*
+
+arquivo(1).txt
+arquivo(2).txt
+arquivo(3).txt
+
+#Então faça:
+
+bash-4.3$ for i in *\(*\)*; do j=`echo $i |sed -e 's/[()]//g'`; mv "$i" "$j"; done
+
+bash-4.3$ ls arquivo*
+
+arquivo1.txt
+arquivo2.txt
+arquivo3.txt
+
+-----------------------------------------------------------------------------------------
+## aceita várias substituições, separadas por ponto-e-vírgula ou ENTER
+sed 's/uqe/que/; s/qeu/que/; s/euq/que/'
+
+# ou
+bash-4.3$ sed 's/uqe/que/
+     s/qeu/que/
+     s/euq/que/'
+
+# ou
+bash-4.3$ sed 's/\(uqe\|qeu\|euq\)/que/'
+
+--------------------------------------------------------------------------------------------
+Comando seq com saída em hexadecimal
+bash-4.3$ bc <<< "obase = 16 ; `seq 1 255`"
+
+Comando seq com saída em octal
+bash-4.3$ bc <<< "obase = 8 ; `seq 1 255`"
+
+Comando seq com saída em binária
+bash-4.3$ bc <<< "obase = 2 ; `seq 1 255`"
+
+--------------------------------------------------------------------------------------------
+## diversos
+sed 's/.//'                     # apaga o 1o caracter da frase
+sed 's/.//4'                    # apaga o 4o caractere da frase
+sed 's/.\{4\}//'                # apaga os 4 primeiros caracteres
+sed 's/.\{4,\}//'               # apaga no mínimo 4 caracteres
+sed 's/.\{2,4\}//'              # apaga de 2 a 4 caracteres (o máx. que tiver)
+
+sed '/padrão/q'                 # para a leitura do arquivo ao achar o padrão
+sed '/padrão/d'                 # apaga as linhas que contém o padrão
+sed '/padrão1/,/padrão2/d"      # apaga um bloco de linhas 
+
+-------------------------------------------------------------------------------------------------
+5 maneiras de se emular o head
+
+sed -n 1,10p
+sed 1,10!d
+sed 10q
+sed 11,$d
+sed -n 11,$!p
+
+------------------------------------------------------------------------------
+alinhamento:
+
+bash-4.3$ echo "direita" | sed -e :a -e 's/^.\{2,79\}$/ &/;ta'
+                                                                         direita
+
+faça uma marcação no início da linha e lhe dê o nome "a"
+    :a
+case apenas uma linha inteira (^...$) que tenha entre 1 e 79 caracteres
+    ^.\{1,79\}$
+coloque um espaço em branco no começo dessa linha
+(a aumentando um caractere e a jogando para a direita)
+    <ESPAÇO>&
+caso uma substituição tenha sido feita na última s///, vá até (t) a marca "a"
+    ta
+	
+e assim volta-se para o início da linha, fazendo um laço que só acaba quando
+a linha toda tiver mais que 79 caracteres, aí a substituição não será feita,
+e comando t nada fará, continuando o processamento normalmente para a próxima
+linha, ou neste caso, acabará, e sua palavra estará lá na extrema direita,
+completada com espaços em branco no início.
+
+outros:
+------
+direita : sed ':a;s/^.\{1,79\}$/ &/;ta'
+esquerda: sed ':a;s/^.\{1,79\}$/& /;ta'
+centro  : sed ':a;s/^.\{1,78\}$/ & /;ta'
+vertical: sed 's/./&\/g'
+
+-------------------------------------------------------------------------------------------------
+## estes comandos abaixo filtra todas as tags html de um site salvo deixando somente as urls
+
+bash-4.3$ cut -d "\"" -f 2   arquivo-com-tags-urls-html > arquivo-novo-com-urls.txt
+
+bash-4.3$ cat arquivo-com-tags-urls-html | sed 's/.*="//; s/">.*//' > arquivo-novo-com-urls.txt
+
+
+## Este comando abaixo cria uma lista de links a ser baixada atravez do mozilla firefox.
+#1 na pagina onde se encontra os links digite o seguinte comando abaixo:
+#CTRL+SHIFT+K
+#e depois cole no terminal o seguinte comando abaixo:
+#urls = $$('a'); for (url in urls) console.log(urls[url].href);
+
+-----------------------------------------------------------------------------------------------------
+## faz dump da url criando uma lista chamada downloads com links files .txt
+
+bash-4.3$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txt$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## faz dump da url adicionando os links abaixo das urls filtradas no comando acima existentes na lista 
+chamada downloads filtrando as extensões .txz.asc, .txz.md5, .txz 
+
+bash-4.3$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz.asc$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
+
+bash-4.3$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz.md5$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
+
+bash-4.3$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## faz dump da url criando uma lista com links para downloads dos livros pdf's
+
+bash-4.3$ lynx -dump http://www.tldp.org/HOWTO/pdf/ | egrep -i '^\s+[0-9]+\. .+\.pdf$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+# fas dump da url criando uma lista com links para downloads dos pacotes rpm's 
+
+bash-4.3$ lynx -dump http://ftp.colocall.net/pub/centos/7/os/x86_64/Packages/ | egrep -i '^\s+[0-9]+\. .+\.rpm$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+# fas dump da url criando uma lista com links para downloads dos pacotes deb's 
+
+bash-4.3$ lynx -dump http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-6/ | egrep -i '^\s+[0-9]+\. .+\.deb$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+## baixando somente os pacotes *txz
+
+bash-4.3$ wget -nv -c -r -np -A xz http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
+
+bash-4.3$ wget -r -A tgz http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/
+
+--------------------------------------------------------------------------------------------------------------------------
+## baixando somente os files *asc
+
+bash-4.3$ wget -nv -c -r -np -A asc http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
+
+bash-4.3$ wget -r -A asc http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
+
+----------------------------------------------------------------------------------------------------------------------------
+## baixando somente os files *md5
+
+bash-4.3$ wget -nv -c -r -np -A md5 http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/
+
+bash-4.3$ wget -r -A md5 http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
+
+--------------------------------------------------------------------------------------------------------------------------------
+## pega o hostname atual da maquina
+
+bash-4.3$ echo hostname=$(cat /etc/HOSTNAME | cut -f1 -d .)
+hostname=darkstar
+
+-----------------------------------------------------------------------------------
+## pega o nome e numero da ultima pasta criada no sistema.
+
+bash-4.3$ echo nomedir=$(ls -t /opt/ | grep -m 1 jdk | sed s'\/\\g';)
+nomedir=jdk1.8.0_121
+
+-------------------------------------------------------------------------------------
+bash-4.3$ echo DISK=$(mount | grep /dev/sda | awk  '{print $1}')
+DISK=/dev/sda3
+
+bash-4.3$ echo DISK=$(grep -m1 "^/dev/.*[[:blank:]]/[[:blank:]]" /proc/mounts | cut -f1 -d' ')
+DISK=/dev/sda3
+
+bash-4.3$ echo DISK=$(cat /etc/fstab |tr '\t' ' ' |grep -v '^ *#' |tr -s ' ' |grep ' / ' |cut -f1 -d' ')
+DISK=/dev/sda3
+
+bash-4.3$ echo SYSARQ=$(file -s $DISK | awk '{print $5}')
+SYSARQ=ext4
+
+bash-4.3$ echo SYSARQ=$(cat /etc/fstab |tr '\t' ' ' |grep -v '^ *#' |tr -s ' ' |grep ' / ' |cut -f3 -d' ')
+SYSARQ=ext4
+
+bash-4.3$ echo PART=$(grep sda /etc/fstab |  cut -d/ -f 3)
+PART=sda3
+
+bash-4.3$ PART=$(mount | grep /dev/sda | awk  '{print $1}' | sed 's/\/dev\/sda/sda/g')
+PART=sda3
+
+DEVSDA=${DEVSDA:-"/dev/sda"}
+
+SDA=$(mount | grep $DEVSDA | cut -c6-8)
+
+PART=$(mount | grep $DEVSDA |  cut -c6-9)
+
+DISK=$(mount | grep $DEVSDA | awk  '{print $1}')
+
+SYSARQ=$(file -s $DISK | awk '{print $5}')
+
+MKINITRDCOMMAND=${MKINITRDCOMMAND:-"/usr/share/mkinitrd/mkinitrd_command_generator.sh"}
+
+MKINITRD=$($MKINITRDCOMMAND | grep ^mkinitrd | cut -c47-300 | cut -f1 -d ' ')
+
+-------------------------------------------------------------------------------------
+## pega somente o numero da versao do pacotes descompactado.
+
+bash-4.3$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/jdk//g;s\/\\g';)
+numerodir=1.8.0_121
+
+--------------------------------------------------------------------------------------
+# Verificando se usuário existe mesmo:
+
+bash-4.3$ grep teste /etc/passwd
+teste:x:1001:1001::/home/teste:/bin/bash
+
+bash-4.3$ echo user=$(grep -w ^teste /etc/passwd | cut -d: -f 1)
+user=teste
+
+bash-4.3# useradd -m teste -p `awk -vFS=':' '$1 ~ /^tmp/ {print $2}' /etc/shadow` teste
+useradd: usuário 'teste' já existe
+
+bash-4.3# useradd -m teste -p `awk -vFS=':' '$1 ~ /^tmp/ {print $2}' /etc/group` teste
+useradd: usuário 'teste' já existe
+
+
+# Verificando usuarios convencionais que possuen um diretório em /home:
+
+bash-4.3$ grep /home/ /etc/passwd
+ftp:x:14:50::/home/ftp:/bin/false
+teste:x:1001:1001::/home/teste:/bin/bash
+
+
+# Listagem simples trazendo somente os nomes dos usuários
+
+bash-4.3$ grep /home/ /etc/passwd | cut -d: -f1
+ftp
+teste
+
+bash-4.3$ grep $USER /etc/passwd | cut -d: -f1
+teste
+
+## pega logname de usuario não logado no sistema
+
+bash-4.3# echo user=$(cat /etc/passwd | grep -vE "nologin|ftp" | grep home | awk -F':' '{ print $1}')
+user=darkstar
+
+bash-4.3# echo user=$(cat /etc/passwd | grep home | awk -F: '$3 > 499 {print $1}')
+user=darkstar
+
+bash-4.3# echo user=$(cat /etc/passwd | awk -F: '$3 > 499 {print $1}')
+user=darkstar postgres
+
+## pega logname do usuario logado no sistema
+
+bash-4.3$ echo login=$(echo "$USER" | cut -d : -f 1)
+login=darkstar
+
+
+bash-4.3$ echo GET_USER=`su -c "echo \$HOME" | sed 's/\/home\///g'`
+GET_USER=darkstar
+
+#3. Restringindo sed por linhas
+#http://rberaldo.com.br/o-comando-sed-do-linux/
+#E possível fazer o SED atuar somente num intervalo de linhas. 
+#Vamos mostrar os dez primeiros usuários do sistema, 
+#listando as dez primeiras linhas do arquivo /etc/passwd.
+
+sed -r -n '1,10 s/([^:]+).*/\1/p' /etc/passwd
+
+#Note a opção -n e o modificador “p”, para mostrar somente o padrão casado. 
+#É possível usar o caractere $ (cifrão) para se referir à última linha do arquivo:
+
+sed -r -n '1,$ s/([^:]+).*/\1/p' /etc/passwd
+
+-----------------------------------------------------------------------------------------------
+## mostra o total de memoria RAM do sistema
+
+bash-4.3$ echo MEMTOTAL=$(egrep MemTotal /proc/meminfo | awk '{print $2/1024 " MB"}')
+MEMTOTAL=4999.8 MB
+
+bash-4.3$ echo ramtotal=$(awk '{print "Total: "$2" GB"}' <(sed -u '2!d' <(free -m)))
+ramtotal=Total: 15877 GB
+
+bash-4.3$ echo ramusada=$(awk '{print "Usada: "$3" GB"}' <(sed -u '2!d' <(free -m)))
+ramusada=Usada: 1480 GB
+
+bash-4.3$ echo ramlivre=$(awk '{print "Livre: "$4" GB"}' <(sed -u '2!d' <(free -m)))
+ramlivre=Livre: 13318 GB
+
+bash-4.3$ echo ramcache=$(awk '{print "Cache: "$6" MB"}' <(sed -u '2!d' <(free -m)))
+ramcache=Cache: 1067 MB
+
+bash-4.3$ echo FREERAM=$(free -k | grep "^Mem:" | tr -s ' ' | cut -d' ' -f2)
+FREERAM=16267136
+
+bash-4.3$ echo FREERAM=$(free -m | grep "^Mem:" | tr -s ' ' | cut -d' ' -f2)
+FREERAM=15885
+
+bash-4.3$ echo SWP=$(grep -w swap /etc/fstab | cut -d' ' -f1)
+SWP=/dev/zram0
+
+bash-4.3$ echo SWPKB=$(fdisk -s $SWP)" KB"
+SWPKB=2097152 KB
+
+----------------------------------------------------------------------------------------------
+## mostra a quantidade de pacotes no slackware
+
+bash-4.3$ echo pkgs=$(ls -1 /var/log/packages | wc -l)
+pkgs=1267
+
+-------------------------------------------------------------------------------------------------
+## pega a arquitetura do sistema.
+
+bash-4.3# echo osarch=$(uname -a | cut -d' ' -f1 | file /bin/ls | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g';)
+osarch=ELF 64-bit LSB x86-64 version (SYSV)
+
+bash-4.3$ echo osarch=$(file -e elf /sbin/init | grep -i bit | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g';)
+osarch=ELF 64-bit LSB x86-64 version (SYSV)
+
+------------------------------------------------------------------------------------------------------------
+## lista todos os users e uids do sistema.
+
+bash-4.3$ echo UIDS="`cat /etc/passwd | sed 's/:/ /g'|awk '{print "User: "$1",","UID: " $3",", "GID: " $4}'`"
+UIDS=User: root, UID: 0, GID: 0
+
+------------------------------------------------------------------------------------------------------------
+Comando uname:
+
+bash-4.3$ echo string=${string:-"$(uname -a)"}
+string=Linux anon 4.9.44 #1 SMP Wed Aug 16 19:21:30 CDT 2017 x86_64 Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz GenuineIntel GNU/Linux
+
+# Kernel Name
+bash-4.3$ echo string=${string:-"$(uname -s)"}
+string=Linux
+
+# Node Name
+bash-4.3$ echo string=${string:-"$(uname -n)"}
+string=anon
+
+# Kernel Release
+bash-4.3$ echo string=${string:-"$(uname -r)"}
+string=4.9.44
+
+# Kernel Version
+bash-4.3$ echo string=${string:-"$(uname -v)"}
+string=#1 SMP Wed Aug 16 19:21:30 CDT 2017
+
+# Machine Hardware
+bash-4.3$ echo string=${string:-"$(uname -m)"}
+string=x86_64
+
+# Print Processor (Non Portable)
+bash-4.3$ echo string=${string:-"$(uname -p)"}
+string=Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz
+
+# Hardware Plataform (Non Portable)
+bash-4.3$ echo string=${string:-"$(uname -i)"}
+string=GenuineIntel
+
+# Operating System
+bash-4.3$ echo string=${string:-"$(uname -o)"}
+string=GNU/Linux
+
+# Combinatio commands
+bash-4.3$ echo string=${string:-"GNU/$(uname -srm)"}
+string=GNU/Linux 4.9.44 x86_64
+
+------------------------------------------------------------------------------------------------------------
+## filtra versão release do sistema
+
+bash-4.3$ echo os=$(awk -F'=' '/^PRETTY_NAME=/ {print $2}' /etc/os-release)
+os="Slackware 14.2"
+
+bash-4.3$ echo os=$(cat /etc/os-release | grep PRETTY_NAME | cut -c13-27 | sed 's/"//g;')
+os=Slackware 14.2
+
+bash-4.3$ echo os=$(cat /etc/os-release | grep 'ID' | cut -d '=' -f 2)
+os=slackware 14.2
+
+bash-4.3$ echo os=$(cat /etc/os-release | grep '^ID' | cut -d '=' -f 2)
+os=slackware
+
+bash-4.4$ echo sver=$(cat /etc/os-release | grep 'VERSION_ID' | cut -d '=' -f 2)
+sver=14.2
+
+bash-4.3$ echo sver=$(cat /etc/slackware-version | awk '{print $1}')
+sver=Slackware
+
+bash-4.4$ echo sver=$(cat /etc/slackware-version | awk '{print $2}')
+sver=14.2
+
+----------------------------------------------------------------------------------------------------------
+## pega a versão atual do gcc
+
+bash-4.3$ echo VERSION_GCC=$(gcc --version | head --lines=1 | cut -d " " -f 3)
+VERSION_GCC=7.2.0
+
+# SVERSION pega o nome da ultima pasta gcc-*.*.*  dentro da pasta releases
+SVERSION=$(lynx --dump ftp://gcc.gnu.org/pub/gcc/releases/|sed -n '$p'|awk -F"/" '{print $NF}')
+SVERSION=gcc-7.2.0
+
+# NVERSION pega a versao do gcc na variavel SVERSION
+NVERSION=$( echo $SVERSION | cut -f2 -d -)
+NVERSION=7.2.0
+
+# PKGVERSION pega o nome do ultimo pacote gcc-*.*.*.tar.bz2 dentro da pasta gcc-*.*.*  
+PKGVERSION=$(lynx --dump ftp://gcc.gnu.org/pub/gcc/releases/|sed -n '$p'| awk -F"/" '{print $NF".tar.gz"}')
+PKGVERSION=gcc-7.2.0.tar.gz
+
+#Link usando as variaveis qualificadas para buscar a versão
+LINK="ftp://gcc.gnu.org/pub/gcc/releases/$SVERSION/$PKGVERSION"
+LINK=ftp://gcc.gnu.org/pub/gcc/releases/gcc-7.2.0/gcc-7.2.0.tar.gz
+
+bash-4.3$ echo VERSION_GCC=$(cat /usr/src/linux/include/generated/compile.h | grep LINUX_COMPILER | cut -c25-48 | sed 's/"//g;')
+VERSION_GCC=gcc version 7.2.0 (GCC)
+
+--------------------------------------------------------------------------------------------------------
+## filtra o nome do kernel no Makefile
+
+bash-4.3$ echo NAME=$(grep NAME /usr/src/linux/Makefile|awk '{print $3" "$4" "$5" "$6}')
+NAME=Blurry Fish Butt
+
+bash-4.3$ echo $(grep NAME /usr/src/linux/Makefile|cut -d: -f1)
+NAME = Blurry Fish Butt
+
+bash-4.3$ echo NAME=$(grep NAME /usr/src/linux/Makefile|cut -d'=' -f2)
+NAME= Blurry Fish Butt
+
+bash-4.3$ echo NAME=$(grep NAME /usr/src/linux/Makefile| cut -c7-21)
+NAME= Blurry Fish Butt
+
+---------------------------------------------------------------------------------------------------------
+## Pegando a versão do kernel em makefile
+
+bash-4.3$ head -1 /usr/src/linux/Makefile | awk '{print $3}'
+4
+
+bash-4.3$ head -3 /usr/src/linux/Makefile | awk '{print $3}'
+ 4
+ 9
+ 44
+ 
+bash-4.3$ head -3 /usr/src/linux/Makefile | cut -d= -f2
+ 4
+ 9
+ 44
+ 
+---------------------------------------------------------------------------------------------------------
+## filtra a extraversion do kernel caso esteja configurada no Makefile
+
+bash-4.3$ echo EXTRAVERSION=$(cat /usr/src/linux/Makefile|grep "^EXTRAVERSION"|sed 's/EXTRAVERSION =-//g;s/EXTRAVERSION = -//g;s/EXTRAVERSION= -//g')
+EXTRAVERSION=lowlatency
+
+-----------------------------------------------------------------------------------------------------------
+## pega o numero da VERSION do kernel no Makefile
+
+bash-4.3$ echo VERSION=$(grep "^VERSION" /usr/src/linux/Makefile|awk '{print $3}')
+VERSION=4
+
+-----------------------------------------------------------------------------------------------------------
+## filtra a versão do PATCHLEVEL no Makefile
+
+bash-4.3$ echo PATCHLEVEL=$(grep "^PATCHLEVEL" /usr/src/linux/Makefile|awk '{print $3}')
+PATCHLEVEL=4
+
+-----------------------------------------------------------------------------------------------------------
+## filtra a versão do SUBLEVEL no Makefile
+
+bash-4.3$ echo SUBLEVEL=$(grep "^SUBLEVEL" /usr/src/linux/Makefile|awk '{print $3}')
+SUBLEVEL=17
+
+-------------------------------------------------------------------------------------------------------------
+## filtra o nome da maquina onde supostamente o kernel foi modificado, compilado ou empacotado antes de ser baixado.
+
+bash-4.3$ echo LINUXCOMPILEHOST=$(cat /usr/src/linux/include/generated/compile.h|grep "LINUX_COMPILE_HOST"|sed 's/#define//g;s/LINUX_COMPILE_HOST//g;s/\"//g')
+LINUXCOMPILEHOST= hive64
+
+---------------------------------------------------------------------------------------------------------------------------------
+## filtra a data e a hora em que o kernel foi supostamente levantado para o repositório
+
+bash-4.3$ echo UTSVERSION=$(cat /usr/src/linux/include/generated/compile.h|grep "UTS_VERSION"|sed 's/#define//g;s/#1 SMP//g;s/UTS_VERSION//g;s/\"//g')
+UTSVERSION= Thu Aug 11 10:28:29 CDT 2016
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+## filtra o nome do usuario que compilou e compactou o kernel
+
+bash-4.3$ echo COMPILEBY=$(grep "LINUX_COMPILE_BY" /usr/src/linux/include/generated/compile.h|awk '{print $3}'|sed 's/\"//g')
+COMPILEBY=root
+
+#pega numero da versao do pacote do kernel 4.9.40
+bash-4.3$ echo KVERSION=${KVERSION:-$(echo /var/log/packages/kernel-generic-* | rev | cut -f 3 -d - | rev )}
+KVERSION=4.9.44
+
+#pega a arquitetura do pacote em /var/log/packages
+bash-4.3$ echo ARCHKERNEL=${BKERNEL:-$(echo /var/log/packages/kernel-generic-* | rev | cut -f 2 -d - | rev)}
+ARCHKERNEL=x86_64
+
+#pega a versao do firmware do pacote em /var/log/packages
+bash-4.3$ echo FIRMWARE=${FIRMWARE:-$(echo /var/log/packages/kernel-firmware-* | rev | cut -f 3 -d - | rev )}
+FIRMWARE=20170626git
+
+#pega a arquitetura do firmware do pacote em /var/log/packages
+bash-4.3$ echo ARCHFIRM=${ARCHFIRM:-$(echo /var/log/packages/kernel-firmware-* | rev | cut -f 2 -d - | rev)}
+ARCHFIRM=noarch
+
+#pega a arquitetura do kernel source em /var/log/packages
+bash-4.3$ echo SKERNEL=${SKERNEL:-$(echo /var/log/packages/kernel-source-* | rev | cut -f 2 -d - | rev)}
+SKERNEL=noarch
+
+----------------------------------------------------------------------------------------------------------------------------------
+## filtra a versão do compilador com que o kernel foi compilado e empacotado.
+
+bash-4.3$ echo USEDCOMPILER=$(cat /usr/src/linux/include/generated/compile.h|grep "LINUX_COMPILER"|sed 's/#define//g;s/LINUX_COMPILER//g;s/\"//g')
+USEDCOMPILER= gcc version 5.4.0 (GCC)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+## filtra a Release Version, Abi version e Extra version no Kernel debian e Ubuntu.
+
+bash-4.3$  echo RELEASE=$(cat /usr/src/linux-headers-4.6.0-999-lowlatency/include/config/kernel.release | sed 's/-/ /g'|awk -F'-' '{print "Release: "$1",","Abi: " $2",", "Extra Version: " $3}')
+RELEASE=Release: 4.6.0, Abi: 999 , Extra Version: lowlatency
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## cria um vetor para mostrar a Release Version, Abi version e Extra version no Kernel debian e Ubuntu.
+
+VAR=($(awk -F'-' '{printf "%s %s %s", $1, $2, $3}' /usr/src/linux/include/config/kernel.release))
+
+echo "Relese: "${VAR[0]}
+echo "Abi..: "${VAR[1]}
+echo "Extraversion: " ${VAR[2]}
+
+Release: 4.6.0
+Abi..: 999 
+Extra Version: lowlatency
+
+onde o conteudo do arquivo kernel.release:
+4.6.0-999-lowlatency 
+
+--------------------------------------------------------------------------------------------------------------------
+Pegando endereços registrados nas placas de rede:
+
+bash-4.3$ echo IP=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $2}')
+IP=000.000.000.000
+
+bash-4.3$ echo NETMASK=$(ifconfig wlan0 | grep netmask|awk '{print $6}'|cut -d ":" -f2 2> /dev/null)
+bash-4.3$ echo NETMASK=$(ifconfig eth0  | grep mask|awk '{print $4}'|cut -d ":" -f 2)
+NETMASK=000.000.000.000
+
+bash-4.3$ echo BROADCAST=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $6}')
+bash-4.3$ echo BROADCAST=$(ifconfig wlan0|grep broadcast|awk '{print $6 }'|cut -d ":" -f2 2> /dev/null)
+BROADCAST=000.000.000.000
+
+bash-4.3$ echo GATEWAY=$(route | grep -w 'default'| awk '{print echo $2}')
+GATEWAY=saganet
+
+bash-4.3$ ifconfig eth0| grep -i inet| cut -b 2- | sed 's/inet/\ninet->/g;s/ netmask/\nnetmask->/g;s/ broadcast/\nbroadcast->/g;'
+       
+inet-> 000.000.000.000 
+netmask-> 000.000.000.0 
+broadcast-> 000.000.000.000
+
+bash-4.3$ echo NAMESERVER=$(cat /etc/resolv.conf |grep name |awk '{ print $2 }')
+NAMESERVER=000.000.0.0
+
+bash-4.3$ echo VERI_ETH0=$(ifconfig |grep eth0|awk '{print $1}'|wc -l)
+VERI_ETH0=1
+
+
+# Trocar o nome do computador
+# Só é preciso mudar a informação em dois arquivos /etc/hosts e /etc/hostname.
+# Se vc quiser que sua máquina se chame "anonymous" é só usar o comando abaixo:
+
+MUDAHOSTNAME=$(hostname) && sed -i s"|$(echo $a)|anonymous|"g /etc/host{s,name}
+
+# para mudar por outro nome basta trocar a palavra "anonymous" entre os travoes reinicie a máquina.
+#Código: [Selecionar]
+
+
+Pegando Seu IP Externo:
+
+curl ifconfig.me
+curl icanhazip.com
+curl ident.me
+curl ipecho.net/plain
+curl whatismyip.akamai.com
+curl tnx.nl/ip
+curl myip.dnsomatic.com
+curl ip.appspot.com
+curl ip.telize.com
+curl curlmyip.com
+curl -s checkip.dyndns.org | sed 's/.*IP Address: \([0-9\.]*\).*/\1/g'

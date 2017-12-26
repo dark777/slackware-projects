@@ -1,0 +1,166 @@
+#!/bin/sh
+#################################################################################################################################################
+#                                                                                                                                               #
+# Previous standard setting                                                                                                                     #
+# SIZE=1024                                                                                                                                     #
+# echo $SIZE*1024*1024 | bc > /sys/block/zram0/disksize                                                                                         #
+# default 1GB                                                                                                                                   #
+# Script to start zRam (Virtual Swap Compressed in RAM)                                                                                         #
+# https://github.com/otzy007/enable-zRam-in-Slackware                                                                                           #
+#                                                                                                                                               #
+#################################################################################################################################################
+#                                                                                                                                               #
+# http://forum.linuxvillage.org/index.php?topic=92.0                                                                                            #
+# https://sergioprado.org/economizando-memoria-com-o-zram/                                                                                      #
+# http://www.linuxquestions.org/questions/linux-kernel-70/zram-compression-ratio-4175588385/                                                    #
+# https://www.ibm.com/developerworks/community/blogs/752a690f-8e93-4948-b7a3-c060117e8665/entry/ative_a_compactacao_de_memoria_com_zram?lang=en #
+#                                                                                                                                               #
+# Jean Zonta                                                                                                                                    #
+# Slackware 14.2 x64                                                                                                                            #
+# Genéric Kernel 4.9.41                                                                                                                         #
+# wiki.anon                                                                                                                                     #
+# echo "}oqo4gtutF_gnuu4ius4hx" | perl -pe \ 's/(.)/chr(ord($1)-2*3)/ge'                                                                        #
+# echo 'comhttps://slackwarewww' | sed 's@\(com\)\(https://\)\(slackware\)\(www\)@\2\4.\3.\1 ..!!!@'                                            #
+#                                                                                                                                               #
+# My added news                                                                                                                                 #
+#                                                                                                                                               #
+# echo 2G > /sys/block/zram0/disksize                                                                                                           #
+# config                                                                                                                                        #                                                                                                                                                
+# fstab                                                                                                                                         #
+#                                                                                                                                               #
+#################################################################################################################################################
+
+# Null
+NULL=${NULL:-/dev/null}
+
+# Zram
+DEVZRAM=${DEVZRAM:-/dev/zram0}
+
+# Check for existence  /dev/zram0
+ZRAM=${ZRAM:-$(ls -l $DEVZRAM | awk '{print $10}')}
+
+# Definition priority for RAM
+PRIORITYRAM=${PRIORITYRAM:-vm.swappiness=5}
+
+# Definition priority for ZRAM
+PRIORITYZRAM=${PRIORITYZRAM:-vm.swappiness=100}
+
+# File fstab
+FSTAB=${FSTAB:-/etc/fstab}
+
+# File sysctl.conf
+SYSCTL=${SYSCTL:-/etc/sysctl.conf}
+
+# Vm swappiness
+VMSWAPPINESS=${VMSWAPPINESS:-vm.swappiness}
+
+# Check for existence of parameter
+SWAPPINESS=${SWAPPINESS:-$(grep -ri $VMSWAPPINESS $SYSCTL)}
+
+
+# Check configured partition
+STRZRAM=${STRZRAM:-$(grep -ri $ZRAM $FSTAB | awk '{print $1}')}
+
+# Disk Size
+DISKSIZE=${DISKSIZE:-/sys/block/zram0/disksize}
+
+# Zram Reset
+RESET=${RESET:-/sys/block/zram0/reset}
+
+# Start ZRAM
+start() 
+{
+ echo 2G > $DISKSIZE
+  mkswap $ZRAM
+ swapon -p 100 $ZRAM
+}
+
+# Config Parameters
+config()
+{
+
+if [[ $ZRAM < $NULL && ! -f $SYSCTL ]]; then
+ touch $SYSCTL
+  echo -e "# Top priority for RAM usage\n$PRIORITYRAM" >> $SYSCTL
+   echo -e "\nArquivo $SYSCTL e $PRIORITYRAM Criada com sucesso ..!!!\n"
+    
+elif [[ $ZRAM > $NULL && ! -f $SYSCTL ]]; then
+ touch $SYSCTL
+  echo -e "# Top priority for ZRAM usage\n$PRIORITYZRAM" >> $SYSCTL
+   echo -e "\nArquivo $SYSCTL e $PRIORITYZRAM Criada com sucesso ..!!!\n"
+ 
+elif [[ $ZRAM < $NULL && $SWAPPINESS < $NULL ]]; then 
+ echo -e "# Top priority for RAM usage\n$PRIORITYRAM" >> $SYSCTL
+  echo -e "\n$PRIORITYRAM Criada com sucesso ..!!!\n"
+
+elif [[ $ZRAM > $NULL && $SWAPPINESS < $NULL ]]; then
+ echo -e "# Top priority for ZRAM usage\n$PRIORITYZRAM" >> $SYSCTL
+  echo -e "\n$PRIORITYZRAM Criada com sucesso ..!!!\n"
+   
+elif [[ $ZRAM < $NULL && $SWAPPINESS > $NULL && $SWAPPINESS != $PRIORITYRAM ]]; then
+ MODIFICA=$(sed -i 's/# Top priority for ZRAM usage/# Top priority for RAM usage/g;s/'"^$SWAPPINESS"'/'"$PRIORITYRAM"'/g' $SYSCTL)
+  echo -e "\n# Top priority for RAM usage\n$PRIORITYRAM\nModificada com sucesso ..!!!\n"
+   
+elif [[ $ZRAM > $NULL && $SWAPPINESS > $NULL && $SWAPPINESS != $PRIORITYZRAM ]]; then
+  MODIFICA=$(sed -i 's/# Top priority for RAM usage/# Top priority for ZRAM usage/g;s/'"^$SWAPPINESS"'/'"$PRIORITYZRAM"'/g' $SYSCTL)
+   echo -e "\n# Top priority for ZRAM usage\n$PRIORITYZRAM\nModificada com sucesso ..!!!\n"
+    fi
+}
+
+# Config ZRAM fstab 
+fstab()
+{
+ if [[ $ZRAM < $NULL && $STRZRAM < $NULL ]]; then
+  echo -e "\n# Top priority for $PRIORITYRAM configured\n"
+
+ elif [[ $ZRAM > $NULL && $STRZRAM > $NULL ]]; then
+  echo -e "\n# Top priority for $STRZRAM configured\n"
+ 
+ elif [[ $ZRAM > $NULL && $STRZRAM < $NULL && $SWAPPINESS == $PRIORITYZRAM ]]; then
+  cp $FSTAB $FSTAB.old
+   echo "$ZRAM       none             swap        sw,pri=100       0   0" > $FSTAB
+    cat $FSTAB.old >> $FSTAB
+  
+  MODIFICA=$(sed -i 's/defaults/noatime,barrier=0,commit=60/g' $FSTAB)      
+   rm -rf $FSTAB.old 
+    cat $FSTAB
+     echo -e "$ZRAM configured sucessfull\n"
+     
+ elif [[ $ZRAM < $NULL && $STRZRAM > $NULL && $SWAPPINESS == $PRIORITYRAM ]]; then
+  RM=$(sed -i '1d' $FSTAB)
+    cat $FSTAB
+     echo -e "\n# Top priority for /dev/zram0 not supported\n$FSTAB reconfigured sucessfull\n"
+ fi
+}
+
+# Stop ZRAM
+stop() 
+{
+  swapoff $ZRAM
+}
+
+case "$1" in
+
+  start)
+    start
+  ;;
+   
+ config)
+   config
+  ;;
+  
+  fstab)
+    fstab
+  ;;
+  
+  stop)
+    stop
+  ;;
+  
+  restart)
+    echo 1 > $RESET
+  ;;
+
+  *)
+  echo "Usage: $0 (start|config|fstab|stop|restart)"
+esac

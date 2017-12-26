@@ -1,0 +1,121 @@
+http://www.fnbrandao.com.br/blog/2012/01/o-guia-de-dez-minutos-de-diff-e-patch/
+
+Relacionamos a seguir os comandos a serem seguidos para descompactar os arquivos.
+Sufixo  |  Comando
+zip     |  unzip arquivo.zip
+rar     |  unrar x arquivo.rar
+tar.xz  |  tar Jxf arquivo.tar.xz
+tar.gz  |  tar zxf arquivo.tar.gz
+tar.bz2 |  tar jxf arquivo.tar.bz2
+tgz     |  tar xvzf arquivo.tgz
+gz      |  gunzip arquivo.gz
+bz2     |  bunzip2 arquivo.bz2
+##########################################################################################################
+Por exemplo, vamos admitir que você está usando o kernel (e tem o seu código fonte localmente) 
+2.6.9 e quer aplicar o patch 2.6.9-ac16.bz2. Primeiro, salve o arquivo no diretório /usr/src. 
+Depois, mude para o diretório /usr/src/linux-2.6.9 e faça o seguinte:
+
+/usr/src/linux-2.6.9# bzip2 -dc /usr/src/2.6.9-ac16.bz2 | patch -p1 -s --dry-run
+
+O comando acima faz apenas um teste para ver se o patch seria aplicado sem erro nenhum (não aplicando o patch ainda), 
+o que pode salvar a sua vida, pois pode ser extremamente difícil remover um patch que não foi aplicado por inteiro. 
+Este teste é feito pela opção --dry-run. O output gerado por este comando é mostrado muito rápido para que você consiga 
+ler e ver se alguma coisa saiu errado. Para resolver isto, diga ao patch para que só mostre as mensagens de erro usando a opção -s. 
+Se você tem certeza de que tudo vai sair certo, pode aplicar o patch sem esta opção. 
+A opção -p1 mostra na tela apenas a localização relativa dos arquivos modificados ao invés de mostrar sua localização global.
+
+Agora que você já sabe que o patch vai ser aplicado corretamente, faça o seguinte:
+
+/usr/src/linux-2.6.9# bzip2 -dc ../2.6.9-ac16.bz2 | patch -p1
+
+Este comando vai aplicar o patch "de verdade" no código do kernel. Pronto! Agora o patch já está instalado. 
+Para você usar o kernel com as "melhorias" do patch, é só recompilar. Porém, nem todos os patches são tão 
+fáceis assim de serem aplicados ao kernel. Por exemplo, os prepatches do Linus não são incrementais, 
+então o prepatch 2.6.7-pre2 deve ser aplicado no tarball descompactado do kernel 2.6.6 e não em um kernel 
+com o prepatch 2.6.7-pre1 aplicado. Então, para você poder aplicar o prepatch 2.6.7-pre2, deve remover 
+(como será descrito mais adiante) o patch 2.6.7-pre1 do seu kernel atual. Os patches -ac (lançados por Alan Cox) seguem a mesma lógica. 
+#################################################
+Aplicando patches com patch
+os arquivos se encontram no local abaixo:
+root@flame:/usr/src# ls -a
+   linux-3.9.5.tar.xz   patch-3.9.5-pf.bz2
+   
+vamos descompactar o kernel:
+root@flame:/usr/src# tar -jxvf linux-3.9.5.tar.bz2
+root@flame:/usr/src# tar -Jxvf linux-3.9.5.tar.xz
+
+vamos descompactar o patch:
+root@flame:/usr/src# bunzip2 patch-3.9.5-pf.bz2
+
+root@flame:/usr/src# cd linux-3*
+
+testando a aplicação do patch:
+
+root@flame:/usr/src/linux-3.9.5# patch -Np1 -s --dry-run < ../patch-3.9.5-pf
+
+Aplicando o patch:
+
+root@flame:/usr/src/linux-3.9.5# patch -Np1 < ../patch-3.9.5-pf
+
+removendo o patch:
+
+root@flame:/usr/src/linux-3.9.5# patch -Np1 -R < ../patch-3.9.5-pf
+
+
+##################################################
+Aplicando os paches com Bzcat
+os arquivos se encontram no local abaixo:
+root@flame:/usr/src# ls -a
+.. linux-3.9.5 patch-3.9.5-pf.bz2
+
+entrei dentro da pasta no qual vai ser aplicada o patch:
+root@flame:/usr/src# cd linux-3*
+
+testanto o patch antes de aplicalo:
+
+root@flame:/usr/src/linux-3.9.5# bzcat ../patch-3.9.5-pf.bz2 | patch -Np1 -s --dry-run
+
+Aplicando o patch:
+
+root@flame:/usr/src/linux-3.9.5# bzcat ../patch-3.9.5-pf.bz2 | patch -Np1
+
+caso queira remover use o seguinte comando abaixo:
+
+root@flame:/usr/src/linux-3.9.5# bzcat ../patch-3.9.5-pf.bz2 | patch -Np1 -R
+
+######################################################
+Aplicando Patches com bzip2
+os arquivos se encontram no local abaixo:
+root@flame:/usr/src# ls -a
+.. linux-3.9.5 patch-3.9.5-pf.bz2
+
+entrei dentro da pasta no qual vai ser aplicada o patch:
+root@flame:/usr/src# cd linux-3*
+
+testanto o patch antes de aplicalo:
+
+root@flame:/usr/src/linux-3.9.5# bzip2 -dc ../patch-3.9.5-pf.bz2 | patch -p1 -s --dry-run
+
+Aplicando o patch:
+
+root@flame:/usr/src/linux-3.9.5# bzip2 -dc ../patch-3.9.5-pf.bz2 | patch -Np1
+
+caso queira remover use o seguinte comando abaixo:
+
+root@flame:/usr/src/linux-3.9.5# bzip2 -dc ../patch-3.9.5-pf.bz2 | patch -Np1 -R
+
+########################################################
+
+Kernel Real Time Patch application
+
+wget https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.10.10.tar.xz 
+
+wget https://www.kernel.org/pub/linux/kernel/projects/rt/3.10/older/patch-3.10.10-rt7.patch.xz 
+
+tar xJf linux-3.10.10.tar.xz 
+
+root@flame:/usr/src# cd linux-3.10.10 
+
+root@flame:/usr/src/linux-3.10.10# xzcat ../patch-3.10.10-rt7.patch.xz | patch -p1 --dry-run 
+
+root@flame:/usr/src/linux-3.10.10# xzcat ../patch-3.10.10-rt7.patch.xz | patch -p1
