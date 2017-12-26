@@ -212,11 +212,8 @@ fi
 # Substitui o numero 3 por asterisco em inittab
 sed '/id/ s/3/*/g;' /etc/inittab
 
-# Comenta da linha 54 a 58 e modifica tty1 em inittab
-sed '54,58s/^/#/g;/--noclear/ s/ --noclear.* / tty1 /g;' /etc/inittab
-
-# Substitui numero 3 por asterisco e comenta da linha 52 a 56
-sed '/id/ s/4/*/g;52,56s/^/#/g;' /etc/inittab
+# Comenta da linha 53 a 57 e modifica tty1 em inittab
+sed '53,57s/^/#/g;/--noclear/ s/ --noclear.* / tty1 /g;' /etc/inittab
 
 # Comenta as linhas onde se encontra a teg otmiza
 sed '/otimiza/,+2 s/^/#/'
