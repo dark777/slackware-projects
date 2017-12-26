@@ -79,7 +79,7 @@ fi
 # Substitui `hostname` por \u.\h na linha 47
 # Substitui `pwd` por \w na linha 47
 # Substitui @ por ponto na linha 57
-sed -i '47s/`hostname`/\\u.\\h/g;47s/`pwd`/\\w/g;57s/@/./g'  $PROFILE
+sed -i '47s/`hostname`/\\u.\\h/g;47s/`pwd`/\\w/g;47s/^#//g;57s/@/./g' $PROFILE
 rm -rf $ZPROFILE
 
 # Substitui us por br
