@@ -6,6 +6,8 @@ LILO=${LILO:-/etc/lilo.conf}
 
 PROFILE=${PROFILE:-/etc/profile}
 
+INITTAB=${INITTAB:-/etc/inittab}
+
 ZPROFILE=${ZPROFILE:-/etc/zprofile}
 
 SUDOERS=${SUDOERS:-/etc/sudoers}
@@ -17,6 +19,8 @@ RCNTPD=${RCNTPD:-/etc/rc.d/rc.ntpd}
 ETCNTP=${ETCNTP:-/etc/ntp.conf}
 
 NTPDRIFT=${NTPDRIFT:-/etc/ntp.drift}
+
+NETWORKMANAGER=${NETWORKMANAGER:-/etc/rc.d/rc.networkmanager}
 
 MODULESLOCAL=${MODULESLOCAL:-/etc/rc.d/rc.modules.local}
 
@@ -48,17 +52,18 @@ VERSION=${VERSION:-$(cat $SLVERSION)}
 
 ISSUE=${ISSUE:-/etc/issue}
 
+BASHRCADM=${BASHRCADM:-/root/.bashrc}
+
 MKINITRDCOMMAND=${MKINITRDCOMMAND:-/usr/share/mkinitrd/mkinitrd_command_generator.sh}
 MKINITRD=${MKINITRD:-$($MKINITRDCOMMAND | grep ^mkinitrd | cut -c47-300 | cut -f1 -d ' ')}
 
 groupadd sudo
 groupadd tar
 
-rm -rf /etc/inittab
 rm -rf /etc/rc.d/rc.{4,M,S}
 rm -rf /etc/profile.d/lang.{csh,sh}
 
-cp sys/{inittab,sysctl.conf} /etc
+cp sys/sysctl.conf /etc
 cp sys/lang.{csh,sh} /etc/profile.d/
 cp sys/rc.{4,M,S,zram} /etc/rc.d
 mv $ETCNTP $ETCNTP.orig
@@ -76,6 +81,11 @@ cp $SHAREKEYBOARD $KEYBOARD
 
 fi
 
+# Modifica Default runlevel
+# Subistitui 3 por asteristico 
+# Comenta da linha 53 a 57
+sed -i '/id/ s/3/*/g;53,57s/^/#/g;/--noclear/ s/ --noclear.* / tty1 /g;' $INITTAB
+
 # Substitui `hostname` por \u.\h na linha 47
 # Substitui `pwd` por \w na linha 47
 # Substitui @ por ponto na linha 57
@@ -84,7 +94,6 @@ rm -rf $ZPROFILE
 
 # Substitui us por br
 #sed -i '/us/ s/us/br/g;' $KEYBOARD
-
 
 # Descomenta Option
 # Substitui us por br
@@ -117,13 +126,13 @@ if [ -f $MODULESLOCAL ]; then
  echo "/sbin/modprobe zram" >> $MODULESLOCAL
 fi
 
-chmod 755 -v /etc/rc.d/rc.{zram,ntpd}
+chmod 755 -v /etc/rc.d/rc.{zram,ntpd,networkmanager}
+   $NETWORKMANAGER start
    /sbin/nmtui
    ntpdate pool.ntp.br
    $RCNTPD start
    #. /etc/rc.d/rc.zram start
    #. /etc/rc.d/rc.mysqld start
-   #. /etc/rc.d/rc.networkmanager start
    
 if [ -f $SLVERSION ]; then
  echo "Welcome to $VERSION \s-\r.\m \l" > $ISSUE
@@ -148,16 +157,14 @@ useradd -m $usuario
 
 passwd $usuario
 
-mkdir -p /home/$usuario/{Documentos,Downloads,Imagens,Músicas,Vídeos,Filmes,Packages,Projetos,Workspace}
-
-touch /home/$usuario/.{bashrc,profile}
+mkdir -p /home/$usuario/{Documentos,Downloads,Imagens,Musicas,Videos,Filmes,Packages,Projetos,Workspace}
 
 chown -R $usuario.$usuario /home/$usuario
 
 usermod -aG sudo,tar,users,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner $usuario 
 
-BASHRCUSER=${BASHRCUSER:-"/home/$usuario/.bashrc"}
-BASHRCADM=${BASHRCADM:-"/root/.bashrc"}
+
+BASHRCUSER=${BASHRCUSER:-/home/$usuario/.bashrc}
 
 echo "
 if [ -f $PROFILE ]; then
@@ -186,13 +193,15 @@ sed -i '/^label = GNRCLNX/a read-only' $LILO
 sed -i '/^read-only/a # Linux bootable generic partition config ends' $LILO
 
 ## Adiciona partição no fim de lilo.conf
-#echo "# Linux bootable generic partition config begins" >> $LILO
-#echo "image = $GENERIC" >> $LILO
-#echo "initrd = $ZRAMINITRD" >> $LILO 
-#echo "  root = $DISK" >> $LILO
-#echo "  label = GNRCLNX" >> $LILO
-#echo "  read-only " >> $LILO
-#echo "# Linux bootable generic partition config ends" >> $LILO
+#echo "
+# Linux bootable generic partition config begins
+#image = $GENERIC
+#  initrd = $ZRAMINITRD 
+#  root = $DISK
+#  label = GNRCLNX
+#  read-only
+# Linux bootable generic partition config ends
+#" >> $LILO
    
 lilo
 
