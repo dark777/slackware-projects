@@ -854,3 +854,42 @@ curl ip.appspot.com
 curl ip.telize.com
 curl curlmyip.com
 curl -s checkip.dyndns.org | sed 's/.*IP Address: \([0-9\.]*\).*/\1/g'
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+sed formatando CPF, CNPJ e datas
+
+
+Em formulários CGI e programas em shell que tenham entradas manuais de CPF, 
+CNPJ e datas é um tanto chato e passível de erros digitá-los com seus formatos. 
+O sed aqui se mostra muito útil para formatá-los.
+
+Para formatar CPF:
+
+echo 99988877755 | sed -e 's!\.!!g;s!\(...\)!\1.!1;s!\ (.\)!\1.!7;s!\(.\)!\1-!11' A saída deste comendo será:
+
+999.888.777-55
+
+Para formatar CNPJ com o sed faça o seguinte.
+
+CNPJ 18 caracteres (antigo):
+
+echo 99888777000155 | sed -e 's!\.!!g;s!\(..\)!\1.!1;s!\ (.\)!\1.!6;s!\(.\)!\1/!10;s!\(.\)!\1-!15'
+
+A saída será: 99.888.777/0001-55
+
+CNPJ 19 caracteres (novo):
+
+echo 199888777000155 | sed -e 's!\.!!g;s!\(.\)!\1.!3;s!\ (.\)!\1.!7;s!\(.\)!\1/!11;s!\(.\)!\1-!16'
+
+A saída será: 199.888.777/0001-55
+
+Muito semelhante ao CPF e CNPJ esta linha de comando o sed formata datas igualmente para 6 ou 8 dígitos:
+
+echo 10102011 | sed -e 's!\.!!g;s!\(.\)!\1\/!2;s!\ (.\)!\1\/!5;s!$!!'
+
+A saída será: 10/10/2011
+
+echo 101011 | sed -e 's!\.!!g;s!\(.\)!\1\/!2;s!\ (.\)!\1\/!5;s!$!!'
+
+A saída será: 10/10/11

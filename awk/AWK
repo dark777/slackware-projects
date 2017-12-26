@@ -1,0 +1,128 @@
+ftp://ftp.uvsq.fr/pub/gcc/snapshots/LATEST-7/gcc-7-20170219.tar.bz2
+ftp://gcc.gnu.org/pub/gcc/snapshots/7-20170219/
+VERSION=${VERSION:-$(echo php/php-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)} 
+
+
+https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+
+f='/path/to/complex/file.1.0.1.tar.gz'
+
+# Filename : 'file.1.0.x.tar.gz'
+    echo "$f" | awk -F'/' '{print $NF}'
+
+# Extension (last): 'gz'
+    echo "$f" | awk -F'[.]' '{print $NF}'
+
+# Extension (all) : '1.0.1.tar.gz'
+    echo "$f" | awk '{sub(/[^.]*[.]/, "", $0)} 1'
+
+# Extension (last-2): 'tar.gz'
+    echo "$f" | awk -F'[.]' '{print $(NF-1)"."$NF}'
+
+# Basename : 'file'
+    echo "$f" | awk '{gsub(/.*[/]|[.].*/, "", $0)} 1'
+
+# Basename-extended : 'file.1.0.1.tar'
+    echo "$f" | awk '{gsub(/.*[/]|[.]{1}[^.]+$/, "", $0)} 1'
+
+# Path : '/path/to/complex/'
+    echo "$f" | awk '{match($0, /.*[/]/, a); print a[0]}'
+    # or 
+    echo "$f" | grep -Eo '.*[/]'
+
+# Folder (containing the file) : 'complex'
+    echo "$f" | awk -F'/' '{$1=""; print $(NF-1)}'
+
+# Version : '1.0.1'
+    # Defined as 'number.number' or 'number.number.number'
+    echo "$f" | grep -Eo '[0-9]+[.]+[0-9]+[.]?[0-9]?'
+
+    # Version - major : '1'
+    echo "$f" | grep -Eo '[0-9]+[.]+[0-9]+[.]?[0-9]?' | cut -d. -f1
+
+    # Version - minor : '0'
+    echo "$f" | grep -Eo '[0-9]+[.]+[0-9]+[.]?[0-9]?' | cut -d. -f2
+
+    # Version - patch : '1'
+    echo "$f" | grep -Eo '[0-9]+[.]+[0-9]+[.]?[0-9]?' | cut -d. -f3
+
+# All Components : "path to complex file 1 0 1 tar gz"
+    echo "$f" | awk -F'[/.]' '{$1=""; print $0}'
+
+# Is absolute : True (exit-code : 0)
+    # Return true if it is an absolute path (starting with '/' or '~/'
+    echo "$f" | grep -q '^[/]\|^~/'
+ 
+------------------------------------------------------------------------------------------------
+# Comenta as linhas onde se encontra a teg otmiza
+
+bash-4.4$ awk -i inplace '/otimiza/ {f=2} f && f-- {$0="#"$0}1' arquivo
+#if [ -x /etc/rc.d/rc.otimiza ]; then
+#. /etc/rc.d/rc.otimiza dir
+#fi
+
+------------------------------------------------------------------------------------------------
+
+11 Comandos AWK que você precisa conhecer (Alguns destes comandos precisam de privilégios elevados e precisam se precedidos de sudo)
+1: Exibir uma lista dos comandos que você mais utiliza:
+
+    history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
+
+2: Exibir um bloco de texto com AWK
+
+    awk '/delimitador_inicial/,/delimitador_final/' arquivo.txt
+
+Se você ficou um pouco perdido com a utilidade deste comando veja este exemplo: 
+Para ver apenas as informações do processador do computador use-o assim:
+
+    dmidecode | awk '/Processor Information/,/Part Number/'
+
+3: Encontrar informação geográfica de um determinado endereço ip:
+*Obs: Neste exemplo utilizamos o IP do google.com.br (172.217.29.78)
+
+    lynx -dump http://www.ip-adress.com/ip_tracer/172.217.29.78 | awk '/IP country code/,/Local time in/' | tail -12 | sort | uniq -c | sort -n | awk {'print $2,$3,$4,$5,$6,$7,$8,$9'}
+
+4: Remover entradas duplicadas de um arquivo sem reordenar as linhas na saída:
+*Algo muito útil para analisar log de sistema com excesso de linhas redundantes.
+
+    awk '!x[$0]++' arquivo.txt
+
+5: O comando irá obter a lista e criar as regras para você, se você quer que o comando bloqueie automaticamente adicione "| sh" 
+no final do comando não esqueça de adicionar este comando no Cron para ser executado de hora em hora para ficar ainda melhor ;)
+
+    wget -qO – http://infiltrated.net/blacklisted | awk '!/# | [a-z]/&&/./{print "iptables -A INPUT -s "$1" -j DROP"}'
+
+*Obs: A BlackList é formada por uma lista compilada de todos os hosts maliciosos 
+conhecidos no momento (botnets, spammers, bruteforcers, etc.) esta lista é atualizado a cada hora.
+6: Analisar o log de acesso do apache para os endereços IPs mais comuns:
+
+    tail -15000 access_log | awk '{print $1}' | sort | uniq -c | sort -n | tail
+
+7: Mostra um histograma dos momentos mais congestionados de um arquivo de log:
+
+    cat /var/log/syslog | awk '{print substr($0,0,12)}' | uniq -c | sort -nr | awk '{printf("n%s ",$0) ; for (i = 0; i<$1 ; i++) {printf("*")};}'
+
+8: Mostra rapidamente quais os usuários utilizaram o sistema recentemente:
+
+    last  | grep -v "^$" | awk '{ print $1 }' | sort -nr | uniq -c
+
+9: Mostra o numero de conexões abertas por IP e as portas usadas:
+*Obs: Está linha de comando serve para executar em seu servidor,  quando você achar que seu servidor está sob ataque. 
+O comando vai imprimir uma lista de conexões abertas para o servidor e os classifica por quantidade.
+
+    netstat -ntu | awk '{print $5}' | cut -d: -f1,2 | sort | uniq -c | sort -n
+
+10: Efetuar checagem dos seus e-mails não lidos do Gmail pela linha de comando:
+Obs: O problema deste comando é que se a sua senha tiver algum metacaractere como . ? * + ^ $ | [ ] { } ( ), 
+você terá que "escapar" colocando "" antes de cada um deles, ou eles vão mudar todo o contexto do comando! ;)
+
+    curl -u username:password –silent "https://mail.google.com/mail/feed/atom” | \
+    tr -d 'n' | awk -F " '{for (i=2; i<=NF; i++) {print $i}}' | sed -n "s/(.*)</title.*name>(.*)</name>.*/2 – 1/p"
+
+11: Listar o número e tipo de conexões de rede ativas:
+
+    netstat -ant | awk '{print $NF,$3,$4,$5}' | grep -v '[a-z]' | sort | uniq -c
+
+12: Mostra o tamanho dos diretórios, os maiores primeiro e divididos entre ‘Kb, Mb e Gb’:
+
+    du -d 1 | sort -r -n | awk '{split("KB(s) MB(s) GB(s)",v); s=1; while($1>1024){$1/=1024; s++} print int($1)" "v[s]"t"$2}'

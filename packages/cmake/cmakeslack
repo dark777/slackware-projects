@@ -1,0 +1,129 @@
+#!/bin/sh
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp}
+VERSION=${VERSION:-3.9.1}
+PKG=${PKG:-${TMP}/cmake-${VERSION}}
+SRCBUILD=${SRCBUILD:-1}
+BINBUILD=${BINBUILD:-2}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i686 ;;
+    arm*) ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    x86_64) ARCH=x86_64 ;;
+  esac
+fi
+
+PKGVERSION=$(echo ${VERSION} | rev | cut -f 2- -d . | rev)
+
+URLBIN="https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}-Linux-${ARCH}.sh"
+
+SRCURL="https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}.tar.gz"
+
+read -p "Do you want to compile or compact? [s|S]-Source or [b|B]-Binary: " line
+
+    case ${line} in
+      s|S)
+     
+       if [ ! -d ${CWD}/cmake ]; then
+        mkdir -p ${CWD}/cmake
+         # from Source
+         cd ${CWD}/cmake
+         mkdir -p ${PKG}
+          wget -nv -T 20 --no-check-certificate -q "${SRCURL}" || true
+           tar xfz cmake-${VERSION}.tar.gz
+         
+           cd cmake-${VERSION} && mkdir build && cd build
+           ../configure --prefix=/usr
+           #cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+           make -j5 
+           make DESTDIR=${PKG} install
+           cd ${PKG}
+           
+           chown -R root:root .
+           find . \
+           \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+           -exec chmod 755 {} \; -o \
+           \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+           -exec chmod 644 {} \;
+
+           makepkg -l y -c n ../cmake-${VERSION}${ARCH}-${SRCBUILD}.txz
+           
+           mv ${TMP}/cmake-${VERSION}${ARCH}-${SRCBUILD}.txz ${CWD}
+                      
+           rm -rf ${PKG}
+           rm -rf ${CWD}/cmake
+           
+           cd ${CWD}
+           echo "Do you want to upgrade the package $(cmake --version | grep "cmake version")?"
+           read -p "Choice[y|Y]-Yes or [n|N]-No: " resp
+           
+           case ${resp} in
+           
+             y|Y)
+              upgradepkg --install-new --reinstall cmake-${VERSION}${ARCH}-${SRCBUILD}.txz
+             ;;
+           
+             n|N)
+              echo "Package successfully compiled good work .."
+              exit 1
+             ;;
+             
+               *)
+             echo "Not option valid. Exiting ..."
+             exit 1;;
+           esac
+           #su -c "make install"
+           #su -c "make uninstall"
+       fi
+       ;;
+        
+      b|B)
+        
+       if [ ! -d ${CWD}/cmake ]; then
+        mkdir -p ${CWD}/cmake
+         # from binary
+         cd ${CWD}/cmake
+          wget -nv -T 20 --no-check-certificate -q "${URLBIN}" || true
+           sh ./cmake-${VERSION}-Linux-${ARCH}.sh --prefix=${CWD}/cmake --skip-license --exclude-subdir
+           rm -rf cmake-${VERSION}-Linux-${ARCH}.sh 
+           chown -R root:root .
+           find . \
+           \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+           -exec chmod 755 {} \; -o \
+           \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+           -exec chmod 644 {} \;
+          
+           /sbin/makepkg -l y -c n ../cmake-${VERSION}-${ARCH}-${BINBUILD}.txz
+                      
+           rm -rf ${PKG}
+           rm -rf ${CWD}/cmake
+           
+           cd ${CWD}          
+           echo "Do you want to upgrade the package $(make --version | grep "cmake version")?"
+           read -p "Choice[y|Y]-Yes or [n|N]-No: " resp
+           
+           case ${resp} in
+           
+             y|Y)
+              upgradepkg --install-new --reinstall cmake-${VERSION}-${ARCH}-${BINBUILD}.txz
+             ;;
+             
+             n|N)
+              echo "Package successfully compiled good work .."
+              exit 1
+             ;;
+             
+               *)
+             echo "Not option valid. Exiting ..."
+             exit 1;;
+           esac
+        fi 
+        ;;
+      *)
+        echo "Not option valid. Exiting ..."
+        exit 1;;
+    esac
