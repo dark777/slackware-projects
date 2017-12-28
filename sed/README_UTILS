@@ -430,6 +430,41 @@ hostname=darkstar
 
 bash-4.3$ echo nomedir=$(ls -t /opt/ | grep -m 1 jdk | sed s'\/\\g';)
 nomedir=jdk1.8.0_121
+-------------------------------------------------------------------------------------
+Gerenciamento do bash_history
+
+# Limpa as variaveis antes de ser usadas:
+unset STR_HISTORY BLANK_LNRM BLANK_INIRM BLANK_FIMRM RMDUP NEWSTORE RMFILES
+
+# Salva saida padrao em um novo arquivo:
+STR_HISTORY=${STR_HISTORY:-$(cat ~/.bash_history > str_history)}
+
+
+# Remove linha em branco:
+BLANK_LNRM=${BLANK_LNRM:-$(sed  -i '/^$/d' str_history)}
+
+
+# Remove caracteres em branco no inicio da linha:
+BLANK_INIRM=${BLANK_INIRM:-$(sed -i 's/^ *//g' str_history)}
+
+
+# Remove caracteres em branco no final da linha:
+BLANK_FIMRM=${BLANK_FIMRM:-$(sed -i 's/ *$//g' str_history)}
+
+
+# Remove linhas duplicadas
+RMDUP=${RMDUP:-$(sort -u str_history > str_history2)}
+
+
+# Salva os comandos devolta em .bash_history:
+NEWSTORE=${NEWSTORE:-$(cat str_history2 > ~/.bash_history)}
+
+
+#Remove os arquivos de suporte:
+RMFILES=${RMFILES:-$(rm -rf str_{history,history2})}
+
+# Limpa as variaveis usadas:
+unset STR_HISTORY BLANK_LNRM BLANK_INIRM BLANK_FIMRM RMDUP NEWSTORE RMFILES
 
 -------------------------------------------------------------------------------------
 bash-4.3$ echo DISK=$(mount | grep /dev/sda | awk  '{print $1}')
