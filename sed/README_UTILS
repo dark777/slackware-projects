@@ -16,6 +16,13 @@ https://www.slackware.com ..!!!
 bash-4.3$ echo 'comhttps://slackwarewww' | sed 's@\(com\)\(https://\)\(slackware\)\(www\)@\2\4.\3.\1 ..!!!@'
 https://www.slackware.com ..!!!
 -----------------------------------------------------------------------------------------
+
+Contando os comandos digitados:
+
+PS1='\u.\h:\#:\w\$ '
+\# Conta o numero de comandos digitados no terminal
+
+-----------------------------------------------------------------------------------------
 # Configurando data e hora precisamente pelo terminal linux.
 
 # Mudando a data
