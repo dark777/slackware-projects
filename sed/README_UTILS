@@ -520,7 +520,7 @@ DEVSDA=${DEVSDA:-"/dev/sda"}
 
 SDA=$(mount | grep $DEVSDA | cut -c6-8)
 
-PART=$(mount | grep $DEVSDA |  cut -c6-9)
+PART=$(mount | grep $DEVSDA |  cut -c6-10)
 
 DISK=$(mount | grep $DEVSDA | awk  '{print $1}')
 
@@ -835,6 +835,11 @@ ARCHFIRM=noarch
 #pega a arquitetura do kernel source em /var/log/packages
 bash-4.3$ echo SKERNEL=${SKERNEL:-$(echo /var/log/packages/kernel-source-* | rev | cut -f 2 -d - | rev)}
 SKERNEL=noarch
+
+
+#pega o nome e a extensao do pacote.
+bash-4.3$ echo NAME=$(echo php* |sed -re "s/(.*\/)(.*.t[blxg]z)$/\2/")
+NAME=phpmyadmin-4.7.5-noarch-1_slonly.txz
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ## filtra a versão do compilador com que o kernel foi compilado e empacotado.
