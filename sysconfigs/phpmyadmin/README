@@ -3,7 +3,7 @@
 bash-4.4$ su -c "installpkg phpmyadmin-4.7.5-noarch-1_SBo.tgz"
 
 # Fazendo upgrade do phpmyadmin caso 
-já tenha a versão acima instalada
+já tenha a versão inferior a 4.7.5 acima.
 
 https://pkgs.org/download/phpmyadmin
 
