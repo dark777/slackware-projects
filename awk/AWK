@@ -1,9 +1,3 @@
-ftp://ftp.uvsq.fr/pub/gcc/snapshots/LATEST-7/gcc-7-20170219.tar.bz2
-ftp://gcc.gnu.org/pub/gcc/snapshots/7-20170219/
-VERSION=${VERSION:-$(echo php/php-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)} 
-
-
-https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
 
 f='/path/to/complex/file.1.0.1.tar.gz'
 
@@ -62,17 +56,6 @@ bash-4.4$ awk -i inplace '/otimiza/ {f=2} f && f-- {$0="#"$0}1' arquivo
 #fi
 
 ------------------------------------------------------------------------------------------------
-Removendo linhas duplicadas com o awk
-O comando abaixo mostra o conteúdo do arquivo sem as linahs duplicadas
-
-awk '!($0 in a) {a[$0];print}' file.txt
-	
-awk '!a[$0]++' file.txt
-awk '!i[$0]++' file.txt
-awk '!x[$0]++' file.txt
-
-https://github.com/voyeg3r/dotfaster/blob/master/vim/wiki/awk.md
-------------------------------------------------------------------------------------------------
 
 11 Comandos AWK que você precisa conhecer (Alguns destes comandos precisam de privilégios elevados e precisam se precedidos de sudo)
 1: Exibir uma lista dos comandos que você mais utiliza:
@@ -96,8 +79,11 @@ Para ver apenas as informações do processador do computador use-o assim:
 4: Remover entradas duplicadas de um arquivo sem reordenar as linhas na saída:
 *Algo muito útil para analisar log de sistema com excesso de linhas redundantes.
 
+    awk '!a[$0]++' arquivo.txt
+    awk '!i[$0]++' arquivo.txt
     awk '!x[$0]++' arquivo.txt
-
+    awk '!($0 in a) {a[$0];print}' arquivo.txt
+    
 5: O comando irá obter a lista e criar as regras para você, se você quer que o comando bloqueie automaticamente adicione "| sh" 
 no final do comando não esqueça de adicionar este comando no Cron para ser executado de hora em hora para ficar ainda melhor ;)
 
@@ -137,3 +123,9 @@ você terá que "escapar" colocando "" antes de cada um deles, ou eles vão muda
 12: Mostra o tamanho dos diretórios, os maiores primeiro e divididos entre ‘Kb, Mb e Gb’:
 
     du -d 1 | sort -r -n | awk '{split("KB(s) MB(s) GB(s)",v); s=1; while($1>1024){$1/=1024; s++} print int($1)" "v[s]"t"$2}'
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+https://github.com/voyeg3r/dotfaster/blob/master/vim/wiki/awk.md
+https://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash
+    
