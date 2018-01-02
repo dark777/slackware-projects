@@ -1,0 +1,53 @@
+# Instalando e configurando phpmyadmin
+
+bash-4.4$ su -c "installpkg phpmyadmin-4.7.5-noarch-1_SBo.tgz"
+
+# Fazendo upgrade do phpmyadmin caso 
+já tenha a versão acima instalada
+
+https://pkgs.org/download/phpmyadmin
+
+Download phpmyadmin-4.7.5-noarch-1_slonly.txz
+Install phpmyadmin txz package:
+
+bash-4.4$ su -c "upgradepkg --install-new phpmyadmin-4.7.5-noarch-1_slonly.txz"
+
+bash-4.4$ su -c "chmod 755 /etc/rc.d/rc.httpd"
+
+bash-4.4$ su -c "rm -rf /etc/httpd/*"
+
+bash-4.4$ cd httpd_configurado
+
+bash-4.4$ su -c "cp -ar * /etc/httpd"
+
+bash-4.4$ su -c "/etc/rc.d/rc.httpd start"
+AH00112: Warning: DocumentRoot [/srv/httpd/htdocs/website1] does not exist
+
+bash-4.4$ su -c "mkdir -p /srv/httpd/htdocs/website1"
+
+bash-4.4$ su -c "mkdir -p /var/www/htdocs/website1"
+
+bash-4.4$ su -c "/etc/rc.d/rc.httpd stop"
+
+bash-4.4$ su -c "/etc/rc.d/rc.httpd start"
+
+bash-4.4# ifconfig | grep "inet addr" | grep -v "127.0.0.1" | cut -d: -f2 | cut -d' ' -f1
+
+# Entre no seu browser e coloque o link:
+
+http://127.0.0.1/phpmyadmin/
+http://localhost/phpmyadmin/
+http://anon.com.br/phpmyadmin/
+
+Login: root
+senha: a senha do seu mysql (que foi configurado qnd instalou o mysql ou o appserver)
+
+
+Sources:
+https://pkgs.org/download/phpmyadmin
+http://slackdummies.blogspot.com.br/
+http://docs.php.net/manual/pt_BR/features.http-auth.php
+https://www.vivaolinux.com.br/artigo/PHP-Programando-com-seguranca?
+https://codecasts.com.br/lesson
+http://slackware.ponce.cc/blog/2011/02/12/slackware-lamp-server-with-phpmyadmin-in-a-few-easy-steps/comment-page-1/
+http://www.novotopico.com/aprendendo-a-mecher-no-phpmyadmin-t6363.html

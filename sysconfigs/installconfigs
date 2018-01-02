@@ -4,6 +4,8 @@ DEVSDA=${DEVSDA:-/dev/sda}
 
 LILO=${LILO:-/etc/lilo.conf}
 
+SBINLILO=${SBINLILO:-/sbin/lilo}
+
 PROFILE=${PROFILE:-/etc/profile}
 
 INITTAB=${INITTAB:-/etc/inittab}
@@ -34,11 +36,11 @@ KEYBOARD=${KEYBOARD:-/etc/X11/xorg.conf.d/90-keyboard-layout.conf}
 
 SDA=${SDA:-$(mount | grep $DEVSDA | cut -c6-8)}
 
-PART=${PART:-$(mount | grep $DEVSDA | cut -c6-9)}
+PART=${PART:-$(mount | grep $DEVSDA | cut -c6-10)}
 
-DISK=${DISK:-$(mount | grep $DEVSDA | awk  '{print $1}')}
+DEVDISK=${DEVDISK:-$(mount | grep $DEVSDA | awk  '{print $1}')}
 
-SYSARQ=${SYSARQ:-$(file -s $DISK | awk '{print $5}')}
+SYSARQ=${SYSARQ:-$(file -s $DEVDISK | awk '{print $5}')}
 
 GENERIC=${GENERIC:-/boot/vmlinuz-generic}
 
@@ -52,13 +54,21 @@ VERSION=${VERSION:-$(cat $SLVERSION)}
 
 ISSUE=${ISSUE:-/etc/issue}
 
+USERADD=${USERADD:-/usr/sbin/useradd}
+
+GROUPADD=${GROUPADD:-/usr/sbin/groupadd}
+
+SETPASSWORD=${SETPASSWORD:-/usr/bin/passwd}
+
 BASHRCADM=${BASHRCADM:-/root/.bashrc}
 
-MKINITRDCOMMAND=${MKINITRDCOMMAND:-/usr/share/mkinitrd/mkinitrd_command_generator.sh}
-MKINITRD=${MKINITRD:-$($MKINITRDCOMMAND | grep ^mkinitrd | cut -c47-300 | cut -f1 -d ' ')}
+MKINITRD=${MKINITRD:-/sbin/mkinitrd}
 
-groupadd sudo
-groupadd tar
+MKINITRDCOMMAND=${MKINITRDCOMMAND:-/usr/share/mkinitrd/mkinitrd_command_generator.sh}
+
+MKINITRDSTRINGS=${MKINITRDSTRINGS:-$($MKINITRDCOMMAND | grep ^mkinitrd | cut -c47-300 | cut -f1 -d ' ')}
+
+$GROUPADD {tar,sudo}
 
 rm -rf /etc/rc.d/rc.{4,M,S}
 rm -rf /etc/profile.d/lang.{csh,sh}
@@ -98,7 +108,7 @@ rm -rf $ZPROFILE
 # Descomenta Option
 # Substitui us por br
 # Substitui "" por "abnt2"
-sed -i '/#Option/ s/#//g;/us/ s/us/br/g;/""/ s/""/"abnt2"/g;' $KEYBOARD
+#sed -i '/#Option/ s/#//g;/us/ s/us/br/g;/""/ s/""/"abnt2"/g;' $KEYBOARD
 
 # Descomenta compact
 sed -i 's/^#compact/compact/g;' $LILO
@@ -153,9 +163,9 @@ read -p "Crie um usuario: " usuario
 
 echo -e "\n\t\e[1;31mAdicionando\e[0m $usuario\n"
 
-useradd -m $usuario
+$USERADD -m $usuario
 
-passwd $usuario
+$SETPASSWORD $usuario
 
 mkdir -p /home/$usuario/{Documentos,Downloads,Imagens,Musicas,Videos,Filmes,Packages,Projetos,Workspace}
 
@@ -180,14 +190,16 @@ fi
      
 echo -e "\n\t\e[0m$usuario \e[1;31mAdicionado com sucesso..\n\e[0m"
 
-mkinitrd -c -k $KVERSION -f $SYSARQ -r $DISK -m $MKINITRD -u -o $INITRDZRAM
+
+$MKINITRD -c -k $KVERSION -f $SYSARQ -r $DEVDISK -m $MKINITRDSTRINGS -u -o $INITRDZRAM
+
 ln -s $INITRDZRAM $ZRAMINITRD
 
-## Adiciona partição após "# End LILO global section"
+## Adiciona partição após "# End LILO global section" em /etc/lilo.conf
 sed -i '/# End LILO global section/a # Linux bootable generic partition config begins' $LILO
 sed -i '/# Linux bootable generic partition config begins/a image = '$GENERIC'' $LILO
 sed -i '/^image = \/boot\/vmlinuz-generic/a initrd = '$ZRAMINITRD'' $LILO
-sed -i '/^initrd = \/boot\/initrd-zram/a root = '$DISK'' $LILO
+sed -i '/^initrd = \/boot\/initrd-zram/a root = '$DEVDISK'' $LILO
 sed -i '/^root = \/dev\/'$PART'/a label = GNRCLNX' $LILO
 sed -i '/^label = GNRCLNX/a read-only' $LILO
 sed -i '/^read-only/a # Linux bootable generic partition config ends' $LILO
@@ -197,16 +209,10 @@ sed -i '/^read-only/a # Linux bootable generic partition config ends' $LILO
 # Linux bootable generic partition config begins
 #image = $GENERIC
 #  initrd = $ZRAMINITRD 
-#  root = $DISK
+#  root = $DEVDISK
 #  label = GNRCLNX
 #  read-only
 # Linux bootable generic partition config ends
 #" >> $LILO
-   
-lilo
 
-echo "
-     Após dez minutos teste,
-     se há alguma conexão ativa,
-     com um servidor NTP usando o comando: ntpq -p
-     "
+$SBINLILO
