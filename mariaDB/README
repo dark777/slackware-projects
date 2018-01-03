@@ -93,9 +93,9 @@ Os dados do arquivo TXT serão os dados abaixo:
 
 1ª) Passo - Vamos criar o arquivo contendo os dados no diretório do seu usuário comum:
 
-Digite a seguinte linha abaixo e pressione enter e depois que apareceu >
+Digite a seguinte linha abaixo e pressione ENTER e depois que apareceu >
 copie e cole o conteúdo acima que será importado para o banco de dados teste
-depois de copiado pressione enter e digite EOF:
+depois de copiado pressione ENTER novamente e digite EOF:
 
 bash-4.4$ cat >~/cadastros.txt<<EOF
 >01; Boi Preto; 2000-02-29
@@ -431,7 +431,7 @@ Query OK, 0 rows affected (0.04 sec)
 11ª) Passo - Recriando a tabela cadastros com auto_increment:
 
 MariaDB [teste]>  create table cadastros(
-    -> `id_faz` int auto_increment,
+    -> `id_faz` int auto_increment primary key,
     -> `nome_faz` varchar(25) unique not null,
     -> `data_compra` date not null
     -> );
