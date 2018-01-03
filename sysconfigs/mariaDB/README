@@ -91,7 +91,6 @@ Os dados do arquivo TXT serão os dados abaixo:
 05; Nossa Senhora; 2011-06-22
 
 
-
 1ª) Passo - Vamos criar o arquivo contendo os dados no diretório do seu usuário comum:
 
 Digite a seguinte linha abaixo e pressione enter e depois que apareceu >
@@ -107,7 +106,6 @@ bash-4.4$ cat >~/cadastros.txt<<EOF
 EOF
 
 
-
 2ª) Passo - Vamos logar no MariaDB:
 
 bash-4.4$ su -c "mysql -h localhost -u root -p"
@@ -118,7 +116,7 @@ Enter password: <digite a senha do seu MariaDB(Mysql)>
 pressione ENTER
 
 
-Caso você tenha o sudo ativado em seu Slackware faça:
+# Caso você tenha o sudo ativado em seu Slackware faça:
 
 bash-4.4$ sudo mysql -h localhost -u root -p
 Senha: <digite a senha do admin root>.
@@ -128,10 +126,9 @@ Enter password: <digite a senha do seu MariaDB(Mysql)>
 pressione ENTER
 
 
-Aparecerá a seguinte linha de comando abaixo:
+# Aparecerá a seguinte linha de comando abaixo:
 
 MariaDB [(none)]>
-
 
 
 3ª) Passo -  Logado no MariaDB vamos criar o banco  teste:
@@ -140,7 +137,7 @@ MariaDB [(none)]> create database teste;
 Query OK, 1 row affected (0.00 sec)
 
 
-Listando o banco de dados criado:
+# Listando o banco de dados criado:
 
 MariaDB [(none)]> show databases;
 +--------------------+
@@ -154,16 +151,14 @@ MariaDB [(none)]> show databases;
 4 rows in set (0.00 sec)
 
 
-
 4ª) Passo - Entrando no banco teste para criarmos a tabela:
 
 MariaDB [(none)]> use teste;
 
 
-feito isso aparecerá o seguinte terminal abaixo:
+# Feito isso aparecerá o seguinte terminal abaixo:
 
 MariaDB [teste]>
-
 
 
 5ª) Passo - Criaremos a tabela cadastros:
@@ -177,7 +172,7 @@ MariaDB [teste]> create table cadastros(
 Query OK, 0 rows affected (0.00 sec)
 
 
-Listando a tabela criada:
+# Listando a tabela criada:
 
 MariaDB [teste]> show tables;
 +-----------------+
@@ -197,7 +192,6 @@ Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
 Onde terminated by é o separador dos dados dentro do arquivo.
 
 
-
 7ª) Passo - Listaremos os dados inseridos na tabela:
 
 MariaDB [teste]> select *from cadastros;
@@ -213,8 +207,7 @@ MariaDB [teste]> select *from cadastros;
 5 rows in set (0.00 sec)
 
 
-
-Deletando a linha que contem o id_faz=2 da tabela cadastros:
+# Deletando a linha que contem o id_faz=2 da tabela cadastros:
 
 MariaDB [teste]> delete from cadastros where id_faz=2;
 Query OK, 1 row affected (0.00 sec)                                                                            
@@ -231,13 +224,13 @@ MariaDB [teste]> select *from fazendas;
 4 rows in set (0.00 sec)
 
 
-
-Reinserindo o dado excluido:
+# Reinserindo o dado excluido:
 
 MariaDB [teste]> insert into cadastros(id_faz,nome_faz,data_compra)values("2", "Sol Nascente", "2009-10-01");
 Query OK, 1 row affected (0.00 sec)
 
-Listando os dados da tabela:
+
+# Listando os dados da tabela:
 
 MariaDB [teste]> select *from cadastros;
 +--------+---------------+-------------+
@@ -251,8 +244,7 @@ MariaDB [teste]> select *from cadastros;
 +--------+---------------+-------------+
 
 
-
-Fazendo um update do campo nome_faz na tabela cadastros:
+# Fazendo um update do campo nome_faz na tabela cadastros:
 
 MariaDB [teste]> update cadastros set nome_faz="Agua Bonita" where id_faz=5;
 Query OK, 1 row affected (0.00 sec)
@@ -320,7 +312,7 @@ bash-4.4$ cat /tmp/exportacao.txt
 5;Nossa Senhora;2011-06-22
 
 
-Você também pode usar este comando abaixo:
+# Você também pode usar este comando abaixo:
 
 MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by ';' lines terminated by ';\n' from cadastros;
 Query OK, 5 rows affected (0.01 sec)
@@ -343,7 +335,7 @@ manter as coisas o mais simples não o use para esta finalidade:
 
 MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by ';' enclosed by '"' lines terminated by '' from cadastros;
 
-Este comando acima salvaria os dados neste formato abaixo:
+# Este comando acima salvaria os dados neste formato abaixo:
 
 bash-4.4$ cat /tmp/exportacao.txt
 "1";"Boi Preto";"2000-02-29";"2";"Sol Nascente";"2009-10-01";"3";"Parque Belo";"2007-03-15";"4";"Pedras Bonitas";"2017-12-12";"5";"Medeiros";"2011-06-22";
