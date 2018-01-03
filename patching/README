@@ -1,3 +1,92 @@
+#Criando um patch e aplicando as diferenças.
+
+1º)para isso criaremos 2 arquivos o file1.txt e o file2.txt.
+
+O conteúdo do file1.txt será o conteudo abaixo:
+
+Estou aprendendo a criar um patch e parece ser dificil. 
+
+
+O conteúdo do file2.txt será o conteúdo abaixo:
+
+Estou aprendendo a criar um patch e parece ser difícil, mas é legal e interessante.
+
+
+2º) Vamos criar tambem o file1modificado.txt que será o mesmo file1.txt e que na realidade
+será o arquivo em que aplicaremos a mudança apenas para exemlo de diferença quando o
+correto seria aplicar as mudanças direto no file1.txt.
+
+O conteudo de file1modificado.txt será o conteúdo abaixo:
+
+Estou aprendendo a criar um patch e parece ser dificil.
+
+
+3º) Agora, o que devemos fazer, é identificar suas diferenças com o comando diff:
+
+bash-4.4$ diff file1.txt file2.txt
+
+1c1
+< Estou aprendendo a criar um patch e parece ser dificil. 
+---
+> Estou aprendendo a criar um patch e parece ser dificíl, mas é legal e interessante.
+\ Nenhum caractere de nova linha no final do arquivo
+
+
+4º) agora vamos criar um diff que será aplicado ao arquivo file1modificado.txt
+
+bash-4.4$ diff -Naur file1.txt file2.txt > file12diff.diff
+
+ou
+
+bash-4.4$ diff -Naur file1.txt file2.txt > file12diff.patch
+
+
+5º) Testando o patch
+
+Se nao retornar nada o patch esta OK
+bash-4.4$ patch -Np1 -s --dry-run  file1.txt  file12diff.diff
+
+ou
+
+bash-4.4$ patch -Np1 -s --dry-run  file1modificado.txt  file12diff.patch
+
+
+Se der erro ele mostra FAILED
+bash-4.4$ patch -Np1 -s --dry-run  file1.txt  file12diff.diff
+1 out of 1 hunk FAILED
+
+
+6º) Aplicando o patch
+
+Sem Backup
+bash-4.4$ patch -p0 file1modificado.txt < file12diff.diff
+patching file file1modificado.txt
+
+bash-4.4$ patch -p0  file1modificado.txt < file12diff.patch
+patching file file1modificado.txt
+
+
+Com Backup
+bash-4.4$ patch -p1  file1modificado.txt < file12diff.diff
+patching file file1modificado.txt
+
+bash-4.4$ patch -p1  file1modificado.txt < file12diff.patch
+patching file file1modificado.txt
+
+
+7º) Vejamos agora a diferença do arquivo file1.txt e do file1modificado.txt
+
+bash-4.4$ diff file1.txt file1modificado.txt
+1c1
+< Estou aprendendo a criar um patch e parece ser dificil. 
+\ Nenhum caractere de nova linha no final do arquivo
+---
+> Estou aprendendo a criar um patch e parece ser difícil, mas é legal e interessante.
+\ Nenhum caractere de nova linha no final do arquivo
+
+
+##################################################################################################
+
 http://www.fnbrandao.com.br/blog/2012/01/o-guia-de-dez-minutos-de-diff-e-patch/
 
 Relacionamos a seguir os comandos a serem seguidos para descompactar os arquivos.
@@ -10,7 +99,9 @@ tar.bz2 |  tar jxf arquivo.tar.bz2
 tgz     |  tar xvzf arquivo.tgz
 gz      |  gunzip arquivo.gz
 bz2     |  bunzip2 arquivo.bz2
-##########################################################################################################
+
+##################################################################################################
+
 Por exemplo, vamos admitir que você está usando o kernel (e tem o seu código fonte localmente) 
 2.6.9 e quer aplicar o patch 2.6.9-ac16.bz2. Primeiro, salve o arquivo no diretório /usr/src. 
 Depois, mude para o diretório /usr/src/linux-2.6.9 e faça o seguinte:
@@ -34,7 +125,9 @@ fáceis assim de serem aplicados ao kernel. Por exemplo, os prepatches do Linus 
 então o prepatch 2.6.7-pre2 deve ser aplicado no tarball descompactado do kernel 2.6.6 e não em um kernel 
 com o prepatch 2.6.7-pre1 aplicado. Então, para você poder aplicar o prepatch 2.6.7-pre2, deve remover 
 (como será descrito mais adiante) o patch 2.6.7-pre1 do seu kernel atual. Os patches -ac (lançados por Alan Cox) seguem a mesma lógica. 
-#################################################
+
+##################################################################################################
+
 Aplicando patches com patch
 os arquivos se encontram no local abaixo:
 root@flame:/usr/src# ls -a
@@ -62,7 +155,8 @@ removendo o patch:
 root@flame:/usr/src/linux-3.9.5# patch -Np1 -R < ../patch-3.9.5-pf
 
 
-##################################################
+##################################################################################################
+
 Aplicando os paches com Bzcat
 os arquivos se encontram no local abaixo:
 root@flame:/usr/src# ls -a
@@ -83,7 +177,8 @@ caso queira remover use o seguinte comando abaixo:
 
 root@flame:/usr/src/linux-3.9.5# bzcat ../patch-3.9.5-pf.bz2 | patch -Np1 -R
 
-######################################################
+##################################################################################################
+
 Aplicando Patches com bzip2
 os arquivos se encontram no local abaixo:
 root@flame:/usr/src# ls -a
@@ -104,7 +199,7 @@ caso queira remover use o seguinte comando abaixo:
 
 root@flame:/usr/src/linux-3.9.5# bzip2 -dc ../patch-3.9.5-pf.bz2 | patch -Np1 -R
 
-########################################################
+##################################################################################################
 
 Kernel Real Time Patch application
 
@@ -119,3 +214,8 @@ root@flame:/usr/src# cd linux-3.10.10
 root@flame:/usr/src/linux-3.10.10# xzcat ../patch-3.10.10-rt7.patch.xz | patch -p1 --dry-run 
 
 root@flame:/usr/src/linux-3.10.10# xzcat ../patch-3.10.10-rt7.patch.xz | patch -p1
+
+
+Sources:
+https://sistematico.github.io/criando-e-aplicando-um-patch/
+https://www.vivaolinux.com.br/artigo/diff-e-patch-Um-guia-sem-hora-pra-acabar?
