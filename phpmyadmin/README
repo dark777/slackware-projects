@@ -1,14 +1,12 @@
+https://pkgs.org/download/phpmyadmin
+Download phpmyadmin-4.7.5-noarch-1_slonly.txz
+
 # Instalando e configurando phpmyadmin
 
 bash-4.4$ su -c "installpkg phpmyadmin-4.7.5-noarch-1_SBo.tgz"
 
 # Fazendo upgrade do phpmyadmin caso 
 já tenha a versão inferior a 4.7.5 acima.
-
-https://pkgs.org/download/phpmyadmin
-
-Download phpmyadmin-4.7.5-noarch-1_slonly.txz
-Install phpmyadmin txz package:
 
 bash-4.4$ su -c "upgradepkg --install-new phpmyadmin-4.7.5-noarch-1_slonly.txz"
 
