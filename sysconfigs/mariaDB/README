@@ -1,4 +1,4 @@
-# Primeiro se o mysql estiver executando vamos dar um stop no mysql:
+# Primeiro se o mysql estiver executando vamos dar um stop:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
 
