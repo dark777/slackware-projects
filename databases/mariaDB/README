@@ -14,10 +14,13 @@ bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
 
 bash-4.4$ su -c "mysql_install_db --user=mysql"
 
+
+1-4ª) Passo - Agora Inicie o MariaDB:
+
 bash-4.4$ su -c "mysqld_safe --user=mysql&"
 
 
-1-4ª) Passo - Vamos configurar os parametros de segurança do MariaDB:
+1-5ª) Passo - Vamos configurar os parametros de segurança do MariaDB:
 bash-4.4$ su -c "mysql_secure_installation"
 
 Enter current password for root (enter for none): [ENTER]
@@ -34,27 +37,27 @@ Remove test database and access to it? [Y/n] Y
 Reload privilege tables now? [Y/n] Y
 
 
-1-5ª) Passo - Vamos criar a pasta mysql em /var/log:
+1-6ª) Passo - Vamos criar a pasta mysql em /var/log:
 
 bash-4.4$ su -c "mkdir -p /var/log/mysql"
 
 
-1-6ª) Passo - Diga quem é o dono de /var/log/mysql recursivamente:
+1-7ª) Passo - Diga quem é o dono de /var/log/mysql recursivamente:
 
 bash-4.4$ su -c "chown -R mysql.mysql /var/log/mysql"
 
 
-1-7ª) Passo - Como o mysql está executando vamos dar um stop:
+1-8ª) Passo - Como o mysql está executando vamos dar um stop:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
 
 
-1-6ª) Passo - Depois de dar stop vamos matar o processo:
+1-9ª) Passo - Depois de dar stop vamos matar o processo:
 
 bash-4.4$ su -c "killall mysqld"
 
 
-1-7ª) Passo - Iniciando o server mysqld:
+1-10ª) Passo - Iniciando o server mysqld:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld start"
 
@@ -87,7 +90,7 @@ bash-4.4$ su -c "mysql --user=root mysql"
 2-5ª) Passo - Estando no console do banco,
 digite o comando para atualizar a senha:
 
-MariaDB [mysql]>  update user set Password=PASSWORD('aqui_a_nova_senha') where user='root';
+MariaDB [mysql]>  update user set password=password('aqui_a_nova_senha') where user='root';
 MariaDB [mysql]>  flush privileges;
 MariaDB [mysql]>  exit;
 
@@ -197,7 +200,7 @@ MariaDB [teste]> create table cadastros(
     -> `id_faz` int unique not null primary key,                                 
     -> `nome_faz` varchar(25) unique not null,   
     -> `data_compra` date not null
-    -> );
+    -> )engine=InnoDB default charset=latin1;
 
 Query OK, 0 rows affected (0.00 sec)
 
@@ -464,7 +467,7 @@ MariaDB [teste]>  create table cadastros(
     -> `id_faz` int auto_increment primary key,
     -> `nome_faz` varchar(25) unique not null,
     -> `data_compra` date not null
-    -> );
+    -> )engine=InnoDB default charset=latin1;;
 Query OK, 0 rows affected (0.01 sec)
 
 
@@ -517,9 +520,252 @@ MariaDB [teste]> select *from cadastros;
 +--------+-----------------+-------------+
 5 rows in set (0.00 sec)
 
+##################################################################################################
+
+Liberar 3306 do MySQL no Slackware:
+
+2ª) Passo - No arquivo /etc/rc.d/rc.mysqld comente a linha: 
+
+SKIP="--skip-networking"
+
+Deixando-a assim:
+
+#SKIP="--skip-networking"
+
+
+bash-4.4$ su -c "sed '/SKIP/ s/^/#/g;' /etc/rc.d/rc.mysqld"
+ou
+bash-4.4$ su -c "sed '32s/^/#/g;' /etc/rc.d/rc.mysqld"
+
+2ª) Passo - Reinicie o mysqld:
+
+bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
+
+##################################################################################################
+
+Restauração de backup:
+
+bash-4.4$ mysql -u <usuario> -p --databases <dbname> < banco.sql
+
+
+Backup do banco com os dados data hora e log:
+
+data=$(date +%a%H%M%S%d%m%y)
+sqlname="$data.sql"
+logname="$data.log"
+
+bash-4.4$ mysqldump --databases <dbname> --routines --single-transaction --result-file="$sqlname" -v -h localhost -u root -p -P 3306  2>> $logname
+
+
+Backup de uma tabela especifica:
+
+bash-4.4$ mysqldump -u root -p --databases <dbname> <tabela> > cadastros.sql
+
+
+Backup de duas tabelas especifica chamada tabela1 e tabela2:
+
+bash-4.4$ mysqldump -u root -p --databases <dbname> tabela1 tabela2 > tab1_tab2.sql
+
+
+Backup de todas as tabelas com exceção de uma:
+
+bash-4.4$ mysqldump -u root -p --databases <dbname> --ignore-table=<dbname>.<nometabela> > backup.sql
+
+
+Backup de todas as tabelas com exceção de duas ou mais:
+
+bash-4.4$ mysqldump -u root -p --databases <dbname> --ignore-table=<dbname>.{tabela1,tabela2,tabela3} > backup.sql
+ou
+bash-4.4$ mysqldump -u root -p --databases <dbname> --ignore-table=<dbname>.tabela1 --ignore-table=<dbname>.tabela2 > backup.sql
+
+
+Backup de todas as bases de dados:
+
+bash-4.4$ mysqldump --all-databases > ~/mysql_all.sql -v -h localhost -u root -p -P 3306
+
+##################################################################################################
+
+Fazendo backup das bases de dados do MySQL
+
+Uma das grandes dúvidas de qualquer administrador iniciante é como fazer backup das bases de dados do
+MySQL, já que os dados são gravados e acessados através do servidor MySQL e não diretamente através de
+arquivos, como no caso dos arquivos referentes aos sites, salvos na pasta "/var/www", por exemplo.
+
+As bases de dados do MySQL são salvas por padrão dentro da pasta "/var/lib/mysql". Ao criar a base de dados
+"phpbb", por exemplo, será criada a pasta "/var/lib/mysql/phpbb", contendo um conjunto de arquivos, referentes,
+às tabelas criadas.
+
+A forma mais simples de fazer backup das bases de dados do MySQL é simplesmente salvar o conteúdo da
+pasta "/var/lib/mysql", criando um arquivo .tar.gz ou mesmo copiando os arquivos diretamente para outra
+partição. O maior problema é que as bases de dados são alteradas continuamente durante a operação do banco
+de dados, o que leva a cópias inconsistentes. Se alguns dos arquivos dentro da pasta com a base mudam no
+meio da cópia, o backup conterá uma mistura de dados novos e antigos, uma receita para o desastre.
+
+A forma mais segura é parar o serviço do MySQL antes de fazer o backup, garantindo assim que nada será 
+alterado durante a cópia, como no exemplo abaixo:
+
+bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
+
+A segunda opção é fazer um backup online, sem parar o servidor. O utilitário mais simples (e provavelmente
+o mais usado) para isso é o mysqldump, que acompanha o pacote principal do MySQL.
+
+Para salvar todas as bases de dados do servidor no arquivo "backup.sql", criado no diretório atual, por exemplo,
+o comando seria:
+
+bash-4.4$ mysqldump -u root -p -x -e -A > backup.sql
+
+O "-u root -p" especifica o usuário que será usado para acessar o banco de dados. No exemplo estou fazendo
+um backup completo, por isso estou usando diretamente o root. A opção "-x" trava as bases de dados no
+momento em que cada uma é copiada, evitando qualquer problema de inconsistência, enquanto a "-e" é uma
+opção de otimização, que permite ao mysqldump combinar argumentos INSERT dentro das tabelas, o que torna
+tanto o backup quanto a restauração mais rápidos. Finalizando, a opção "-A" especifica um backup completo,
+de todas as bases de dados.
+
+Se o comando parasse por aí, o mysqldump simplesmente escreveria todo o conteúdo das bases de dados na
+própria janela do terminal, resultando em uma longa exibição de informações, sem muita utilidade. Como
+queremos que a saída seja salva em um arquivo, usamos o ">", que redireciona a saída para o arquivo especificado.
+
+O arquivo "backup.sql" gerado é basicamente um arquivo de texto gigante contendo declarações de todas as
+informações armazenadas. Você pode reduzir o tamanho do arquivo para um quarto (ou menos) do tamanho
+original compactando o arquivo, o que pode ser feito adicionando a opção "| gzip" antes do ">" no comando, 
+como em:
+
+bash-4.4$ mysqldump -u root -p -x -e -A | gzip > backup.sql.gz
+
+Note que nesse exemplo adicionei também o ".gz" no nome do arquivo, indicando que se trata de um arquivo
+compactado. Para usá-lo posteriormente, você precisaria apenas descompactar o arquivo, usando o comando
+"gunzip", como em:
+
+bash-4.4$ gunzip backup.sql.gz
+
+O maior problema com estes dois comandos é que você precisa digitar a senha depois de rodar o comando, o
+que dificulta seu uso em scripts de backup automático. É possível eliminar a necessidade de digitar a senha
+especificando-a diretamente no comando, depois do "-p" (sem espaços), como em:
+
+bash-4.4$ mysqldump -u root -p12345 -x -e -A | gzip > backup.sql.gz
+
+Note que ao incluir senhas em arquivos, é extremamente importante restringir as permissões, de forma que
+apenas o root (ou o usuário em questão) tenha permissão para lê-lo. Qualquer outro usuário do servidor que
+tenha acesso de leitura no arquivo, poderá ler a senha e acessar o servidor MySQL.
+
+Continuando, os comandos acima permitem fazer um backup completo de todas as bases do servidor, que
+poderia ser usado para restaurar os dados em uma instalação limpa do MySQL. É possível também fazer
+backups localizados, contendo apenas uma base de dados específica.
+
+Nesse caso, em vez de usar a opção "-A", você usaria a opção "-B", seguida pela base de dados a ser salva,
+como em:
+
+bash-4.4$ mysqldump -u root -p -x -e -B phpbb > phpbb.sql
+
+Na hora de restaurar o backup, deixamos de usar o mysqldump e passamos a utilizar o cliente mysql, que se
+encarrega de ler os comandos e os dados adicionados nos arquivos e usá-los para povoar as bases de dados.
+O comando ficaria então:
+
+bash-4.4$ mysql -u root -p --databases phpbb < phpbb.sql
+
+Você pode também especificar a senha diretamente no comando, assim como no caso do mysqldump, como em:
+
+bash-4.4$ mysql -u root -p12345 --databases phpbb < phpbb.sql
+
+Se você tentar restaurar o backup sobre uma base de dados contendo dados, provavelmente receberá uma
+mensagem de erro logo no início do processo, avisando que uma das tabelas já existe, como em:
+
+ERROR 1050 at line 19: Table 'wp_comments' already exists
+
+A solução no caso é remover a base de dados antiga usando o cliente MySQL e criar outra em branco para
+então fazer a restauração, como em:
+
+bash-4.4$ su -c "mysql -u root -p"
+
+mysql> DROP DATABASE phpbb;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CREATE DATABASE phpbb;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> exit
+
+bash-4.4$ mysql -u root -p --databases phpbb < phpbb.sql
+
+Outra opção seria adicionar a opção "--add-drop-table" ao gerar o backup com o mysqldump. Ela faz com que
+ele inclua instruções para que as bases sejam excluídas e recriadas automaticamente durante a restauração,
+evitando que você precise fazê-lo manualmente. O comando ficaria então:
+
+bash-4.4$ mysqldump --add-drop-table -u root -p -x -e -B phpbb > phpbb.sql
+
+O comando para restaurar continua o mesmo, com a diferença de que você não precisa mais dar o DROP
+DATABASE; CREATE DATABASE antes de fazer a restauração.
+
+Esta opção pode ser adicionada também ao comando para fazer o backup completo das bases de dados,
+facilitando assim sua restauração:
+
+bash-4.4$ mysqldump --add-drop-table -u root -p -x -e -A > backup.sql
+
+O backup poderia ser então restaurado diretamente usando o comando abaixo, sem que você precisasse
+remover as bases e tabelas manualmente antes de iniciar a recuperação:
+
+bash-4.4$ mysql -u root -p < backup.sql
+
+O backup usando o mysqldump e a restauração usando o mysql são preferíveis à cópia manual dos arquivos da
+pasta "/var/lib/mysql", pois evita problemas de incompatibilidade ao migrar os dados para versões
+diferentes do MySQL. Além disso, a facilidade de fazer o backup sem precisar parar o servidor é uma grande
+vantagem em um ambiente de produção.
+
+Source: http://www.hardware.com.br/dicas/mysql.html
+
+##################################################################################################
+
+Resolvendo problemas de caracteres acentuados no MySQL
+
+Antes de importar os dados para a sua base MySQL, defina um collation padrão. No Brasil o
+Latin1 é o mais utilizado, então o CHARSET (codificação de caracteres) padrão na
+Maxrevenda é o Latin1 e o COLLATE (collation) padrão é o latin1_general_ci. Scripts
+externos podem utilizar UTF8 e geralmente é por causa da diferença de codificação entre
+Latin1 e UTF8 que ocorrem erros de acentuação.
+A seguir estão alguns exemplos para definir um collation padrão para a sua base de dados:
+
+MariaDB [teste]> ALTER DATABASE `sua_base` CHARSET = Latin1 COLLATE = latin1_swedish_ci;
+
+ou
+
+MariaDB [teste]> ALTER DATABASE `sua_base` CHARSET = UTF8 COLLATE = utf8_general_ci;
+
+CHARSET e COLLATE são coisas distintas, no MySQL, cada CHARSET possui COLLATEs,
+cada um com sua particularidade. O intuito deste Wiki não é explicar as características de
+cada um deles, pois pode ser visto da documentação do MySQL, mas daremos um pequeno
+descritivo entre latin1_general_ci, latin1_general_cs e latin1_swedish_ci.
+
+latin1_general_ci: Não há distinção entre letras maiúsculas e minúsculas. Buscando
+por “teste”, registros como “Teste” ou “TESTE” serão retornados.
+
+latin1_general_cs: Distingue letras maiúsculas e minúsculas. Buscando por “teste”
+somente retornará “teste”. Opções como “Teste” e “TESTE” não serão retornadas.
+
+latin1_swedish_ci: Não distingue letras minúsculas e maiúsculas e nem caracteres
+acentuados e com cedilha, ou seja, o registro que contém a palavra “Intuição”
+será retornado quando houver uma procura pela palavra “intúicao”.
+
+Quando você estiver exportando os dados da sua base de dados de origem, certifique-se de
+estar especificando a codificação corretamente. No phpMyAdmin há um menu DropDown próximo
+às opções de compactação ‘nenhum’, ‘zip’, ‘gzip’ e ‘bzip’ que normalmente está selecionada
+a opção ‘utf-8’. Mantenha este se sua base estiver com este CHARSET, do contrário, 
+especifique ‘iso-8859-1’ caso ela esteja com o CHARSET Latin1.Faça o mesmo durante a
+importação. Ao enviar o arquivo, o menu DropDown estará como ‘utf-8’,
+se o CHARSET da base for ‘Latin1’ escolha o ‘iso-8859-1’.
+
+##################################################################################################
+
+https://www.vivaolinux.com.br/dica/MySQL-Control-Center-Gerenciando-seu-MySQL
+
 
 Sources:
+http://www.hardware.com.br/dicas/mysql.html
+https://www.vivaolinux.com.br/dica/MySQL-Backup-automatico-de-banco-de-dados-com-data
+https://pt.stackoverflow.com/questions/37297/backup-de-todas-as-tabelas-com-exceção-de-uma
+http://analiselogin.blogspot.com.br/2012/10/mysqldump-escolhendo-as-tabelas-dentro.html
 http://www.andersonmedeiros.com/importar-arquivos-txt-para-postgresql/
+http://aquicode.blogspot.com.br/2014/07/excluindo-tabelas-do-mysqldump.html
+http://analiselogin.blogspot.com.br/2012/10/mysqldump-escolhendo-as-tabelas-dentro.html
 http://www.novotopico.com/aprendendo-a-mecher-no-phpmyadmin-t6363.html
 http://blog.ffelix.eti.br/exportar-dados-de-tabelas-mysql-para-txt-ou-csv/
 https://www.rlsystem.com.br/outros/noticia/select-insert-delete-update-mysql/

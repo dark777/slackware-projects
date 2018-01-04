@@ -1,0 +1,39 @@
+MyWebSQL é um cliente de banco de dados WYSIWYG baseado na web escrito em PHP. 
+Possui uma interface simples e intuitiva com a aparência de uma aplicação desktop
+e oferece recursos ricos para o gerenciamento de banco de dados. 
+Nenhuma instalação é necessária, basta fazer o download, extrair e você está pronto para ir. 
+Ele ainda possui uma versão compacta de arquivo único com funcionalidades completas,
+que você pode implantar rapidamente em seu servidor.
+
+Atualmente, o MyWebSQL suporta trabalhar com bancos de dados MySQL, PostgreSQL e SQLite.
+
+
+Características
+
+     Editores de SQL destacados com sintaxe múltipla
+     Criador / editor da tabela WYSIWYG
+     Edição de registro múltiplo rápido no Inplace
+     Vista e sensação do aplicativo de área de trabalho
+     Excelente suporte para todos os principais navegadores
+     Instalação de configuração zero
+     Interface multilingue com suporte a temas
+     Suporta MySQL 4 e 5, PostgreSQL 8 e 9 e bancos de dados SQLite fora da caixa
+     Importar script de banco de dados, exportar banco de dados, tabelas ou resultados para vários formatos
+     Ambiente multitarefa para que você possa executar tarefas de gerenciamento de banco de dados rapidamente
+     Documentação atualizada on-line e ajuda
+     Demonstração online disponível para experimentar
+
+Download:
+https://sourceforge.net/projects/mywebsql/files/stable/
+
+
+Instalando o MyWebSQL:
+
+bash-4.4$ su -c "tar -zxf mywebsql.tar.gz -C /var/www/htdocs"
+
+
+Usando o MyWebSQL:
+
+bash-4.4$ su -c "/etc/rc.d/rc.httpd start"
+
+http://127.0.0.1/mywebsql/
