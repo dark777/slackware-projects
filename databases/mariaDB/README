@@ -95,6 +95,18 @@ MariaDB [mysql]>  flush privileges;
 MariaDB [mysql]>  exit;
 
 
+2-5.1ª) Passo OPCIONAL - Redefinir as permissões
+
+ mysql> grant all privileges on *.* to 'root'@'%';  
+ mysql> grant all privileges on *.* to 'root'@'localhost';  
+ mysql> grant all privileges on *.* to 'root@localhost';  
+
+2-5.2ª) Finalizando:
+
+ mysql> SHOW GRANTS FOR 'root'@'%';  
+ mysql> FLUSH PRIVILEGES;  
+
+
 2-6ª) Passo - Reinicie o mysqld:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"

@@ -1,0 +1,60 @@
+Aumentando a segurança de pastas e arquivos com ACL
+
+
+O uso das ACLs podem ajudar e muito na segurança de arquivos e pastas, pois elas acrescentam um grau
+a mais nas permissões, permitindo assim que possamos definir permissões mais específicas para
+determinados usuários ou grupos.
+
+Por exemplo, temos uma pasta da administração, onde somente o grupo ADMIN tem acesso,
+porém queremos que o usuário "teste" do grupo ESTAGIO possa acessá-la, esse acesso pode
+ser dado através do uso das ACLs da seguinte maneira:
+
+bash-4.4$ su -c "setfacl -m d:u:teste:rx /administracao"
+
+    setfacl: comando usando para defini a ACL
+    -m: parâmetro para modificar a ACL
+    d: define a ACL como padrão para o diretório
+    u: usado para o usuário
+    teste: usuário em questão
+    rx: permissões de leitura e execução
+    /administracao: diretório 
+
+
+Outros parâmetros:
+
+    g: usado para grupos
+    -x: utilizado para remover uma ACL 
+
+
+Vamos ver a seguir como implementar as ACLs e mais alguns parâmetros.
+
+Nas distribuições baseadas em Red Hat, a instalação já vem por padrão,
+nas baseadas em Debian é necessário instalar o pacote "ACL".
+
+Podemos implementar as ACLs das seguintes maneiras.
+
+Adicionando o parâmetro "acl" dentro do fstab:
+
+acl,defaults
+
+Utilizando o comando mount:
+
+bash-4.4$ su -c "mount -o remount,acl /dev/sdx"
+
+Para os sistemas de arquivos que foram criados após a instalação:
+
+bash-4.4$ su -c "tune2fs /dev/sdx -o acl" (para habilitar)
+
+bash-4.4$ su -c "tune2fs -l /dev/sdx | grep options (para verificar)"
+
+Para verificar as permissões das ACLs:
+
+bash-4.4$ su -c "getfacl /home/" (a pasta "home" é usada como exemplo)
+
+    getfacl: Removing leading '/' from absolute path names
+    # file: home/
+    # owner: root
+    # group: root
+    user::rwx
+    group::r-x
+    other::r-x  

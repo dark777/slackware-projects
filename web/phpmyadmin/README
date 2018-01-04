@@ -39,6 +39,40 @@ Login: root
 senha: a senha do seu mysql (que foi configurado qnd instalou o mysql ou o appserver)
 
 
+
+Habilitar ssl apache2 slackware
+ 
+
+Este artigo mostra como habilitar a porta 443 para acesso a paginas
+seguras no apache em um servidor Slackware, mas voce pode adaptá-lo para seu servidor.
+
+cd /etc/httpd
+
+vi httpd.conf
+
+# descomente a linha abaixo
+
+LoadModule ssl_module lib/httpd/modules/mod_ssl.so
+
+# Secure (SSL/TLS) connections (descomente esta tambem)
+
+Include /etc/httpd/extra/httpd-ssl.conf
+
+root@toor-server:# cd /etc/httpd
+
+root@toor-server:# openssl req -new -out server.csr
+
+root@toor-server:# openssl rsa -in privkey.pem -out server.key
+
+root@toor-server:# openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 365
+
+
+root@toor-server:#  sh /etc/rc.d/rc.httpd stop
+
+root@toor-server:#  sh /etc/rc.d/rc.httpd start
+
+http://toor.com.br/habilitar-ssl-apache2-slackware/
+###########################################################################################################
 Sources:
 https://pkgs.org/download/phpmyadmin
 http://slackdummies.blogspot.com.br/
