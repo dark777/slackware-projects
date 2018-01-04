@@ -1,45 +1,103 @@
-# Primeiro se o mysql estiver executando vamos dar um stop:
+1) Configurando o banco de dados MariaDB.
+
+1-1ª) Passo - Daremos permissao de execução a rc.mysql:
+
+bash-4.4$ su -c "chmod 755 /etc/rc.d/rc.mysqld"
+
+
+1-2ª) Passo - Se o mysql estiver executando vamos dar um stop:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
 
-bash-4.4$ su -c "chmod 755 /etc/rc.d/rc.mysqld"
+
+1-3ª) Passo - Criando o banco de dados e o usuário mysql:
 
 bash-4.4$ su -c "mysql_install_db --user=mysql"
 
 bash-4.4$ su -c "mysqld_safe --user=mysql&"
 
+
+1-4ª) Passo - Vamos configurar os parametros de segurança do MariaDB:
 bash-4.4$ su -c "mysql_secure_installation"
 
 Enter current password for root (enter for none): [ENTER]
 
 OK, successfully used password, moving on... 
 
-##################################################################################################
-
-Set root password? [Y/n] [Y] Y
-New password: (Digite aqui aquela que será a sua senha)
-Re-enter new password: (Redigite a senha)
-Password updated successfully!
 
 Remove anonymous users? [Y/n] Y
+
 Disallow root login remotely? [Y/n] Y
 
 Remove test database and access to it? [Y/n] Y
 
 Reload privilege tables now? [Y/n] Y
 
+
+1-5ª) Passo - Vamos criar a pasta mysql em /var/log:
+
 bash-4.4$ su -c "mkdir -p /var/log/mysql"
+
+
+1-6ª) Passo - Diga quem é o dono de /var/log/mysql recursivamente:
 
 bash-4.4$ su -c "chown -R mysql.mysql /var/log/mysql"
 
+
+1-7ª) Passo - Como o mysql está executando vamos dar um stop:
+
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
 
+
+1-6ª) Passo - Depois de dar stop vamos matar o processo:
+
 bash-4.4$ su -c "killall mysqld"
+
+
+1-7ª) Passo - Iniciando o server mysqld:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld start"
 
 
-# Agora Pra acessar o MySQL digite:
+##################################################################################################
+
+2) Alterando a senha de root do MySQL no Slackware 14.1
+
+2-1ª) Passo - Se o mysql está executando vamos dar um stop:
+
+bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
+
+
+2-2ª) Passo - Depois de dar stop abra outro terminal e,
+vamos matar o processo:
+
+bash-4.4$ su -c "killall mysqld"
+
+
+2-3ª) Passo - Depois faça:
+
+bash-4.4$ su -c "mysqld_safe --skip-grant-tables"
+
+
+2-4ª) Passo - Volte ao terminal do passo 2-1ª, e acesse o banco:
+
+bash-4.4$ su -c "mysql --user=root mysql"
+
+
+2-5ª) Passo - Estando no console do banco,
+digite o comando para atualizar a senha:
+
+MariaDB [mysql]>  update user set Password=PASSWORD('aqui_a_nova_senha') where user='root';
+MariaDB [mysql]>  flush privileges;
+MariaDB [mysql]>  exit;
+
+
+2-6ª) Passo - Reinicie o mysqld:
+
+bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
+
+
+2-7ª) Passo - Agora Pra acessar o MySQL digite:
 
 bash-4.4$ su -c "mysql -p"
 ou
@@ -49,37 +107,7 @@ bash-4.4$ su -c "mysql -h localhost -u root -p"
 
 ##################################################################################################
 
-# Alterando a senha de root do MySQL no Slackware 14.1
-
-# Parar o serviço mysqld:
-
-bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
-
-
-# Em outro terminal digite:
-
-bash-4.4$ su -c "killall mysqld"
-
-bash-4.4$ su -c "mysqld_safe --skip-grant-tables"
-
-
-# Volte ao primeiro terminal e acesse o banco:
-
-bash-4.4$ su -c "mysql --user=root mysql"
-
-# Estando no console do banco digite o comando para atualizar a senha:
-
-MariaDB [mysql]>  update user set Password=PASSWORD('aqui_a_nova_senha') where user='root';
-MariaDB [mysql]>  flush privileges;
-MariaDB [mysql]>  exit;
-
-# Reinicie o mysqld:
-
-bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
-
-##################################################################################################
-
-# Fazendo importação e exportacao de arquivos TXT's
+3) Fazendo importação e exportacao de arquivos TXT's,
 correspondentes a uma tabela para MariaDB(Mysql).
 
 
@@ -91,7 +119,7 @@ Os dados do arquivo TXT serão os dados abaixo:
 05; Nossa Senhora; 2011-06-22
 
 
-1ª) Passo - Vamos criar o arquivo contendo os dados no diretório do seu usuário comum:
+3-1ª) Passo - Vamos criar o arquivo contendo os dados no diretório do seu usuário comum:
 
 Digite a seguinte linha abaixo e pressione ENTER e depois que apareceu >
 copie e cole o conteúdo acima que será importado para o banco de dados teste
@@ -106,7 +134,7 @@ bash-4.4$ cat >~/cadastros.txt<<EOF
 EOF
 
 
-2ª) Passo - Vamos logar no MariaDB:
+3-2ª) Passo - Vamos logar no MariaDB:
 
 bash-4.4$ su -c "mysql -h localhost -u root -p"
 Senha: <digite a senha do admin root>.
@@ -116,7 +144,7 @@ Enter password: <digite a senha do seu MariaDB(Mysql)>
 pressione ENTER
 
 
-# Caso você tenha o sudo ativado em seu Slackware faça:
+3-2.1ª) Passo - Caso você tenha o sudo ativado em seu Slackware faça:
 
 bash-4.4$ sudo mysql -h localhost -u root -p
 Senha: <digite a senha do admin root>.
@@ -131,13 +159,13 @@ pressione ENTER
 MariaDB [(none)]>
 
 
-3ª) Passo -  Logado no MariaDB vamos criar o banco  teste:
+3-3ª) Passo -  Logado no MariaDB vamos criar o banco  teste:
 
 MariaDB [(none)]> create database teste;                                                                                                                       
 Query OK, 1 row affected (0.00 sec)
 
 
-# Listando o banco de dados criado:
+3-3.1ª) Passo - Listando o banco de dados criado:
 
 MariaDB [(none)]> show databases;
 +--------------------+
@@ -151,17 +179,17 @@ MariaDB [(none)]> show databases;
 4 rows in set (0.00 sec)
 
 
-4ª) Passo - Entrando no banco teste para criarmos a tabela:
+3-4ª) Passo - Entrando no banco teste para criarmos a tabela:
 
 MariaDB [(none)]> use teste;
 
 
-# Feito isso aparecerá o seguinte terminal abaixo:
+3-4.1ª) Passo - Feito isso aparecerá o seguinte terminal abaixo:
 
 MariaDB [teste]>
 
 
-5ª) Passo - Criaremos a tabela cadastros:
+3-5ª) Passo - Criaremos a tabela cadastros:
 
 MariaDB [teste]> create table cadastros(
     -> `id_faz` int unique not null primary key,                                 
@@ -172,7 +200,7 @@ MariaDB [teste]> create table cadastros(
 Query OK, 0 rows affected (0.00 sec)
 
 
-# Listando a tabela criada:
+3-5.1ª) Passo - Listando a tabela criada:
 
 MariaDB [teste]> show tables;
 +-----------------+
@@ -183,7 +211,7 @@ MariaDB [teste]> show tables;
 1 row in set (0.00 sec)
 
 
-6ª) Passo - Importando o arquivo cadastros.txt para o banco teste:
+3-6ª) Passo - Importando o arquivo cadastros.txt para o banco teste:
 
 MariaDB [teste]> load data local infile "cadastros.txt" into table cadastros fields terminated by ';';
 Query OK, 5 rows affected (0.01 sec)                 
@@ -192,7 +220,7 @@ Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
 Onde terminated by é o separador dos dados dentro do arquivo.
 
 
-7ª) Passo - Listaremos os dados inseridos na tabela:
+3-7ª) Passo - Listaremos os dados inseridos na tabela:
 
 MariaDB [teste]> select *from cadastros;
 +--------+----------------+-------------+
@@ -207,7 +235,7 @@ MariaDB [teste]> select *from cadastros;
 5 rows in set (0.00 sec)
 
 
-# Deletando a linha que contem o id_faz=2 da tabela cadastros:
+3-7.1ª) Passo - Deletando a linha que contem o id_faz=2 da tabela cadastros:
 
 MariaDB [teste]> delete from cadastros where id_faz=2;
 Query OK, 1 row affected (0.00 sec)                                                                            
@@ -224,13 +252,13 @@ MariaDB [teste]> select *from fazendas;
 4 rows in set (0.00 sec)
 
 
-# Reinserindo o dado excluido:
+3-7.2ª) Passo - Reinserindo o dado excluido:
 
 MariaDB [teste]> insert into cadastros(id_faz,nome_faz,data_compra)values("2", "Sol Nascente", "2009-10-01");
 Query OK, 1 row affected (0.00 sec)
 
 
-# Listando os dados da tabela:
+3-7.3ª) Passo - Listando os dados da tabela:
 
 MariaDB [teste]> select *from cadastros;
 +--------+---------------+-------------+
@@ -244,14 +272,14 @@ MariaDB [teste]> select *from cadastros;
 +--------+---------------+-------------+
 
 
-# Fazendo um update do campo nome_faz na tabela cadastros:
+3-8ª) Passo - Fazendo um update do campo nome_faz na tabela cadastros:
 
 MariaDB [teste]> update cadastros set nome_faz="Agua Bonita" where id_faz=5;
 Query OK, 1 row affected (0.00 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
 
-Listando os dados da tabela:
+3-8.1ª) Passo - Listando os dados da tabela:
 
 MariaDB [teste]> select *from cadastros;
 +--------+---------------+-------------+
@@ -276,12 +304,12 @@ nome_faz="Agua Bonita"
 
 ##################################################################################################
 
-Agora vamos realizar os mesmos passos acima mas com auto_increment.
+3-9ª) Passo - Agora vamos realizar os mesmos passos acima mas com auto_increment.
 Primeiro vamos exportar os dados importados em nossa tabela cadastros,
 para um novo arquivo que será salvo em  /tmp chamado exportacao.txt:
 
 
-8ª) Passo - Exportando os dados da tabela cadastros para a pasta /tmp/ no arquivo exportacao.txt:
+3-9.1ª) Passo - Exportando os dados da tabela cadastros para a pasta /tmp/ no arquivo exportacao.txt:
 
 MariaDB [teste]> select id_faz, nome_faz, data_compra into outfile "/tmp/exportacao.txt" fields terminated by ';'  from cadastros;
 Query OK, 6 rows affected (0.00 sec)
@@ -327,7 +355,7 @@ bash-4.4$ cat /tmp/exportacao.txt
 4;Pedra Bonita;2001-08-25;
 5;Nossa Senhora;2011-06-22;
 
-Com estes comandos acima, não importa como nossos dados exportados,
+Com estes quatro comandos acima, não importa como nossos dados exportados,
 para /tmp/exportacao.txt, ficarão formatados você só não pode usar o comando abaixo,
 pois a forma como ele exporta os dados dificulta nosso serviço,
 aumentando a complexidade mas como queremos 
@@ -341,7 +369,7 @@ bash-4.4$ cat /tmp/exportacao.txt
 "1";"Boi Preto";"2000-02-29";"2";"Sol Nascente";"2009-10-01";"3";"Parque Belo";"2007-03-15";"4";"Pedras Bonitas";"2017-12-12";"5";"Medeiros";"2011-06-22";
 
 
-9ª) Passo - Vamos editar o arquivo exportado removendo todos os id's,
+3-10ª) Passo - Vamos editar o arquivo exportado removendo todos os id's,
 deixando somente os nomes e datas. Atualmente nosso arquivo em /tmp/exportacao.txt,
 se encontra no formato abaixo:
 
@@ -353,7 +381,7 @@ bash-4.4$ cat /tmp/exportacao.txt
 5; Nossa Senhora;2011-06-22
 
 
-Então precisamos remover os id's mas, não podemos remover os separadores após os id's,
+3-10.1ª) Passo - Então precisamos remover os id's mas, não podemos remover os separadores após os id's,
 é ai que esta o pulo do gato para termos sucesso na nossa importação em uma tabela com 
 auto_increment. Então digite o comando abaixo para formatar o arquivo:
 
@@ -398,7 +426,7 @@ Pedra Bonita;2001-08-25;
 Nossa Senhora;2011-06-22;
 
 
-Então precisamos adicionar os separadores que estariam após os id's,
+3-10.2ª) Passo - Precisamos adicionar os separadores que estariam após os id's,
 que foi deixado de lado, precisamos colocar os separadores ";",
 antes dos nomes, pois sem estes separadores todo nosso trabalho,
 vai por água abaixo quando importar o arquivo para a tabela devolta.
@@ -421,14 +449,14 @@ bash-4.4$ cat /tmp/exportacao.txt
 ;Nossa Senhora;2011-06-22;
 
 
-10ª) Passo - Vamos deletar nossa tabela cadastros,
+3-11ª) Passo - Vamos deletar nossa tabela cadastros,
 para recriar novamente mas com auto_increment.
 
 MariaDB [teste]> drop table cadastros;
 Query OK, 0 rows affected (0.04 sec)
 
 
-11ª) Passo - Recriando a tabela cadastros com auto_increment:
+3-11.1ª) Passo - Recriando a tabela cadastros com auto_increment:
 
 MariaDB [teste]>  create table cadastros(
     -> `id_faz` int auto_increment primary key,
@@ -447,7 +475,7 @@ Query OK, 5 rows affected (0.04 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 
 
-12ª) Passo - Precisamos fazer um truncate na nossa tabela cadastros,
+3-12ª) Passo - Precisamos fazer um truncate na nossa tabela cadastros,
 simplesmente por que criamos os campos nome_faz como unique, 
 caso contrário, poderíamos fazer apenas a importação,
 novamente pois ficaria com id's auto_increment de 6 a 10. 
@@ -466,8 +494,8 @@ MariaDB [teste]> select * from cadastros;
 Empty set (0.00 sec)
 
 
-13ª) Passo - Importando novamente o arquivo /tmp/exportacao.txt,
-ja formatado no 9ª passo, para o banco teste.
+3-12.1ª) Passo - Importando novamente o arquivo /tmp/exportacao.txt,
+ja formatado na sessao 3 passo 10.1ª, para o banco teste.
 
 
 MariaDB [teste]> load data local infile "/tmp/exportacao.txt" into table cadastros fields terminated by ';';
