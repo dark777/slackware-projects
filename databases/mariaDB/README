@@ -740,8 +740,6 @@ dos arquivos da pasta "/var/lib/mysql", pois evita problemas de incompatibilidad
 os dados para versões diferentes do MySQL. Além disso, a facilidade de fazer o backup sem
 precisar parar o servidor é uma grande vantagem em um ambiente de produção.
 
-Source: http://www.hardware.com.br/dicas/mysql.html
-
 ##################################################################################################
 
 Resolvendo problemas de caracteres acentuados no MySQL
@@ -783,9 +781,6 @@ importação. Ao enviar o arquivo, o menu DropDown estará como ‘utf-8’,
 se o CHARSET da base for ‘Latin1’ escolha o ‘iso-8859-1’.
 
 ##################################################################################################
-
-https://www.vivaolinux.com.br/dica/MySQL-Control-Center-Gerenciando-seu-MySQL
-
 
 Sources:
 http://www.hardware.com.br/dicas/mysql.html
