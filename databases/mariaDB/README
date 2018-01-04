@@ -316,7 +316,9 @@ para um novo arquivo que será salvo em  /tmp chamado exportacao.txt:
 
 4-1ª) Passo - Exportando os dados da tabela cadastros para a pasta /tmp/ no arquivo exportacao.txt:
 
-MariaDB [teste]> select id_faz, nome_faz, data_compra into outfile "/tmp/exportacao.txt" fields terminated by ';'  from cadastros;
+MariaDB [teste]> select id_faz, nome_faz, data_compra into outfile "/tmp/exportacao.txt" \
+fields terminated by ';'  from cadastros;
+
 Query OK, 6 rows affected (0.00 sec)
 
 Este comando acima exporta campos específicos de uma tabela,
@@ -325,11 +327,15 @@ a exportar os dados de uma tabela estamos exportando todos os campos.
 
 Ou você também pode usar um destes comando abaixo:
 
-MariaDB [teste]> select * from cadastros into outfile "/tmp/exportacao.txt" fields terminated by ';';
+MariaDB [teste]> select * from cadastros into outfile "/tmp/exportacao.txt" \
+fields terminated by ';';
+
 Query OK, 5 rows affected (0.00 sec)
 
 
-MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by ';'  from cadastros;
+MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" \
+fields terminated by ';'  from cadastros;
+
 Query OK, 5 rows affected (0.00 sec)
 
 
@@ -347,7 +353,9 @@ bash-4.4$ cat /tmp/exportacao.txt
 
 # Você também pode usar este comando abaixo:
 
-MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by ';' lines terminated by ';\n' from cadastros;
+MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by \
+';' lines terminated by ';\n' from cadastros;
+
 Query OK, 5 rows affected (0.01 sec)
 
 Com este comando acima nossos dados exportados para /tmp/exportacao.txt
@@ -366,12 +374,14 @@ pois a forma como ele exporta os dados dificulta nosso serviço,
 aumentando a complexidade mas como queremos 
 manter as coisas o mais simples não o use para esta finalidade:
 
-MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by ';' enclosed by '"' lines terminated by '' from cadastros;
+MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by ';' \
+enclosed by '"' lines terminated by '' from cadastros;
 
 # Este comando acima salvaria os dados neste formato abaixo:
 
 bash-4.4$ cat /tmp/exportacao.txt
-"1";"Boi Preto";"2000-02-29";"2";"Sol Nascente";"2009-10-01";"3";"Parque Belo";"2007-03-15";"4";"Pedras Bonitas";"2017-12-12";"5";"Medeiros";"2011-06-22";
+"1";"Boi Preto";"2000-02-29";"2";"Sol Nascente";"2009-10-01";"3";"Parque Belo";"2007-03-15"; \
+"4";"Pedras Bonitas";"2017-12-12";"5";"Medeiros";"2011-06-22";
 
 
 4-2ª) Passo - Vamos editar o arquivo exportado removendo todos os id's,
@@ -411,11 +421,15 @@ Ou você também pode usar um destes comando abaixo,
 este comando é mais útil pois geralmente uma tabela exportada,
 contém centenas ou milhares de registros:
 
-MariaDB [teste]> select  nome_faz, data_compra into outfile "/tmp/exportacao.txt" fields terminated by ';' lines terminated by ';\n'  from cadastros;
+MariaDB [teste]> select  nome_faz, data_compra into outfile "/tmp/exportacao.txt" \
+fields terminated by ';' lines terminated by ';\n'  from cadastros;
+
 Query OK, 5 rows affected (0.00 sec)
 
 
-MariaDB [teste]> select nome_faz, data_compra from cadastros into outfile "/tmp/exportacao.txt" fields terminated by ';' lines terminated by ';\n';
+MariaDB [teste]> select nome_faz, data_compra from cadastros into outfile "/tmp/exportacao.txt" \
+fields terminated by ';' lines terminated by ';\n';
+
 Query OK, 5 rows affected (0.00 sec)
 
 
@@ -503,7 +517,9 @@ Empty set (0.00 sec)
 ja formatado na sessao 3 passo 10.1ª, para o banco teste.
 
 
-MariaDB [teste]> load data local infile "/tmp/exportacao.txt" into table cadastros fields terminated by ';';
+MariaDB [teste]> load data local infile "/tmp/exportacao.txt" \
+into table cadastros fields terminated by ';';
+
 Query OK, 5 rows affected, 5 warnings (0.81 sec)     
 Records: 5  Deleted: 0  Skipped: 0  Warnings: 5
 
@@ -554,7 +570,8 @@ data=$(date +%a%H%M%S%d%m%y)
 sqlname="$data.sql"
 logname="$data.log"
 
-bash-4.4$ mysqldump --databases <dbname> --routines --single-transaction --result-file="$sqlname" -v -h localhost -u root -p -P 3306  2>> $logname
+bash-4.4$ mysqldump --databases <dbname> --routines --single-transaction \
+--result-file="$sqlname" -v -h localhost -u root -p -P 3306  2>> $logname
 
 
 Backup de uma tabela especifica:
@@ -569,14 +586,19 @@ bash-4.4$ mysqldump -u root -p --databases <dbname> tabela1 tabela2 > tab1_tab2.
 
 Backup de todas as tabelas com exceção de uma:
 
-bash-4.4$ mysqldump -u root -p --databases <dbname> --ignore-table=<dbname>.<nometabela> > backup.sql
+bash-4.4$ mysqldump -u root -p --databases <dbname> \
+--ignore-table=<dbname>.<nometabela> > backup.sql
 
 
 Backup de todas as tabelas com exceção de duas ou mais:
 
-bash-4.4$ mysqldump -u root -p --databases <dbname> --ignore-table=<dbname>.{tabela1,tabela2,tabela3} > backup.sql
+bash-4.4$ mysqldump -u root -p --databases <dbname> \
+--ignore-table=<dbname>.{tabela1,tabela2,tabela3} > backup.sql
+
 ou
-bash-4.4$ mysqldump -u root -p --databases <dbname> --ignore-table=<dbname>.tabela1 --ignore-table=<dbname>.tabela2 > backup.sql
+
+bash-4.4$ mysqldump -u root -p --databases <dbname> --ignore-table=<dbname>.tabela1 \
+--ignore-table=<dbname>.tabela2 > backup.sql
 
 
 Backup de todas as bases de dados:
@@ -587,60 +609,65 @@ bash-4.4$ mysqldump --all-databases > ~/mysql_all.sql -v -h localhost -u root -p
 
 Fazendo backup das bases de dados do MySQL
 
-Uma das grandes dúvidas de qualquer administrador iniciante é como fazer backup das bases de dados do
-MySQL, já que os dados são gravados e acessados através do servidor MySQL e não diretamente através de
-arquivos, como no caso dos arquivos referentes aos sites, salvos na pasta "/var/www", por exemplo.
+Uma das grandes dúvidas de qualquer administrador iniciante é como fazer backup das bases de dados
+do MySQL, já que os dados são gravados e acessados através do servidor MySQL e não diretamente
+através de arquivos, como no caso dos arquivos referentes aos sites, salvos na pasta "/var/www",
+por exemplo.
 
-As bases de dados do MySQL são salvas por padrão dentro da pasta "/var/lib/mysql". Ao criar a base de dados
-"phpbb", por exemplo, será criada a pasta "/var/lib/mysql/phpbb", contendo um conjunto de arquivos, referentes,
-às tabelas criadas.
+As bases de dados do MySQL são salvas por padrão dentro da pasta "/var/lib/mysql". Ao criar a base
+de dados "phpbb", por exemplo, será criada a pasta "/var/lib/mysql/phpbb", contendo um conjunto
+de arquivos, referentes, às tabelas criadas.
 
-A forma mais simples de fazer backup das bases de dados do MySQL é simplesmente salvar o conteúdo da
-pasta "/var/lib/mysql", criando um arquivo .tar.gz ou mesmo copiando os arquivos diretamente para outra
-partição. O maior problema é que as bases de dados são alteradas continuamente durante a operação do banco
-de dados, o que leva a cópias inconsistentes. Se alguns dos arquivos dentro da pasta com a base mudam no
-meio da cópia, o backup conterá uma mistura de dados novos e antigos, uma receita para o desastre.
+A forma mais simples de fazer backup das bases de dados do MySQL é simplesmente salvar o conteúdo
+da pasta "/var/lib/mysql", criando um arquivo .tar.gz ou mesmo copiando os arquivos diretamente
+para outra partição. O maior problema é que as bases de dados são alteradas continuamente durante
+a operação do banco de dados, o que leva a cópias inconsistentes. Se alguns dos arquivos dentro da
+pasta com a base mudam no meio da cópia, o backup conterá uma mistura de dados novos e antigos,
+uma receita para o desastre.
 
-A forma mais segura é parar o serviço do MySQL antes de fazer o backup, garantindo assim que nada será 
-alterado durante a cópia, como no exemplo abaixo:
+A forma mais segura é parar o serviço do MySQL antes de fazer o backup, garantindo assim que nada
+será alterado durante a cópia, como no exemplo abaixo:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
 
-A segunda opção é fazer um backup online, sem parar o servidor. O utilitário mais simples (e provavelmente
-o mais usado) para isso é o mysqldump, que acompanha o pacote principal do MySQL.
+A segunda opção é fazer um backup online, sem parar o servidor. O utilitário mais simples 
+(e provavelmente o mais usado) para isso é o mysqldump, que acompanha o pacote principal do MySQL.
 
-Para salvar todas as bases de dados do servidor no arquivo "backup.sql", criado no diretório atual, por exemplo,
-o comando seria:
+Para salvar todas as bases de dados do servidor no arquivo "backup.sql", criado no diretório atual,
+por exemplo, o comando seria:
 
 bash-4.4$ mysqldump -u root -p -x -e -A > backup.sql
 
-O "-u root -p" especifica o usuário que será usado para acessar o banco de dados. No exemplo estou fazendo
-um backup completo, por isso estou usando diretamente o root. A opção "-x" trava as bases de dados no
-momento em que cada uma é copiada, evitando qualquer problema de inconsistência, enquanto a "-e" é uma
-opção de otimização, que permite ao mysqldump combinar argumentos INSERT dentro das tabelas, o que torna
-tanto o backup quanto a restauração mais rápidos. Finalizando, a opção "-A" especifica um backup completo,
-de todas as bases de dados.
+O "-u root -p" especifica o usuário que será usado para acessar o banco de dados.
+No exemplo estou fazendo um backup completo, por isso estou usando diretamente o root.
+A opção "-x" trava as bases de dados no momento em que cada uma é copiada,
+evitando qualquer problema de inconsistência, enquanto a "-e" é uma opção de otimização,
+que permite ao mysqldump combinar argumentos INSERT dentro das tabelas, o que torna
+tanto o backup quanto a restauração mais rápidos. Finalizando, a opção "-A"
+especifica um backup completo, de todas as bases de dados.
 
-Se o comando parasse por aí, o mysqldump simplesmente escreveria todo o conteúdo das bases de dados na
-própria janela do terminal, resultando em uma longa exibição de informações, sem muita utilidade. Como
-queremos que a saída seja salva em um arquivo, usamos o ">", que redireciona a saída para o arquivo especificado.
+Se o comando parasse por aí, o mysqldump simplesmente escreveria todo o conteúdo das bases
+de dados na própria janela do terminal, resultando em uma longa exibição de informações,
+sem muita utilidade. Como queremos que a saída seja salva em um arquivo, usamos o ">", 
+que redireciona a saída para o arquivo especificado.
 
-O arquivo "backup.sql" gerado é basicamente um arquivo de texto gigante contendo declarações de todas as
-informações armazenadas. Você pode reduzir o tamanho do arquivo para um quarto (ou menos) do tamanho
-original compactando o arquivo, o que pode ser feito adicionando a opção "| gzip" antes do ">" no comando, 
-como em:
+O arquivo "backup.sql" gerado é basicamente um arquivo de texto gigante contendo declarações
+de todas as informações armazenadas. Você pode reduzir o tamanho do arquivo para um quarto
+(ou menos) do tamanho original compactando o arquivo, o que pode ser feito adicionando a
+opção "| gzip" antes do ">" no comando, como em:
 
 bash-4.4$ mysqldump -u root -p -x -e -A | gzip > backup.sql.gz
 
-Note que nesse exemplo adicionei também o ".gz" no nome do arquivo, indicando que se trata de um arquivo
-compactado. Para usá-lo posteriormente, você precisaria apenas descompactar o arquivo, usando o comando
-"gunzip", como em:
+Note que nesse exemplo adicionei também o ".gz" no nome do arquivo, indicando que se trata de
+um arquivo compactado. Para usá-lo posteriormente, você precisaria apenas descompactar o arquivo,
+usando o comando "gunzip", como em:
 
 bash-4.4$ gunzip backup.sql.gz
 
-O maior problema com estes dois comandos é que você precisa digitar a senha depois de rodar o comando, o
-que dificulta seu uso em scripts de backup automático. É possível eliminar a necessidade de digitar a senha
-especificando-a diretamente no comando, depois do "-p" (sem espaços), como em:
+O maior problema com estes dois comandos é que você precisa digitar a senha depois de rodar
+o comando, o que dificulta seu uso em scripts de backup automático. É possível eliminar a
+necessidade de digitar a senha especificando-a diretamente no comando, depois do "-p"
+(sem espaços), como em:
 
 bash-4.4$ mysqldump -u root -p12345 -x -e -A | gzip > backup.sql.gz
 
@@ -687,29 +714,31 @@ mysql> exit
 
 bash-4.4$ mysql -u root -p --databases phpbb < phpbb.sql
 
-Outra opção seria adicionar a opção "--add-drop-table" ao gerar o backup com o mysqldump. Ela faz com que
-ele inclua instruções para que as bases sejam excluídas e recriadas automaticamente durante a restauração,
-evitando que você precise fazê-lo manualmente. O comando ficaria então:
+Outra opção seria adicionar a opção "--add-drop-table" ao gerar o backup com o mysqldump.
+Ela faz com que ele inclua instruções para que as bases sejam excluídas e recriadas
+automaticamente durante a restauração, evitando que você precise fazê-lo manualmente.
+O comando ficaria então:
 
 bash-4.4$ mysqldump --add-drop-table -u root -p -x -e -B phpbb > phpbb.sql
 
-O comando para restaurar continua o mesmo, com a diferença de que você não precisa mais dar o DROP
-DATABASE; CREATE DATABASE antes de fazer a restauração.
+O comando para restaurar continua o mesmo, com a diferença de que você não precisa
+mais dar o DROP DATABASE; CREATE DATABASE antes de fazer a restauração.
 
-Esta opção pode ser adicionada também ao comando para fazer o backup completo das bases de dados,
-facilitando assim sua restauração:
+Esta opção pode ser adicionada também ao comando para fazer o backup completo das
+bases de dados, facilitando assim sua restauração:
 
 bash-4.4$ mysqldump --add-drop-table -u root -p -x -e -A > backup.sql
 
-O backup poderia ser então restaurado diretamente usando o comando abaixo, sem que você precisasse
-remover as bases e tabelas manualmente antes de iniciar a recuperação:
+O backup poderia ser então restaurado diretamente usando o comando abaixo,
+sem que você precisasse remover as bases e tabelas manualmente antes de
+iniciar a recuperação:
 
 bash-4.4$ mysql -u root -p < backup.sql
 
-O backup usando o mysqldump e a restauração usando o mysql são preferíveis à cópia manual dos arquivos da
-pasta "/var/lib/mysql", pois evita problemas de incompatibilidade ao migrar os dados para versões
-diferentes do MySQL. Além disso, a facilidade de fazer o backup sem precisar parar o servidor é uma grande
-vantagem em um ambiente de produção.
+O backup usando o mysqldump e a restauração usando o mysql são preferíveis à cópia manual
+dos arquivos da pasta "/var/lib/mysql", pois evita problemas de incompatibilidade ao migrar
+os dados para versões diferentes do MySQL. Além disso, a facilidade de fazer o backup sem
+precisar parar o servidor é uma grande vantagem em um ambiente de produção.
 
 Source: http://www.hardware.com.br/dicas/mysql.html
 
