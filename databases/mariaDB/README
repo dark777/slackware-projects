@@ -27,6 +27,10 @@ Enter current password for root (enter for none): [ENTER]
 
 OK, successfully used password, moving on... 
 
+Set root password? [Y/n] [Y] Y
+New password: (Digite aqui aquela que será a sua senha)
+Re-enter new password: (Redigite a senha)
+Password updated successfully!
 
 Remove anonymous users? [Y/n] Y
 
