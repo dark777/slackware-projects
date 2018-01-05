@@ -561,9 +561,12 @@ Deixando-a assim:
 #SKIP="--skip-networking"
 
 
+1ª) Passo - Digite uma das duas linhas abaixo no terminal: 
+
 bash-4.4$ su -c "sed '/SKIP/ s/^/#/g;' /etc/rc.d/rc.mysqld"
 ou
 bash-4.4$ su -c "sed '32s/^/#/g;' /etc/rc.d/rc.mysqld"
+
 
 2ª) Passo - Reinicie o mysqld:
 
