@@ -211,12 +211,54 @@ echo "
      " >> $GITCONFIG
 
 echo "
+bash()
+{
+# Remove linha em branco:
+BLANK_LNRM=${BLANK_LNRM:-$(sed  -i '/^$/d' ~/.bash_history)}
+
+# Remove caracteres em branco no inicio da linha:
+BLANK_INIRM=${BLANK_INIRM:-$(sed -i 's/^ *//g' ~/.bash_history)}
+
+# Remove caracteres em branco no final da linha:
+BLANK_FIMRM=${BLANK_FIMRM:-$(sed -i 's/ *$//g' ~/.bash_history)}
+
+# Remove linhas duplicadas
+RMDUP=${RMDUP:-$(sort -u ~/.bash_history > str_history)}
+
+# Salva os comandos devolta em .bash_history
+NEWSTORE=${NEWSTORE:-$(cat str_history > ~/.bash_history)}
+
+#Remove os arquivos de suporte
+RMFILES=${RMFILES:-$(rm -rf str_history)}
+}
+
 if [ -f $PROFILE ]; then
   . $PROFILE
 fi 
      " >> $BASHRCUSER
 
 echo "
+bash()
+{
+# Remove linha em branco:
+BLANK_LNRM=${BLANK_LNRM:-$(sed  -i '/^$/d' ~/.bash_history)}
+
+# Remove caracteres em branco no inicio da linha:
+BLANK_INIRM=${BLANK_INIRM:-$(sed -i 's/^ *//g' ~/.bash_history)}
+
+# Remove caracteres em branco no final da linha:
+BLANK_FIMRM=${BLANK_FIMRM:-$(sed -i 's/ *$//g' ~/.bash_history)}
+
+# Remove linhas duplicadas
+RMDUP=${RMDUP:-$(sort -u ~/.bash_history > str_history)}
+
+# Salva os comandos devolta em .bash_history
+NEWSTORE=${NEWSTORE:-$(cat str_history > ~/.bash_history)}
+
+#Remove os arquivos de suporte
+RMFILES=${RMFILES:-$(rm -rf str_history)}
+}
+
 if [ -f $PROFILE ]; then
   . $PROFILE
 fi
