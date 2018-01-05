@@ -513,6 +513,9 @@ SYSARQ=ext4
 bash-4.3$ echo PART=$(grep sda /etc/fstab |  cut -d/ -f 3)
 PART=sda3
 
+bash-4.3$ echo PART=${PART:-$(mount | grep /dev/sda | cut -f3 -d/ | cut -f1 -d ' ')}
+PART=sda3
+
 bash-4.3$ PART=$(mount | grep /dev/sda | awk  '{print $1}' | sed 's/\/dev\/sda/sda/g')
 PART=sda3
 
