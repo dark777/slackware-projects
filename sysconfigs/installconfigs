@@ -144,7 +144,7 @@ chmod 755 -v /etc/rc.d/rc.{zram,ntpd,networkmanager}
    $RCNTPD start
    #. /etc/rc.d/rc.zram start
    #. /etc/rc.d/rc.mysqld start
-   
+
 if [ -f $SLVERSION ]; then
  echo "Welcome to $VERSION \s-\r.\m \l" > $ISSUE
 fi
@@ -172,10 +172,43 @@ mkdir -p /home/$usuario/{Documentos,Downloads,Imagens,Musicas,Videos,Filmes,Pack
 
 chown -R $usuario.$usuario /home/$usuario
 
-usermod -aG sudo,tar,users,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner $usuario 
-
+usermod -aG sudo,tar,users,floppy,audio,video,cdrom,plugdev,power,netdev,lp,scanner $usuario
 
 BASHRCUSER=${BASHRCUSER:-/home/$usuario/.bashrc}
+
+GITCONFIG=${GITCONFIG:-/home/$usuario/.gitconfig}
+
+echo "
+[user]
+       name = Jean Zonta
+       email = wiki.anon@yahoo.com.br
+       username = dark777
+[core]
+       editor = nano
+[merge]
+       tool = diff
+[push]
+        default = matching
+[web]
+        browser = mozilla-firefox
+
+[color "branch"]
+       current = yellow bold
+       local = green bold
+       remote = cyan bold
+
+[color "diff"]
+       meta = yellow bold
+       frag = magenta bold
+       old = red bold
+       new = green bold
+       whitespace = red reverse
+
+[color "status"]
+       added = green bold
+       changed = yellow bold
+       untracked = red bold 
+     " >> $GITCONFIG
 
 echo "
 if [ -f $PROFILE ]; then
