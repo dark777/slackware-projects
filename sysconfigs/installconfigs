@@ -68,7 +68,8 @@ MKINITRDCOMMAND=${MKINITRDCOMMAND:-/usr/share/mkinitrd/mkinitrd_command_generato
 
 MKINITRDSTRINGS=${MKINITRDSTRINGS:-$($MKINITRDCOMMAND | grep ^mkinitrd | cut -c47-300 | cut -f1 -d ' ')}
 
-$GROUPADD {tar,sudo}
+$GROUPADD tar
+$GROUPADD sudo
 
 rm -rf /etc/rc.d/rc.{4,M,S}
 rm -rf /etc/profile.d/lang.{csh,sh}
@@ -138,7 +139,7 @@ fi
 
 chmod 755 -v /etc/rc.d/rc.{zram,ntpd,networkmanager}
    $NETWORKMANAGER start
-   /sbin/nmtui
+   nmtui
    ntpdate pool.ntp.br
    $RCNTPD start
    #. /etc/rc.d/rc.zram start
