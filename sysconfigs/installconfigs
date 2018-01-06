@@ -1,7 +1,5 @@
 #!/bin/sh
 
-DEVSDA=${DEVSDA:-/dev/sda}
-
 LILO=${LILO:-/etc/lilo.conf}
 
 SBINLILO=${SBINLILO:-/sbin/lilo}
@@ -34,11 +32,11 @@ SHAREKEYBOARD=${SHAREKEYBOARD:-/usr/share/X11/xorg.conf.d/90-keyboard-layout.con
 
 KEYBOARD=${KEYBOARD:-/etc/X11/xorg.conf.d/90-keyboard-layout.conf}
 
-SDA=${SDA:-$(mount | grep $DEVSDA | cut -c6-8)}
+DEVDISK=${DEVDISK:-$(cat /etc/fstab |tr '\t' ' ' |grep -v '^ *#' |tr -s ' ' |grep ' / ' |cut -f1 -d' ')}
 
-PART=${PART:-$(mount | grep $DEVSDA | cut -c6-10)}
+SDA=${SDA:-$(mount | grep $DEVDISK | cut -c6-8)}
 
-DEVDISK=${DEVDISK:-$(mount | grep $DEVSDA | awk  '{print $1}')}
+PART=${PART:-$(mount | grep $DEVDISK | cut -c6-9)}
 
 SYSARQ=${SYSARQ:-$(file -s $DEVDISK | awk '{print $5}')}
 
@@ -74,11 +72,10 @@ $GROUPADD sudo
 rm -rf /etc/rc.d/rc.{4,M,S}
 rm -rf /etc/profile.d/lang.{csh,sh}
 
-cp sys/sysctl.conf /etc
+cp sys/{ntp,sysctl}.conf /etc
 cp sys/lang.{csh,sh} /etc/profile.d/
 cp sys/rc.{4,M,S,zram} /etc/rc.d
 mv $ETCNTP $ETCNTP.orig
-cp sys/ntp.conf /etc/
 touch $NTPDRIFT
 mkdir /var/log/ntpstats
 
@@ -104,12 +101,12 @@ sed -i '47s/`hostname`/\\u.\\h/g;47s/`pwd`/\\w/g;47s/^#//g;57s/@/./g' $PROFILE
 rm -rf $ZPROFILE
 
 # Substitui us por br
-#sed -i '/us/ s/us/br/g;' $KEYBOARD
+sed -i '/us/ s/us/br/g;' $KEYBOARD
 
 # Descomenta Option
 # Substitui us por br
 # Substitui "" por "abnt2"
-#sed -i '/#Option/ s/#//g;/us/ s/us/br/g;/""/ s/""/"abnt2"/g;' $KEYBOARD
+sed -i '/#Option/ s/#//g;/us/ s/us/br/g;/""/ s/""/"abnt2"/g;' $KEYBOARD
 
 # Descomenta compact
 sed -i 's/^#compact/compact/g;' $LILO
@@ -121,7 +118,7 @@ sed -i 's/^timeout =.*/timeout = 50/g;' $LILO
 sed -i 's/^  label =.*/  label = SLCKWRLNX/g;' $LILO
 
 # Adciona suport UTF8 para a partição corrent
-sed -i '6s/append=.*/append="\/dev\/'$PART' vt.default_utf8=1"/g;' $LILO
+sed -i '/append=.*/ s/append=.*/append="\/dev\/'$PART' vt.default_utf8=1"/g;' $LILO
 
 # Retira quebra de linha da linha 8
 sed -i 'N;8s/\n//g;' $LILO
@@ -129,25 +126,27 @@ sed -i 'N;8s/\n//g;' $LILO
 # Adciona quebra de linha na linha 7
 sed -i '7s/boot = \/dev\/'$SDA'/boot = \/dev\/'$SDA'\n/g;' $LILO
 
-#sed -i '/ALL/ s/ALL=(/ALL=(ALL:/g;' $SUDOERS
-#sed -i '/root/ s/ALL=(/ALL=(ALL:/g;' $SUDOERS
+sed -i '/ALL/ s/ALL=(/ALL=(ALL:/g;' $SUDOERS
+sed -i '/root/ s/ALL=(/ALL=(ALL:/g;' $SUDOERS
 sed -i '/%sudo/ s/^#//g;/%sudo/ s/^ //g;/ALL/ s/ALL=(/ALL=(ALL:/g;' $SUDOERS
 
 if [ -f $MODULESLOCAL ]; then
  echo "/sbin/modprobe zram" >> $MODULESLOCAL
 fi
 
-chmod 755 -v /etc/rc.d/rc.{zram,ntpd,networkmanager}
+chmod 755 -v /etc/rc.d/rc.{zram,ntpd,httpd,mysqld,networkmanager}
    $NETWORKMANAGER start
    nmtui
    ntpdate pool.ntp.br
    $RCNTPD start
-   #. /etc/rc.d/rc.zram start
-   #. /etc/rc.d/rc.mysqld start
 
 if [ -f $SLVERSION ]; then
  echo "Welcome to $VERSION \s-\r.\m \l" > $ISSUE
 fi
+
+RMOZILLA_FIREFOX=${RMOZILLA_FIREFOX:-$(ls -a /var/log/packages/mozilla-firefox*| cut -c19-54)}
+
+removepkg $RMOZILLA_FIREFOX
 
 installpkg python/wxPython-2.8.12.1-x86_64-5_slonly.txz
 installpkg python/python3-3.6.0-x86_64-3_SBo.tgz
@@ -191,19 +190,16 @@ echo "
         default = matching
 [web]
         browser = mozilla-firefox
-
 [color "branch"]
        current = yellow bold
        local = green bold
        remote = cyan bold
-
 [color "diff"]
        meta = yellow bold
        frag = magenta bold
        old = red bold
        new = green bold
        whitespace = red reverse
-
 [color "status"]
        added = green bold
        changed = yellow bold
@@ -231,7 +227,6 @@ NEWSTORE=${NEWSTORE:-$(cat str_history > ~/.bash_history)}
 #Remove os arquivos de suporte
 RMFILES=${RMFILES:-$(rm -rf str_history)}
 }
-
 if [ -f $PROFILE ]; then
   . $PROFILE
 fi 
@@ -258,7 +253,6 @@ NEWSTORE=${NEWSTORE:-$(cat str_history > ~/.bash_history)}
 #Remove os arquivos de suporte
 RMFILES=${RMFILES:-$(rm -rf str_history)}
 }
-
 if [ -f $PROFILE ]; then
   . $PROFILE
 fi
@@ -271,7 +265,7 @@ $MKINITRD -c -k $KVERSION -f $SYSARQ -r $DEVDISK -m $MKINITRDSTRINGS -u -o $INIT
 
 ln -s $INITRDZRAM $ZRAMINITRD
 
-## Adiciona partição após "# End LILO global section" em /etc/lilo.conf
+## Adiciona partição após "# End LILO global section" no lilo.conf
 sed -i '/# End LILO global section/a # Linux bootable generic partition config begins' $LILO
 sed -i '/# Linux bootable generic partition config begins/a image = '$GENERIC'' $LILO
 sed -i '/^image = \/boot\/vmlinuz-generic/a initrd = '$ZRAMINITRD'' $LILO
