@@ -158,6 +158,7 @@ installpkg vlc/npapi-vlc-20170523-x86_64-1alien.txz
 installpkg vlc/vlc-2.2.6-x86_64-1alien.txz
 installpkg navegadores/mozilla-firefox-56.0b2-x86_64-1.txz
 installpkg navegadores/tor-browser-7.0.4-x86_64-1_SBo.tgz
+installpkg database/postgresql-9.6.4-x86_64-1_slonly.txz
 
 read -p "Crie um usuario: " usuario
 
