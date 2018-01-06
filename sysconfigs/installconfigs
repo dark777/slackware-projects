@@ -206,8 +206,7 @@ echo "[user]
        untracked = red bold 
      " >> $GITCONFIG
 
-echo "
-bash()
+echo "bash()
 {
 # Remove linha em branco:
 BLANK_LNRM=${BLANK_LNRM:-$(sed  -i '/^$/d' ~/.bash_history)}
@@ -232,8 +231,7 @@ if [ -f $PROFILE ]; then
 fi 
      " >> $BASHRCUSER
 
-echo "
-bash()
+echo "bash()
 {
 # Remove linha em branco:
 BLANK_LNRM=${BLANK_LNRM:-$(sed  -i '/^$/d' ~/.bash_history)}

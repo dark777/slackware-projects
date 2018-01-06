@@ -72,7 +72,6 @@ src/arq/file1.txt
 
 ##################################
 tar xfz nome_do_arquivo.tgz
-tar xfz nome_do_arquivo.txz
 tar xfz nome_do_arquivo.tlz
 tar xfz nome_do_arquivo.tbz
 tar xfz nome_do_arquivo.tar.gz
