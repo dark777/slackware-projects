@@ -178,8 +178,7 @@ BASHRCUSER=${BASHRCUSER:-/home/$usuario/.bashrc}
 
 GITCONFIG=${GITCONFIG:-/home/$usuario/.gitconfig}
 
-echo "
-[user]
+echo "[user]
        name = Jean Zonta
        email = wiki.anon@yahoo.com.br
        username = dark777
@@ -191,17 +190,17 @@ echo "
         default = matching
 [web]
         browser = mozilla-firefox
-[color "branch"]
+[color \"branch\"]
        current = yellow bold
        local = green bold
        remote = cyan bold
-[color "diff"]
+[color \"diff\"]
        meta = yellow bold
        frag = magenta bold
        old = red bold
        new = green bold
        whitespace = red reverse
-[color "status"]
+[color \"status\"]
        added = green bold
        changed = yellow bold
        untracked = red bold 
@@ -268,11 +267,11 @@ ln -s $INITRDZRAM $ZRAMINITRD
 
 ## Adiciona partição após "# End LILO global section" no lilo.conf
 sed -i '/# End LILO global section/a # Linux bootable generic partition config begins' $LILO
-sed -i '/# Linux bootable generic partition config begins/a image = '$GENERIC'' $LILO
-sed -i '/^image = \/boot\/vmlinuz-generic/a initrd = '$ZRAMINITRD'' $LILO
-sed -i '/^initrd = \/boot\/initrd-zram/a root = '$DEVDISK'' $LILO
-sed -i '/^root = \/dev\/'$PART'/a label = GNRCLNX' $LILO
-sed -i '/^label = GNRCLNX/a read-only' $LILO
+sed -i '/# Linux bootable generic partition config begins/a image  = '$GENERIC'' $LILO
+sed -i '/^image  = \/boot\/vmlinuz-generic/a initrd = '$ZRAMINITRD'' $LILO
+sed -i '/^initrd = \/boot\/initrd-zram/a root   = '$DEVDISK'' $LILO
+sed -i '/^root   = \/dev\/'$PART'/a label  = GNRCLNX' $LILO
+sed -i '/^label  = GNRCLNX/a read-only' $LILO
 sed -i '/^read-only/a # Linux bootable generic partition config ends' $LILO
 
 ## Adiciona partição no fim de lilo.conf
