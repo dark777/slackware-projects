@@ -71,7 +71,19 @@ postgres=# alter user darkstar with encrypted password 'minhasenha';
 ALTER ROLE
 
 
-Outra forma de criar um usuario:
+Outras formas de criar um usuário:
+
+Sem encriptação de senha:
+
+postgres=# create user darkstar with password 'minhasenha';
+
+
+Com encriptação de senha:
+
+postgres=# create user darkstar with encrypted password 'minhasenha';
+
+
+Criando usuario sem logar no psql:
 
 postgres$ createuser darkstar
 Password: <senha do psql>
