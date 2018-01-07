@@ -40,15 +40,10 @@ senha: a senha do seu mysql (que foi configurado qnd instalou o mysql ou o appse
 
 
 
-Habilitar ssl apache2 slackware
- 
+# Habilitar ssl apache2 slackware.
 
-Este artigo mostra como habilitar a porta 443 para acesso a paginas
-seguras no apache em um servidor Slackware, mas voce pode adaptá-lo para seu servidor.
 
-cd /etc/httpd
-
-nano httpd.conf
+bash-4.4$ su -c "nano /etc/httpd/httpd.conf"
 
 # descomente a linha abaixo
 
@@ -60,37 +55,53 @@ LoadModule socache_shmcb_module lib/httpd/modules/mod_socache_shmcb.so
 
 Include /etc/httpd/extra/httpd-ssl.conf
 
-bash-4.4# cd /etc/httpd
+
+# Agora criaremos as chaves e certificados:
+
+bash-4.4$ cd /etc/httpd
+
+bash-4.4$ su -c "openssl req -new -out server.csr"
 
 
-Agora criaremos as chaves e certificados:
-bash-4.4# openssl req -new -out server.csr
+# Agora removeremos a senha escolhida na criação do certificado:
 
-Agora removeremos a senha escolhida na criação do certificado:
-bash-4.4# openssl rsa -in privkey.pem -out server.key
-
-Agora vamos converter a assinatura do certificado:
-bash-4.4# openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 730
-
-bash-4.4# cp server.crt /etc/ssl/certs/
-
-bash-4.4# cp server.key /etc/ssl/private/
-
-bash-4.4# /etc/rc.d/rc.httpd restart
+bash-4.4$ su -c "openssl rsa -in privkey.pem -out server.key"
 
 
-# openssl genrsa -des3 -out server.key 1024
-# openssl rsa -in server.key -out server.key.insecure
-# openssl req -new -key server.key -out server.csr
-# mv server.key server.key.insecure
-# mv server.key.insecure server.key
-# openssl req -new -key server.key -out server.csr
-# openssl x509 -req -days 730 -in server.csr -signkey server.key -out server.crt
-# cp server.crt /etc/ssl/certs/
-# cp server.key /etc/ssl/private/
+# Agora vamos converter a assinatura do certificado:
+
+bash-4.4$ su -c "openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 730"
+
+bash-4.4$ su -c "cp server.crt /etc/ssl/certs/"
+
+bash-4.4$ su -c "cp server.key /etc/ssl/private/"
+
+bash-4.4$ su -c "/etc/rc.d/rc.httpd restart"
+
+
+# Outra forma de gerar as chaves:
+
+bash-4.4$ su -c "openssl genrsa -des3 -out server.key 1024"
+
+bash-4.4$ su -c "openssl rsa -in server.key -out server.key.insecure"
+
+bash-4.4$ su -c "openssl req -new -key server.key -out server.csr"
+
+bash-4.4$ su -c "mv server.key server.key.insecure"
+
+bash-4.4$ su -c "mv server.key.insecure server.key"
+
+bash-4.4$ su -c "openssl req -new -key server.key -out server.csr"
+
+bash-4.4$ su -c "openssl x509 -req -days 730 -in server.csr -signkey server.key -out server.crt"
+
+bash-4.4$ su -c "cp server.crt /etc/ssl/certs/"
+
+bash-4.4$ su -c "cp server.key /etc/ssl/private/"
 
 http://slackdummies.blogspot.com.br/
 http://toor.com.br/habilitar-ssl-apache2-slackware/
+http://slackdummies.blogspot.com.br/2013/02/controle-de-banda-com-webhtb.html
 ###########################################################################################################
 Sources:
 https://pkgs.org/download/phpmyadmin
@@ -99,4 +110,5 @@ http://docs.php.net/manual/pt_BR/features.http-auth.php
 https://www.vivaolinux.com.br/artigo/PHP-Programando-com-seguranca?
 https://codecasts.com.br/lesson
 http://slackware.ponce.cc/blog/2011/02/12/slackware-lamp-server-with-phpmyadmin-in-a-few-easy-steps/comment-page-1/
+https://www.vivaolinux.com.br/artigo/Gateway-autenticado-com-Apache-Iptables-e-CGI-em-shell
 http://www.novotopico.com/aprendendo-a-mecher-no-phpmyadmin-t6363.html
