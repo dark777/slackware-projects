@@ -397,6 +397,26 @@ bash-4.4$ cat /tmp/exportacao.txt
 "1";"Boi Preto";"2000-02-29";"2";"Sol Nascente";"2009-10-01";"3";"Parque Belo";"2007-03-15"; \
 "4";"Pedras Bonitas";"2017-12-12";"5";"Medeiros";"2011-06-22";
 
+# Mas caso você tenha usado este comando acima crie um arquivo chamado format.sed com a
+seguinte linha de comando abaixo:
+
+bash-4.4$ cat >format.sed<<EOF
+> sed 's/\;/\n/g'|sed 'N;N;s/\n//'|sed 'N;s/\n//'|sed '/^$/d'|sed 's/"/;/g;s/;;/;/g'
+EOF
+
+# Depois que você criou o arquivo format.sed vamos dar permissão de execução:
+
+bash-4.4$ chmod a+x format.sed
+
+# E faça:
+
+bash-4.4$ cat /tmp/exportacao.txt | ./format.sed > /tmp/formatados.txt && cat /tmp/formatados.txt
+;1;Boi Preto;2000-02-29;
+;2;Sol Nascente;2009-10-01;
+;3;Parque Belo;2007-03-15;
+;4;Pedras Bonitas;2017-12-12;
+;5;Medeiros;2011-06-22;
+
 
 4-2ª) Passo - Vamos editar o arquivo exportado removendo todos os id's,
 deixando somente os nomes e datas. Atualmente nosso arquivo em /tmp/exportacao.txt,
