@@ -110,6 +110,8 @@ bash-4.4$ su -c "nano /etc/httpd/httpd.conf"
 
 # descomente a linha abaixo
 
+AddHandler cgi-script .cgi
+
 LoadModule cgid_module modules/mod_cgid.so
 
 On Windows, or using a non-threaded MPM like prefork, 
