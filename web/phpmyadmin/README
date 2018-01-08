@@ -104,11 +104,11 @@ http://toor.com.br/habilitar-ssl-apache2-slackware/
 http://slackdummies.blogspot.com.br/2013/02/controle-de-banda-com-webhtb.html
 ###########################################################################################################
 
-Ativando cgi-bin apache2
+# Ativando cgi-bin apache2
 
 bash-4.4$ su -c "nano /etc/httpd/httpd.conf"
 
-# descomente a linha abaixo
+# Descomente a linha abaixo
 
 AddHandler cgi-script .cgi
 
@@ -119,8 +119,20 @@ A correctly configured directive may look like this:
 
 LoadModule cgi_module modules/mod_cgi.so
 
+#Baixe e compile a biblioteca cgicc-3.2.19.tar.gz
+
+bash-4.4$ wget -c https://ftp.gnu.org/gnu/cgicc/cgicc-3.2.19.tar.gz
+
+bash-4.4$ tar xzf cgicc-3.2.19.tar.gz && cd cgicc-3.2.19 && ./configure --prefix=/usr && make && su -c "make install"
+
+# Feito isso é só criar suas paginas cgi em c++,
+e compilar com o seguinte comando abaixo:
+
+bash-4.4$ g++ -o hello hello.cxx -lcgicc
+
 
 https://httpd.apache.org/docs/2.4/howto/cgi.html
+http://www.yolinux.com/TUTORIALS/LinuxTutorialC++CGI.html
 https://www.tutorialspoint.com/cplusplus/cpp_web_programming.htm
 ###########################################################################################################
 Sources:
