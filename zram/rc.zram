@@ -55,11 +55,11 @@ SYSCTL=${SYSCTL:-/etc/sysctl.conf}
 VMSWAPPINESS=${VMSWAPPINESS:-vm.swappiness}
 
 # Check for existence of parameter
-SWAPPINESS=${SWAPPINESS:-$(grep -ri $VMSWAPPINESS $SYSCTL)}
+SWAPPINESS=${SWAPPINESS:-$(grep -ri ${VMSWAPPINESS} ${SYSCTL})}
 
 
 # Check configured partition
-STRZRAM=${STRZRAM:-$(grep -ri $ZRAM $FSTAB | awk '{print $1}')}
+STRZRAM=${STRZRAM:-$(grep -ri ${ZRAM} ${FSTAB} | awk '{print $1}')}
 
 # Disk Size
 DISKSIZE=${DISKSIZE:-/sys/block/zram0/disksize}
@@ -70,73 +70,73 @@ RESET=${RESET:-/sys/block/zram0/reset}
 # Start ZRAM
 start() 
 {
- echo 2G > $DISKSIZE
-  mkswap $ZRAM
- swapon -p 100 $ZRAM
+ echo 2G > ${DISKSIZE}
+  mkswap ${ZRAM}
+ swapon -p 100 ${ZRAM}
 }
 
 # Config Parameters
 config()
 {
 
-if [[ $ZRAM < $NULL && ! -f $SYSCTL ]]; then
- touch $SYSCTL
-  echo -e "# Top priority for RAM usage\n$PRIORITYRAM" >> $SYSCTL
-   echo -e "\nArquivo $SYSCTL e $PRIORITYRAM Criada com sucesso ..!!!\n"
+if [[ ${ZRAM} < ${NULL} && ! -f ${SYSCTL} ]]; then
+ touch ${SYSCTL}
+  echo -e "# Top priority for RAM usage\n${PRIORITYRAM}" >> ${SYSCTL}
+   echo -e "\nArquivo ${SYSCTL} e ${PRIORITYRAM} Criada com sucesso ..!!!\n"
     
-elif [[ $ZRAM > $NULL && ! -f $SYSCTL ]]; then
- touch $SYSCTL
-  echo -e "# Top priority for ZRAM usage\n$PRIORITYZRAM" >> $SYSCTL
-   echo -e "\nArquivo $SYSCTL e $PRIORITYZRAM Criada com sucesso ..!!!\n"
+elif [[ ${ZRAM} > ${NULL} && ! -f ${SYSCTL} ]]; then
+ touch ${SYSCTL}
+  echo -e "# Top priority for ZRAM usage\n${PRIORITYZRAM}" >> ${SYSCTL}
+   echo -e "\nArquivo ${SYSCTL} e ${PRIORITYZRAM} Criada com sucesso ..!!!\n"
  
-elif [[ $ZRAM < $NULL && $SWAPPINESS < $NULL ]]; then 
- echo -e "# Top priority for RAM usage\n$PRIORITYRAM" >> $SYSCTL
-  echo -e "\n$PRIORITYRAM Criada com sucesso ..!!!\n"
+elif [[ ${ZRAM} < ${NULL} && ${SWAPPINESS} < ${NULL} ]]; then 
+ echo -e "# Top priority for RAM usage\n${PRIORITYRAM}" >> ${SYSCTL}
+  echo -e "\n${PRIORITYRAM} Criada com sucesso ..!!!\n"
 
-elif [[ $ZRAM > $NULL && $SWAPPINESS < $NULL ]]; then
- echo -e "# Top priority for ZRAM usage\n$PRIORITYZRAM" >> $SYSCTL
-  echo -e "\n$PRIORITYZRAM Criada com sucesso ..!!!\n"
+elif [[ ${ZRAM} > ${NULL} && ${SWAPPINESS} < ${NULL} ]]; then
+ echo -e "# Top priority for ZRAM usage\n${PRIORITYZRAM}" >> ${SYSCTL}
+  echo -e "\n${PRIORITYZRAM} Criada com sucesso ..!!!\n"
    
-elif [[ $ZRAM < $NULL && $SWAPPINESS > $NULL && $SWAPPINESS != $PRIORITYRAM ]]; then
- MODIFICA=$(sed -i 's/# Top priority for ZRAM usage/# Top priority for RAM usage/g;s/'"^$SWAPPINESS"'/'"$PRIORITYRAM"'/g' $SYSCTL)
-  echo -e "\n# Top priority for RAM usage\n$PRIORITYRAM\nModificada com sucesso ..!!!\n"
+elif [[ ${ZRAM} < ${NULL} && ${SWAPPINESS} > ${NULL} && ${SWAPPINESS} != ${PRIORITYRAM} ]]; then
+ MODIFICA=$(sed -i '/ZRAM/ s/Z//g;s/'"^${SWAPPINESS}"'/'"${PRIORITYRAM}"'/g' ${SYSCTL})
+  echo -e "\n# Top priority for RAM usage\n${PRIORITYRAM}\nModificada com sucesso ..!!!\n"
    
-elif [[ $ZRAM > $NULL && $SWAPPINESS > $NULL && $SWAPPINESS != $PRIORITYZRAM ]]; then
-  MODIFICA=$(sed -i 's/# Top priority for RAM usage/# Top priority for ZRAM usage/g;s/'"^$SWAPPINESS"'/'"$PRIORITYZRAM"'/g' $SYSCTL)
-   echo -e "\n# Top priority for ZRAM usage\n$PRIORITYZRAM\nModificada com sucesso ..!!!\n"
+elif [[ ${ZRAM} > ${NULL} && ${SWAPPINESS} > ${NULL} && ${SWAPPINESS} != ${PRIORITYZRAM} ]]; then
+  MODIFICA=$(sed -i '/RAM/ s/R/ZR/g;s/'"^${SWAPPINESS}"'/'"${PRIORITYZRAM}"'/g' ${SYSCTL})
+   echo -e "\n# Top priority for ZRAM usage\n${PRIORITYZRAM}\nModificada com sucesso ..!!!\n"
     fi
 }
 
 # Config ZRAM fstab 
 fstab()
 {
- if [[ $ZRAM < $NULL && $STRZRAM < $NULL ]]; then
-  echo -e "\n# Top priority for $PRIORITYRAM configured\n"
+ if [[ ${ZRAM} < ${NULL} && ${STRZRAM} < ${NULL} ]]; then
+  echo -e "\n# Top priority for ${PRIORITYRAM} configured\n"
 
- elif [[ $ZRAM > $NULL && $STRZRAM > $NULL ]]; then
-  echo -e "\n# Top priority for $STRZRAM configured\n"
+ elif [[ ${ZRAM} > ${NULL} && ${STRZRAM} > ${NULL} ]]; then
+  echo -e "\n# Top priority for ${STRZRAM} configured\n"
  
- elif [[ $ZRAM > $NULL && $STRZRAM < $NULL && $SWAPPINESS == $PRIORITYZRAM ]]; then
-  cp $FSTAB $FSTAB.old
-   echo "$ZRAM       none             swap        sw,pri=100       0   0" > $FSTAB
-    cat $FSTAB.old >> $FSTAB
+ elif [[ ${ZRAM} > ${NULL} && ${STRZRAM} < ${NULL} && ${SWAPPINESS} == ${PRIORITYZRAM} ]]; then
+  cp ${FSTAB} ${FSTAB}.old
+   echo "${ZRAM}       none             swap        sw,pri=100       0   0" > ${FSTAB}
+    cat ${FSTAB}.old >> ${FSTAB}
   
-  MODIFICA=$(sed -i 's/defaults/noatime,barrier=0,commit=60/g' $FSTAB)      
-   rm -rf $FSTAB.old 
-    cat $FSTAB
-     echo -e "$ZRAM configured sucessfull\n"
+  MODIFICA=$(sed -i 's/defaults/noatime,barrier=0,commit=60/g' ${FSTAB})      
+   rm -rf ${FSTAB}.old 
+    cat ${FSTAB}
+     echo -e "${ZRAM} configured sucessfull\n"
      
- elif [[ $ZRAM < $NULL && $STRZRAM > $NULL && $SWAPPINESS == $PRIORITYRAM ]]; then
-  RM=$(sed -i '1d' $FSTAB)
-    cat $FSTAB
-     echo -e "\n# Top priority for /dev/zram0 not supported\n$FSTAB reconfigured sucessfull\n"
+ elif [[ ${ZRAM} < ${NULL} && ${STRZRAM} > ${NULL} && ${SWAPPINESS} == ${PRIORITYRAM} ]]; then
+  RM=$(sed -i '1d' ${FSTAB})
+    cat ${FSTAB}
+     echo -e "\n# Top priority for /dev/zram0 not supported\n${FSTAB} reconfigured sucessfull\n"
  fi
 }
 
 # Stop ZRAM
 stop() 
 {
-  swapoff $ZRAM
+  swapoff ${ZRAM}
 }
 
 case "$1" in
@@ -158,7 +158,7 @@ case "$1" in
   ;;
   
   restart)
-    echo 1 > $RESET
+    echo 1 > ${RESET}
   ;;
 
   *)
