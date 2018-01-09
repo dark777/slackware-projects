@@ -401,7 +401,7 @@ bash-4.4$ cat /tmp/exportacao.txt
 seguinte linha de comando abaixo:
 
 bash-4.4$ cat >format.sed<<EOF
-> sed 's/\;/\n/g'|sed 'N;N;s/\n//'|sed 'N;s/\n//'|sed '/^$/d'|sed 's/"/;/g;s/;;/;/g'
+sed 's/;/\n/g'|sed 'N;N;s/\n//'|sed 'N;s/\n//'|sed '/^$/d'|sed 's/"/;/g;s/;;/;/g'
 EOF
 
 # Depois que você criou o arquivo format.sed vamos dar permissão de execução:
