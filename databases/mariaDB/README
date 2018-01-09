@@ -324,7 +324,7 @@ foi atualizado para:
 
 nome_faz="Agua Bonita"
 
-###################################################################################################
+##################################################################################################
 
 4ª) Passo - Agora vamos realizar os mesmos passos acima mas com auto_increment.
 Primeiro vamos exportar os dados importados em nossa tabela cadastros,
