@@ -430,9 +430,10 @@ bash-4.4$ cat /tmp/exportacao.txt
 5; Nossa Senhora;2011-06-22
 
 
-4-2.1ª) Passo - Então precisamos remover os id's mas, não podemos remover os separadores após os id's,
-é ai que esta o pulo do gato para termos sucesso na nossa importação em uma tabela com 
-auto_increment. Então digite o comando abaixo para formatar o arquivo:
+4-2.1ª) Passo - Então precisamos remover os id's mas, 
+não podemos remover os separadores após os id's, é ai que esta o pulo do gato,
+para termos sucesso na nossa importação em uma tabela com auto_increment. 
+Então digite o comando abaixo para formatar o arquivo:
 
 bash-4.4$ su -c "sed -i 's/.//' /tmp/exportacao.txt"
 Senha: <digite a senha do admin root>.
