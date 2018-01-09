@@ -434,7 +434,7 @@ bash-4.4$ cat /tmp/exportacao.txt
 é ai que esta o pulo do gato para termos sucesso na nossa importação em uma tabela com 
 auto_increment. Então digite o comando abaixo para formatar o arquivo:
 
-bash-4.4$ su -c "sed -i 's/^1//g;s/^2//g;s/^3//g;s/^4//g;s/^5//g;s/^ *//g;' /tmp/exportacao.txt"
+bash-4.4$ su -c "sed -i 's/.//' /tmp/exportacao.txt"
 Senha: <digite a senha do admin root>.
 pressione ENTER
 

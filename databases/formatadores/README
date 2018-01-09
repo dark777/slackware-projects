@@ -14,3 +14,9 @@ deixando da seguinte forma abaixo:
 # Para usar basta fazer:
 
 bash-4.4$ cat meuarquivo.txt | fmt1.sed > formatado.txt
+
+
+Fonte:
+
+http://terminalroot.com.br/2015/07/30-exemplos-do-comando-sed-com-regex.html
+https://www.vivaolinux.com.br/topico/Sed-Awk-ER-Manipulacao-de-Textos-Strings/formatando-e-quebrando-linhas-com-sedAJUDA
