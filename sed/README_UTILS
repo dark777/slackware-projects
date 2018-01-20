@@ -289,6 +289,68 @@ arquivo2.txt
 arquivo3.txt
 
 -----------------------------------------------------------------------------------------
+
+Verificando tamanho de arquivos
+
+Se você utiliza muitos programas que criam logs,
+enormes e que ocupam um grande espaço no seu computador, 
+você esta no lugar certo. Na maioria das vezes é quase,
+impossível saber exatamente qual arquivo está gerando um grande volume de informações.
+
+Para resolver este problema, vamos usar a combinação de dois programas: ls e sort através do pipe (|).
+
+Para fazer uma verificação simples, dentro do diretório /, execute o seguinte comando:
+
+bash-4.3# ls -lh | sort +4n
+
+Este comando mostra o tamanho que cada diretório possui.
+Para saber quais arquivos desses diretórios estão ocupando mais espaço, execute:
+
+bash-4.3# ls -lRh /var/log | sort +4n
+
+Altere o diretório /var/log para o qual você deseja saber. 
+
+#Listando tamanho de arquivos
+
+bash-4.3# echo filetam=${filetam:-$(ls -lh arquivo1.txt)}
+filetam=1.9kb
+
+#Listando tamanho de diretórios
+
+bash-4.3$ ls -lRh home | sort +4n
+
+--------------------------------------------------------------------------------------------------
+
+#Listar arquivos acima de 150 MB.
+
+bash-4.3# find . -type f -size +150000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+
+#O comando acima vai encontrar e listar,
+a partir da pasta que você está,
+todos os arquivos acima de 150 MB.
+
+
+Você também pode utilizar 150M, veja:
+
+bash-4.3# find . -type f -size +150M -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+
+
+#Caso queira procurar no disco inteiro (apenas troque o . pela /), informe:
+
+bash-4.3# find / -type f -size +150000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+
+
+Por curiosidade, pedi para listar os arquivos acima de 1 GB no disco rígido de meu cliente e encontrei:
+
+/var/lib/mysql/ibdata1: 1,1G
+
+O comando utilizado para listar os arquivos acima de 1 GB foi:
+
+find / -type f -size +1G -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+http://www.rodrigocalado.com.br/como-listar-grandes-arquivos-bytes-kb-mb-gb-em-um-sistema-unixlinux/
+
+-----------------------------------------------------------------------------------------------------
+
 ## aceita várias substituições, separadas por ponto-e-vírgula ou ENTER
 sed 's/uqe/que/; s/qeu/que/; s/euq/que/'
 
