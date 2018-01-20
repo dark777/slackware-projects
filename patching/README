@@ -187,7 +187,7 @@ root@flame:/usr/src# ls -a
 entrei dentro da pasta no qual vai ser aplicada o patch:
 root@flame:/usr/src# cd linux-3*
 
-testanto o patch antes de aplicalo:
+testanto o patch antes de aplicar:
 
 root@flame:/usr/src/linux-3.9.5# bzip2 -dc ../patch-3.9.5-pf.bz2 | patch -p1 -s --dry-run
 
