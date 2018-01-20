@@ -14,7 +14,10 @@ deixando da seguinte forma abaixo:
 # Para usar basta fazer:
 
 bash-4.4$ cat meuarquivo.txt | ./fmt1.sed > formatado.txt
-
+ou
+bash-4.4$ cat meuarquivo.txt | ./fmt2.sed > formatado.txt
+ou
+bash-4.4$ cat meuarquivo.txt | ./fmt3.sed > formatado.txt
 
 Fonte:
 

@@ -1,1 +1,1 @@
-sed 's/;/;\n/g;' | xargs -L3 | sed 's/^/;/g;' 
+sed 's/;/;\n/g;' | paste -sd';;\n' | sed 's/^/;/g;s/";;"/;/g;s/;;//g;s/"//g'
