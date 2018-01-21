@@ -83,11 +83,42 @@ Com encriptação de senha:
 postgres=# create user darkstar with encrypted password 'minhasenha';
 
 
+Criando super usuario sem senha encryptda:
+
+postgres=# create user darkstar password 'minhasenha' superuser inherit createdb createrole;
+CREATE ROLE
+
+
+Criando super usuario com senha encryptda:
+
+postgres=# create user darkstar with encrypted password 'minhasenha' superuser inherit createdb createrole;
+CREATE ROLE
+
+
+Deletando usuario:
+
+postgres=# drop role darkstar;
+DROP ROLE
+
 Criando usuario sem logar no psql:
 
 postgres$ createuser darkstar
 Password: <senha do psql>
 
+
+Criando usuario comun com senha encryptda:
+
+postgres=# create user darkstar with encrypted password 'minhasenha' createdb createrole;
+CREATE ROLE
+
+
+Defineindo direito de acesso ao novo usuário:
+
+postgres$ psql darkstar
+
+
+postgres=# grant all privileges on database <dbname> to darkstar;
+GRANT
 
 Logue no psql para criar a senha do usuário:
 
@@ -154,9 +185,17 @@ para criar o banco de dados teste anexado ao usuário darkstar:
 
 postgres$ psql
 
-
 postgres=# create database teste owner darkstar encoding 'UTF8';
 CREATE DATABASE
+
+Listando databases:
+
+postgres=# \l
+
+ou
+
+postgres=# select * from pg_database;
+
 
 
 2-6ª) Passo - Logando no banco de dados teste com o usuário darkstar:
@@ -170,12 +209,26 @@ vamos criar uma tabela chamada cadastros,
 com campo, primary key não serial(auto_increment):
 
 
-teste=# create table cadastros(
-id_faz int not null unique primary key,
-nome_faz varchar(25) not null,
-data_compra date not null
+Listando Tabelas:
+
+teste=# \dt
+No relations found
+
+
+teste=# create table cadastros( \
+id_faz int not null unique primary key, \
+nome_faz varchar(25) not null, \
+data_compra date not null \
 );
 CREATE TABLE
+
+
+teste=# \dt
+           List of relations
+ Schema |   Name    | Type  |  Owner   
+--------+-----------+-------+----------
+ public | cadastros | table | darkstar
+(1 row)
 
 
 No PgadminIII crie a tabela da seguinte forma:
@@ -260,10 +313,10 @@ DROP TABLE
 
 2-9.5ª) Passo - Recriando a tabela cadastros com serial(auto_increment):
 
-teste=# create table cadastros(
-id_faz serial primary key not null,
-nome_faz varchar(25) not null,
-data_compra date not null
+teste=# create table cadastros( \
+id_faz serial primary key not null, \
+nome_faz varchar(25) not null, \
+data_compra date not null \
 );
 CREATE TABLE
 
