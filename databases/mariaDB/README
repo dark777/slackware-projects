@@ -106,11 +106,12 @@ MariaDB [mysql]>  exit;
  mysql> grant all privileges on *.* to 'root'@'%';  
  mysql> grant all privileges on *.* to 'root'@'localhost';  
  mysql> grant all privileges on *.* to 'root@localhost';  
-
+ mysql> grant all on *.* to 'root'@'%' identified by 'suasenha';
+ 
 2-5.2ª) Finalizando:
 
- mysql> SHOW GRANTS FOR 'root'@'%';  
- mysql> FLUSH PRIVILEGES;  
+ mysql> show grants for'root'@'%';  
+ mysql> flush privileges;
 
 
 2-6ª) Passo - Reinicie o mysqld:
@@ -564,9 +565,9 @@ Deixando-a assim:
 
 1ª) Passo - Digite uma das duas linhas abaixo no terminal: 
 
-bash-4.4$ su -c "sed '/SKIP/ s/^/#/g;' /etc/rc.d/rc.mysqld"
+bash-4.4$ su -c "sed -i '/SKIP/ s/^/#/g;' /etc/rc.d/rc.mysqld"
 ou
-bash-4.4$ su -c "sed '32s/^/#/g;' /etc/rc.d/rc.mysqld"
+bash-4.4$ su -c "sed -i '32s/^/#/g;' /etc/rc.d/rc.mysqld"
 
 
 2ª) Passo - Reinicie o mysqld:
