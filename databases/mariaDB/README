@@ -222,7 +222,7 @@ MariaDB [teste]>
 
 3-5ª) Passo - Criaremos a tabela cadastros:
 
-MariaDB [teste]> create table cadastro( \
+MariaDB [teste]> create table cadastros( \
      `id_faz` int unique not null primary key, \
      `nome_faz` varchar(25) unique not null, \
      `data_compra` date not null \
