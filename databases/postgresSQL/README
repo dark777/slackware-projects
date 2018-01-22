@@ -70,64 +70,6 @@ CREATE ROLE
 postgres=# alter user darkstar with encrypted password 'minhasenha';
 ALTER ROLE
 
-
-Outras formas de criar um usuário:
-
-Sem encriptação de senha:
-
-postgres=# create user darkstar with password 'minhasenha';
-
-
-Com encriptação de senha:
-
-postgres=# create user darkstar with encrypted password 'minhasenha';
-
-
-Criando super usuario sem senha encryptda:
-
-postgres=# create user darkstar password 'minhasenha' superuser inherit createdb createrole;
-CREATE ROLE
-
-
-Criando super usuario com senha encryptda:
-
-postgres=# create user darkstar with encrypted password 'minhasenha' superuser inherit createdb createrole;
-CREATE ROLE
-
-
-Criando usuario comun com senha encryptda:
-
-postgres=# create user darkstar with encrypted password 'minhasenha' createdb createrole;
-CREATE ROLE
-
-
-Defineindo direito de acesso ao novo usuário:
-
-postgres$ psql darkstar
-
-
-postgres=# grant all privileges on database <dbname> to darkstar;
-GRANT
-
-Logue no psql para criar a senha do usuário:
-
-postgres$ psql
-
-postgres=# \password darkstar
-Enter new password:
-Enter it again:
-
-
-Deletando usuario:
-
-postgres=# drop role darkstar;
-DROP ROLE
-
-Criando usuario sem logar no psql:
-
-postgres$ createuser darkstar
-Password: <senha do psql>
-
 ##################################################################################################
 
 2) Fazendo importação e exportação de arquivos TXT's,
@@ -373,12 +315,63 @@ teste=# select * from cadastros;
 
 ##################################################################################################
 
-Outros comandos úteis.
+Outras formas de criar um usuário:
 
-Criando usuário normal no postgres:
+Sem encriptação de senha:
 
-postgres=# create user dark encrypted password 'testes' createdb;
+postgres=# create user darkstar with password 'minhasenha' createdb;
 CREATE ROLE
+
+Com encriptação de senha:
+
+postgres=# create user darkstar with encrypted password 'minhasenha' createdb;
+CREATE ROLE
+
+Criando super usuario sem senha encryptda:
+
+postgres=# create user darkstar password 'minhasenha' superuser inherit createdb createrole;
+CREATE ROLE
+
+
+Criando super usuario com senha encryptda:
+
+postgres=# create user darkstar with encrypted password 'minhasenha' superuser inherit createdb createrole;
+CREATE ROLE
+
+
+Criando usuario comun com senha encryptda:
+
+postgres=# create user darkstar with encrypted password 'minhasenha' createdb createrole;
+CREATE ROLE
+
+
+Defineindo direito de acesso ao novo usuário:
+
+postgres$ psql darkstar
+
+
+postgres=# grant all privileges on database <dbname> to darkstar;
+GRANT
+
+Logue no psql para criar a senha do usuário:
+
+postgres$ psql
+
+postgres=# \password darkstar
+Enter new password:
+Enter it again:
+
+
+Deletando usuario:
+
+postgres=# drop role darkstar;
+DROP ROLE
+
+Criando usuario sem logar no psql:
+
+postgres$ createuser darkstar
+Password: <senha do psql>
+
 
 Logando em um banco pelo usuário postgres,
 usando o usuário darkstar para logar no banco teste:
