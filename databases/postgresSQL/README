@@ -108,7 +108,7 @@ Senha :
 
 2-2ª) Passo - Se você ja tem instalado o postgres no seu slackware,
 vamos ativar o mesmo, ou então execute os, passos de instalação e configuração
-na sesão 1 de 1.1 a 1.11:
+na sesão 1 de 1-1ª a 1-11ª:
 
 
 2-3ª) Passo - Iniciando o server postgresql:
