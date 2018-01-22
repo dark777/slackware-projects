@@ -48,7 +48,24 @@ select *from person where person_id = (select count(*) from person);
 select *from person where person_id = ((select count(*) from person)-3);
 
 /*lista pessoa pelo nome*/
-select *from person where person.name='Marcelo Nogueira';
+select *from person where name='Marcelo Nogueira';
+
+/*lista todos os nomes*/
+select *from person where name like '%';
+
+/*comando like lista nome completo começando com Marc*/
+select *from person where name like 'Marc%';
+
+/*lista nome completo de Marcelo*/
+select *from person where name~~'Marc%';
+
+/*comando ilike retorna nome completo buscando por tags minuscula mesmo que estejam em maiusculas*/
+select *from person where name ilike 'marc%';
+
+/*retorna ambos os registros exceto registos que começan com Marc*/
+select *from person where name!~~'Marc%';
+select *from person where name not like 'Marc%';
+select *from person where name not ilike 'marc%';
 
 /*conta a quantidade de pessoas cadastradas*/
 select count(*) as total from person;
