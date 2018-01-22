@@ -96,13 +96,13 @@ pressione ENTER novamente para digitar a senha e o arquivo cadastros.txt,
 será criado em /tmp.
 
 bash-4.4$ su -c "cat >/tmp/cadastros.txt<<EOF
-> 01; Boi Preto; 2000-02-29
-> 02; Sol Nascente; 2009-10-01
-> 03; Parque Belo; 2007-03-15
-> 04; Pedra Bonita; 2001-08-25
-> 05; Nossa Senhora; 2011-06-22
-> EOF
-> "
+01; Boi Preto; 2000-02-29
+02; Sol Nascente; 2009-10-01
+03; Parque Belo; 2007-03-15
+04; Pedra Bonita; 2001-08-25
+05; Nossa Senhora; 2011-06-22
+EOF
+"
 Senha : 
 
 
@@ -315,6 +315,54 @@ teste=# select * from cadastros;
 
 ##################################################################################################
 
+Outra forma mais simples de se fazer tudo isso é criar um script chamado tabela.sql:
+
+
+1) Passo - Crie o arquivo tabela.sql com o seguinte comando abaixo:
+
+bash-4.4$ cat >tabela.sql<<EOF
+create table cadastros(
+id_faz integer primary key not null,
+nome_faz varchar(25),
+data_compra date
+);
+
+insert into cadastros(id_faz,nome_faz,data_compra) values ('01', 'Boi Preto', '2000-02-29');
+insert into cadastros(id_faz,nome_faz,data_compra) values ('02', 'Sol Nascente', '2009-10-01');
+insert into cadastros(id_faz,nome_faz,data_compra) values ('03', 'Parque Belo', '2007-03-15');
+insert into cadastros(id_faz,nome_faz,data_compra) values ('04', 'Pedra Bonita', '2001-08-25');
+insert into cadastros(id_faz,nome_faz,data_compra) values ('05', 'Nossa Senhora', '2011-06-22');
+
+select *from cadastros;
+EOF
+
+
+2) Passo - Vamos deletar nossa tabela cadastros, para recriar novamente:
+
+teste=# drop table cadastros;
+DROP TABLE
+
+
+3) Passo - Para rodar os comandos que estão no arquivo tabela.sql digite:
+
+teste=# \i tabela.sql
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ id_faz |   nome_faz    | data_compra 
+--------+---------------+-------------
+      1 | Boi Preto     | 2000-02-29
+      2 | Sol Nascente  | 2009-10-01
+      3 | Parque Belo   | 2007-03-15
+      4 | Pedra Bonita  | 2001-08-25
+      5 | Nossa Senhora | 2011-06-22
+(5 rows)
+
+##################################################################################################
+
 Outras formas de criar um usuário:
 
 Sem encriptação de senha:
@@ -460,6 +508,7 @@ bash-4.4$ su -c 'psql -U darkstar -h localhost -p 5432 teste < "/tmp/backup.sql"
 
 Sources:
 http://ribafs.org/portal/index.php
+http://pythonclub.com.br/tutorial-postgresql.html
 https://github.com/ribafs?tab=repositories
 http://pgdocptbr.sourceforge.net/pg80/backup.html
 https://gist.github.com/acdesantana/1019606
