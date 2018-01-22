@@ -47,6 +47,9 @@ select *from person where person_id = (select count(*) from person);
 /*lista Marcelo Nogueira subtraindo pelo ultimo id */
 select *from person where person_id = ((select count(*) from person)-3);
 
+/*lista pessoa pelo nome*/
+select *from person where person.name='Marcelo Nogueira';
+
 /*conta a quantidade de pessoas cadastradas*/
 select count(*) as total from person;
 
