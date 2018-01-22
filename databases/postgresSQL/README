@@ -114,9 +114,8 @@ Logue no psql para criar a senha do usuário:
 postgres$ psql
 
 postgres=# \password darkstar
-Enter new password: 
-Enter it again: 
-
+Enter new password:
+Enter it again:
 
 
 Deletando usuario:
