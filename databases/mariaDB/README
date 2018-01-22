@@ -21,7 +21,9 @@ bash-4.4$ su -c "mysqld_safe --user=mysql&"
 
 
 1-5ª) Passo - Vamos configurar os parametros de segurança do MariaDB:
+
 bash-4.4$ su -c "mysql_secure_installation"
+
 
 Enter current password for root (enter for none): [ENTER]
 
