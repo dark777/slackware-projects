@@ -96,9 +96,11 @@ bash-4.4$ su -c "mysql --user=root mysql"
 2-5ª) Passo - Estando no console do banco,
 digite o comando para atualizar a senha:
 
-MariaDB [mysql]>  update user set password=password('aqui_a_nova_senha') where user='root';
-MariaDB [mysql]>  flush privileges;
-MariaDB [mysql]>  exit;
+MariaDB [mysql]> set password for 'root'@'localhost' = password('aqui_a_nova_senha');
+ou
+MariaDB [mysql]> update user set password=password('aqui_a_nova_senha') where user='root' and host='localhost';
+MariaDB [mysql]> flush privileges;
+MariaDB [mysql]> exit;
 
 
 2-5.1ª) Passo OPCIONAL - Redefinir as permissões
@@ -119,9 +121,9 @@ MariaDB [mysql]>  exit;
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
 
 
-2-6ª.1ª) Passo - Outra forma de alterar a senha do mysql:
+2-6ª.1ª) Passo - Outras formas de alterar a senha do mysql:
 
-bash-4.4$su -c "mysqladmin -u root -p password 'aqui_a_nova_senha'"
+bash-4.4$ su -c "mysqladmin -u root -p password 'aqui_a_nova_senha'"
 
 
 2-7ª) Passo - Agora Pra acessar o MySQL digite:
