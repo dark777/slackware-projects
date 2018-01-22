@@ -25,12 +25,14 @@ select *from person inner join cadastros on (person.person_id = cadastros.id_faz
 /*lista todos os contatos com id diferente de 1*/
 select *from person where id_faz <> 1;
 
-/* altera a idade de geraldo frança que foi inserida de forma errada */
-update person set name = 'Geraldo França', age = age-7 where id_faz = 6;
-
 /*
 http://pythonclub.com.br/tutorial-postgresql.html
 Exemplo de count e inner join
 quantas pessoas trabalham em cada fazenda.
 */
-select person.name, count(person.person_id) from person inner join cadastros on cadastros.id_faz = person.person_id group by person.name;
+select person.name, count(person.person_id) as persons from person inner join cadastros on cadastros.id_faz = person.person_id group by person.name;
+
+/* altera a idade de geraldo frança que foi inserida de forma errada */
+update person set name = 'Geraldo França', age = age-7 where id_faz = 6;
+
+select *from person where id_faz = 6;
