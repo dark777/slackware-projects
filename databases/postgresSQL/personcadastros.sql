@@ -15,16 +15,18 @@ insert into person(id_faz,status,name,age,person_id) VALUES ('05', 'Arrendatári
 
 select *from person;
 
+/*lista nomes em ordem alfabetica*/
 select *from person order by name;
 
+/*lista fazendo junção e ordena nome onde id é igual a id*/
 select *from person inner join cadastros on (person.person_id = cadastros.id_faz) order by name;
 
-select person.name, count(person.person_id) as persons from person inner join person on person.id_faz = person.person_id group by person.name;
-
+/*lista todos os contatos com id diferente de 1*/
+select *from person where id_faz <> 1;
 
 /*
 http://pythonclub.com.br/tutorial-postgresql.html
 Exemplo de count e inner join
-Um exemplo interessante, e talvez útil, é saber quantas pessoas trabalham em cada fazenda.
+quantas pessoas trabalham em cada fazenda.
 */
 select person.name, count(person.person_id) as persons from person inner join cadastros on cadastros.id_faz = person.person_id group by person.name;
