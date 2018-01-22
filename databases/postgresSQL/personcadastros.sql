@@ -18,7 +18,7 @@ select *from person;
 /*lista nomes em ordem alfabetica*/
 select *from person order by name;
 
-/*lista fazendo junção e ordena nome onde id é igual a id*/
+/*lista fazendo junção da tabela pessoa com a tabela cadastros e ordena nome onde id é igual a id*/
 select *from person inner join cadastros on (person.person_id = cadastros.id_faz) order by name;
 
 /*lista todos os contatos com id diferente de 1*/
