@@ -95,17 +95,6 @@ postgres=# create user darkstar with encrypted password 'minhasenha' superuser i
 CREATE ROLE
 
 
-Deletando usuario:
-
-postgres=# drop role darkstar;
-DROP ROLE
-
-Criando usuario sem logar no psql:
-
-postgres$ createuser darkstar
-Password: <senha do psql>
-
-
 Criando usuario comun com senha encryptda:
 
 postgres=# create user darkstar with encrypted password 'minhasenha' createdb createrole;
@@ -127,6 +116,18 @@ postgres$ psql
 postgres=# \password darkstar
 Enter new password: 
 Enter it again: 
+
+
+
+Deletando usuario:
+
+postgres=# drop role darkstar;
+DROP ROLE
+
+Criando usuario sem logar no psql:
+
+postgres$ createuser darkstar
+Password: <senha do psql>
 
 ##################################################################################################
 
