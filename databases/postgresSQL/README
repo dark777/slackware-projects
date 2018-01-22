@@ -367,6 +367,17 @@ Deletando usuario:
 postgres=# drop role darkstar;
 DROP ROLE
 
+
+Deletando o banco de dados:
+
+postgres=# drop database teste;
+ERROR:  database "teste" does not exist
+
+postgres=# drop database if exists teste;
+NOTICE:  database "teste" does not exist, skipping
+DROP DATABASE
+
+
 Criando usuario sem logar no psql:
 
 postgres$ createuser darkstar
@@ -445,16 +456,6 @@ bash-4.4$ su -c 'psql -U darkstar -h localhost teste < "/tmp/backup.sql"'
 Restaurar backup criado como "plain" que não esteja na porta padrão do postgres (5432):
 
 bash-4.4$ su -c 'psql -U darkstar -h localhost -p 5432 teste < "/tmp/backup.sql"'
-
-
-Deletando o banco de dados:
-
-postgres=# drop database teste;
-ERROR:  database "teste" does not exist
-
-postgres=# drop database if exists teste;
-NOTICE:  database "teste" does not exist, skipping
-DROP DATABASE
 
 
 Sources:
