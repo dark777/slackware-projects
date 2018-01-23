@@ -54,22 +54,7 @@ bash-4.4$ su -c "mkdir -p /var/log/mysql"
 bash-4.4$ su -c "chown -R mysql.mysql /var/log/mysql"
 
 
-1-8ª) Passo - Como o mysql está executando vamos dar um stop:
-
-bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
-
-
-1-9ª) Passo - Depois de dar stop vamos matar o processo:
-
-bash-4.4$ su -c "killall mysqld"
-
-
-1-10ª) Passo - Iniciando o server mysqld:
-
-bash-4.4$ su -c "/etc/rc.d/rc.mysqld start"
-
-
-1-11ª) Passo - Criando senha de primeiro acesso:
+1-8ª) Passo - Criando senha de primeiro acesso:
 
 bash-4.4$ mysqladmin -u root password NOVASENHA
 
@@ -116,7 +101,8 @@ MariaDB [mysql]> grant all privileges on *.* to 'root'@'%';
 MariaDB [mysql]> grant all privileges on *.* to 'root'@'localhost';  
 MariaDB [mysql]> grant all privileges on *.* to 'root@localhost';  
 MariaDB [mysql]> grant all on *.* to 'root'@'%' identified by 'suasenha';
- 
+
+
 2-5.2ª) Finalizando:
 
 MariaDB [mysql]> show grants for'root'@'%';  
@@ -128,10 +114,12 @@ MariaDB [mysql]> flush privileges;
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
 
 
-2-6ª.1ª) Passo - Outras formas de alterar a senha do mysql:
+2-6ª.1ª) Passo - Outras formas de alterar a senha do Mysql:
 
 bash-4.4$ su -c "mysqladmin -u root -p password 'aqui_a_nova_senha'"
 
+
+2-7ª) Logando no Mysql
 
 bash-4.4$ su -c "mysql -p"
 ou
@@ -162,11 +150,11 @@ depois de copiado pressione ENTER e digite EOF, e o arquivo cadastros.txt será 
 
 
 bash-4.4$ cat >~/cadastros.txt<<EOF
->01; Boi Preto; 2000-02-29
->02; Sol Nascente; 2009-10-01
->03; Parque Belo; 2007-03-15
->04; Pedra Bonita; 2001-08-25
->05; Nossa Senhora; 2011-06-22
+01; Boi Preto; 2000-02-29
+02; Sol Nascente; 2009-10-01
+03; Parque Belo; 2007-03-15
+04; Pedra Bonita; 2001-08-25
+05; Nossa Senhora; 2011-06-22
 EOF
 
 
@@ -197,7 +185,7 @@ MariaDB [(none)]>
 
 3-3ª) Passo -  Logado no MariaDB vamos criar o banco  teste:
 
-MariaDB [(none)]> create database teste;                                                                                                                       
+MariaDB [(none)]> create database if not exists teste;                                                                                                                       
 Query OK, 1 row affected (0.00 sec)
 
 
@@ -217,17 +205,15 @@ MariaDB [(none)]> show databases;
 
 3-4ª) Passo - Entrando no banco teste para criarmos a tabela:
 
-MariaDB [(none)]> use teste;
-
-
-3-4.1ª) Passo - Feito isso aparecerá o seguinte terminal abaixo:
+MariaDB [(none)]> use teste if exists;
+Database changed
 
 MariaDB [teste]>
 
 
 3-5ª) Passo - Criaremos a tabela cadastros:
 
-MariaDB [teste]> create table cadastros( \
+MariaDB [teste]> create table if not exists cadastros( \
      `id_faz` int unique not null primary key, \
      `nome_faz` varchar(25) unique not null, \
      `data_compra` date not null \
@@ -244,6 +230,7 @@ MariaDB [teste]> show tables;
 | cadastros       |
 +-----------------+
 1 row in set (0.00 sec)
+
 
 3-5.2ª) Passo - Listando a estrutura da tabela criada:
 
@@ -290,7 +277,7 @@ MariaDB [teste]> select *from cadastros;
 MariaDB [teste]> delete from cadastros where id_faz=2;
 Query OK, 1 row affected (0.00 sec)                                                                            
                                                                                                                
-MariaDB [teste]> select *from fazendas;                                                                        
+MariaDB [teste]> select *from cadastros;                                                                        
 +--------+---------------+-------------+                                                                       
 | id_faz | nome_faz      | data_compra |                                                                       
 +--------+---------------+-------------+                                                                  
@@ -362,11 +349,11 @@ para um novo arquivo que será salvo em  /tmp chamado exportacao.txt:
 4-1ª) Passo - Exportando os dados da tabela cadastros para a pasta /tmp/ no arquivo exportacao.txt:
 
 MariaDB [teste]> select id_faz, nome_faz, data_compra into outfile "/tmp/exportacao.txt" \
-fields terminated by ';'  from cadastros;
+fields terminated by ';' from cadastros;
 Query OK, 6 rows affected (0.00 sec)
 
 Este comando acima exporta campos específicos de uma tabela,
-a priori poderíamos deixar o campo id_faz de lado, mas como estamos aprendendo,
+poderíamos deixar o campo id_faz de lado, mas como estamos aprendendo,
 a exportar os dados de uma tabela estamos exportando todos os campos.
 
 Ou você também pode usar um destes comando abaixo:
@@ -386,20 +373,24 @@ para /tmp/exportacao.txt, nossos dados exportados
 ficará no formato abaixo sem o separador ";" no final:
 
 bash-4.4$ cat /tmp/exportacao.txt
-1;Boi Preto;2000-02-29
-2;Sol Nascente;2009-10-01
-3;Parque Belo;2007-03-15
-4;Pedra Bonita;2001-08-25
-5;Nossa Senhora;2011-06-22
+1; Boi Preto; 2000-02-29
+2; Sol Nascente; 2009-10-01
+3; Parque Belo; 2007-03-15
+4; Pedra Bonita; 2001-08-25
+5; Nossa Senhora; 2011-06-22
 
-bash-4.4$ su -c "sed -i '/^/ s//;/g;/$/ s//;/g;'  /tmp/exportacao.txt && cat /tmp/exportacao.txt"
-;1;Boi Preto;2000-02-29;
-;2;Sol Nascente;2009-10-01;
-;3;Parque Belo;2007-03-15;
-;4;Pedra Bonita;2001-08-25;
-;5;Nossa Senhora;2011-06-22;
 
-# Você também pode usar este comando abaixo:
+Então faça:
+
+bash-4.4$ su -c "sed -i 's/^.//g;' /tmp/exportacao.txt" && cat /tmp/exportacao.txt"
+; Boi Preto; 2000-02-29
+; Sol Nascente; 2009-10-01
+; Parque Belo; 2007-03-15
+; Pedra Bonita; 2001-08-25
+; Nossa Senhora; 2011-06-22
+
+
+Você também pode usar este comando abaixo:
 
 MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by ';' \
 lines terminated by ';\n' from cadastros;
@@ -409,11 +400,22 @@ Com este comando acima nossos dados exportados para /tmp/exportacao.txt
 ficara no formato abaixo note os separadores ";" no final:
 
 bash-4.4$ cat /tmp/exportacao.txt
-1;Boi Preto;2000-02-29;
-2;Sol Nascente;2009-10-01;
-3;Parque Belo;2007-03-15;
-4;Pedra Bonita;2001-08-25;
-5;Nossa Senhora;2011-06-22;
+1; Boi Preto; 2000-02-29;
+2; Sol Nascente; 2009-10-01;
+3; Parque Belo; 2007-03-15;
+4; Pedra Bonita; 2001-08-25;
+5; Nossa Senhora; 2011-06-22;
+
+
+Então faça:
+
+bash-4.4$ su -c "sed -i 's/^.//g;' /tmp/exportacao.txt" && cat /tmp/exportacao.txt"
+; Boi Preto; 2000-02-29;
+; Sol Nascente; 2009-10-01;
+; Parque Belo; 2007-03-15;
+; Pedra Bonita; 2001-08-25;
+; Nossa Senhora; 2011-06-22;
+
 
 Com estes quatro comandos acima, não importa como nossos dados exportados,
 para /tmp/exportacao.txt, ficarão formatados você só não pode usar o comando abaixo,
@@ -424,46 +426,35 @@ manter as coisas o mais simples não o use para esta finalidade:
 MariaDB [teste]> select * into outfile "/tmp/exportacao.txt" fields terminated by ';' \
 enclosed by '"' lines terminated by '' from cadastros;
 
-# Este comando acima salvaria os dados neste formato abaixo:
+
+Este comando acima salvaria os dados neste formato abaixo:
 
 bash-4.4$ cat /tmp/exportacao.txt
 "1";"Boi Preto";"2000-02-29";"2";"Sol Nascente";"2009-10-01";"3";"Parque Belo";"2007-03-15"; \
 "4";"Pedras Bonitas";"2017-12-12";"5";"Medeiros";"2011-06-22";
 
-# Mas caso você tenha usado este comando acima crie um arquivo chamado format.sed com a
+
+Mas caso você tenha usado este comando acima crie um arquivo chamado format.sed com a
 seguinte linha de comando abaixo:
 
 bash-4.4$ cat >format.sed<<EOF
-sed 's/;/\n/g'|sed 'N;N;s/\n//'|sed 'N;s/\n//'|sed '/^$/d'|sed 's/"/;/g;s/;;/;/g'
+sed 's/;/\n/g;'|sed 'N;N;s/\n//'|sed 'N;s/\n//g;'|sed '/^$/d'|sed 's/"/;/g;s/;;/;/g;s/^;.//g'
 EOF
 
-# Depois que você criou o arquivo format.sed vamos dar permissão de execução:
+
+Depois que você criou o arquivo format.sed vamos dar permissão de execução:
 
 bash-4.4$ chmod a+x format.sed
 
-# E faça:
+Então faça:
 
 bash-4.4$ su -c "cat /tmp/exportacao.txt | ./format.sed > /tmp/formatados.txt \
 && cat /tmp/formatados.txt"
-;1;Boi Preto;2000-02-29;
-;2;Sol Nascente;2009-10-01;
-;3;Parque Belo;2007-03-15;
-;4;Pedras Bonitas;2017-12-12;
-;5;Medeiros;2011-06-22;
-
-
-4-2ª) Passo - Vamos editar o arquivo /tmp/formatados.txt removendo todos os id's,
-deixando somente os nomes e datas com o ponto e virgula antes dos nomes,
-pois ai esta o pulo do gato, para termos sucesso na nossa importação
-em uma tabela com auto_increment. Então digite o comando abaixo
-para formatar o arquivo:
-
-bash-4.4$ su -c "sed -i 's/^;.//' /tmp/formatados.txt && cat /tmp/formatados.txt"
-;Boi Preto;2000-02-29;
-;Sol Nascente;2009-10-01;
-;Parque Belo;2007-03-15;
-;Pedras Bonitas;2017-12-12;
-;Medeiros;2011-06-22;
+; Boi Preto;2000-02-29;
+; Sol Nascente;2009-10-01;
+; Parque Belo;2007-03-15;
+; Pedras Bonitas;2017-12-12;
+; Medeiros;2011-06-22;
 
 
 Ou você também pode usar um destes comando abaixo,
@@ -485,11 +476,11 @@ ficou sem os id's que se encontra no campo id_faz deixado de lado,
 ficando no formato abaixo note os separadores ";" no final e a ausencia dos id's:
 
 bash-4.4$ cat /tmp/exportacao.txt
-Boi Preto;2000-02-29;
-Sol Nascente;2009-10-01;
-Parque Belo;2007-03-15;
-Pedra Bonita;2001-08-25;
-Nossa Senhora;2011-06-22;
+ Boi Preto;2000-02-29;
+ Sol Nascente;2009-10-01;
+ Parque Belo;2007-03-15;
+ Pedra Bonita;2001-08-25;
+ Nossa Senhora;2011-06-22;
 
 
 4-3ª) Passo - Precisamos adicionar os separadores que estariam após os id's,
@@ -498,38 +489,44 @@ antes dos nomes, pois sem estes separadores todo nosso trabalho,
 vai por água abaixo quando importar o arquivo para a tabela devolta.
 Então digite o comando abaixo para formatar o arquivo:
 
-bash-4.4$ su -c "sed -i '/^/ s//;/g;' /tmp/exportacao.txt"
-Senha: <digite a senha do admin root>.
-pressione ENTER
-
-
-O comando sed acima adicionará os separadores ";" antes dos nomes,
-entao nosso arquivo em  /tmp/exportacao.txt  ficara assim como este abaixo,
-note os separadores ";" no inicio da linha:
-
-bash-4.4$ cat /tmp/exportacao.txt
-;Boi Preto;2000-02-29;
-;Sol Nascente;2009-10-01;
-;Parque Belo;2007-03-15;
-;Pedra Bonita;2001-08-25;
-;Nossa Senhora;2011-06-22;
+bash-4.4$ su -c "sed -i 's/^/;/g;' /tmp/exportacao.txt && cat /tmp/exportacao.txt"
+; Boi Preto;2000-02-29;
+; Sol Nascente;2009-10-01;
+; Parque Belo;2007-03-15;
+; Pedra Bonita;2001-08-25;
+; Nossa Senhora;2011-06-22;
 
 
 4-3.1ª) Passo - Vamos deletar nossa tabela cadastros,
 para recriar novamente mas com auto_increment.
 
-MariaDB [teste]> drop table cadastros;
+MariaDB [teste]> drop table if exists cadastros;
 Query OK, 0 rows affected (0.04 sec)
 
 
 4-3.2ª) Passo - Recriando a tabela cadastros com auto_increment:
 
-MariaDB [teste]>  create table cadastros( \
+MariaDB [teste]> create table if not exists cadastros( \
     `id_faz` int auto_increment primary key, \
     `nome_faz` varchar(25) unique not null, \
     `data_compra` date not null \
     )engine=InnoDB default charset=latin1;
 Query OK, 0 rows affected (0.01 sec)
+
+
+4-3.3ª) Passo - Listando a estrutura da tabela criada:
+
+MariaDB [teste]> show create table cadastros\G
+*************************** 1. row ***************************
+       Table: cadastros
+Create Table: CREATE TABLE `cadastros` (
+  `id_faz` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_faz` varchar(25) NOT NULL,
+  `data_compra` date NOT NULL,
+  PRIMARY KEY (`id_faz`),
+  UNIQUE KEY `nome_faz` (`nome_faz`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)
 
 
 Ou se preferir pode apenas alterar o campo id_faz.
@@ -617,8 +614,8 @@ bash-4.4$ mysql -u <usuario> -p --databases <dbname> < banco.sql
 Backup do banco com os dados data hora e log:
 
 data=$(date +%a%H%M%S%d%m%y)
-sqlname="$data.sql"
-logname="$data.log"
+sqlname="backup_$data.sql"
+logname="mysql_$data.log"
 
 bash-4.4$ mysqldump --databases <dbname> --routines --single-transaction \
 --result-file="$sqlname" -v -h localhost -u root -p -P 3306  2>> $logname
