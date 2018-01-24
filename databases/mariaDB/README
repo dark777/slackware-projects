@@ -967,36 +967,41 @@ necessidade de digitar a senha especificando-a diretamente no comando, depois do
 
 bash-4.4$ mysqldump -u root -p12345 -x -e -A | gzip > backup.sql.gz
 
-Note que ao incluir senhas em arquivos, é extremamente importante restringir as permissões, de forma que
-apenas o root (ou o usuário em questão) tenha permissão para lê-lo. Qualquer outro usuário do servidor que
-tenha acesso de leitura no arquivo, poderá ler a senha e acessar o servidor MySQL.
+Note que ao incluir senhas em arquivos, é extremamente importante restringir as permissões,
+de forma que apenas o root (ou o usuário em questão) tenha permissão para lê-lo. Qualquer
+outro usuário do servidor que tenha acesso de leitura no arquivo, poderá ler a senha e
+acessar o servidor MySQL.
 
-Continuando, os comandos acima permitem fazer um backup completo de todas as bases do servidor, que
-poderia ser usado para restaurar os dados em uma instalação limpa do MySQL. É possível também fazer
-backups localizados, contendo apenas uma base de dados específica.
+Continuando, os comandos acima permitem fazer um backup completo de todas as
+bases do servidor, que poderia ser usado para restaurar os dados em uma instalação
+limpa do MySQL. É possível também fazer backups localizados, contendo apenas
+uma base de dados específica.
 
-Nesse caso, em vez de usar a opção "-A", você usaria a opção "-B", seguida pela base de dados a ser salva,
-como em:
+Nesse caso, em vez de usar a opção "-A", você usaria a opção "-B", seguida
+pela base de dados a ser salva, como em:
 
 bash-4.4$ mysqldump -u root -p -x -e -B phpbb > phpbb.sql
 
-Na hora de restaurar o backup, deixamos de usar o mysqldump e passamos a utilizar o cliente mysql, que se
-encarrega de ler os comandos e os dados adicionados nos arquivos e usá-los para povoar as bases de dados.
-O comando ficaria então:
+Na hora de restaurar o backup, deixamos de usar o mysqldump e passamos
+a utilizar o cliente mysql, que se encarrega de ler os comandos e os dados adicionados
+nos arquivos e usá-los para povoar as bases de dados. O comando ficaria então:
 
 bash-4.4$ mysql -u root -p --databases phpbb < phpbb.sql
 
-Você pode também especificar a senha diretamente no comando, assim como no caso do mysqldump, como em:
+Você pode também especificar a senha diretamente no comando, assim como
+no caso do mysqldump, como em:
 
 bash-4.4$ mysql -u root -p12345 --databases phpbb < phpbb.sql
 
-Se você tentar restaurar o backup sobre uma base de dados contendo dados, provavelmente receberá uma
-mensagem de erro logo no início do processo, avisando que uma das tabelas já existe, como em:
+
+Se você tentar restaurar o backup sobre uma base de dados contendo dados,
+provavelmente receberá uma mensagem de erro logo no início do processo,
+avisando que uma das tabelas já existe, como em:
 
 ERROR 1050 at line 19: Table 'wp_comments' already exists
 
-A solução no caso é remover a base de dados antiga usando o cliente MySQL e criar outra em branco para
-então fazer a restauração, como em:
+A solução no caso é remover a base de dados antiga usando o cliente MySQL e criar
+outra em branco para então fazer a restauração, como em:
 
 bash-4.4$ su -c "mysql -u root -p"
 
@@ -1010,10 +1015,10 @@ mysql> exit
 
 bash-4.4$ mysql -u root -p --databases phpbb < phpbb.sql
 
-Outra opção seria adicionar a opção "--add-drop-table" ao gerar o backup com o mysqldump.
-Ela faz com que ele inclua instruções para que as bases sejam excluídas e recriadas
-automaticamente durante a restauração, evitando que você precise fazê-lo manualmente.
-O comando ficaria então:
+Outra opção seria adicionar a opção "--add-drop-table" ao gerar o backup
+com o mysqldump. Ela faz com que ele inclua instruções para que as bases sejam
+excluídas e recriadas automaticamente durante a restauração, evitando que
+você precise fazê-lo manualmente. O comando ficaria então:
 
 bash-4.4$ mysqldump --add-drop-table -u root -p -x -e -B phpbb > phpbb.sql
 
