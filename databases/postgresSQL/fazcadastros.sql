@@ -1,7 +1,7 @@
 create table cadastros(
 id_faz integer primary key not null,
-nome_faz varchar(25),
-data_compra date
+nome_faz varchar(25) not null,
+data_compra date not null
 );
 
 insert into cadastros(id_faz,nome_faz,data_compra) values ('01', 'Boi Preto', '2000-02-29');

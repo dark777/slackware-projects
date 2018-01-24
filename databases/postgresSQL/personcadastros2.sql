@@ -1,9 +1,9 @@
 create table person(
     person_id integer primary key not null,
-    name varchar(50),
-    age integer,
-    status varchar(20),
-    id_faz integer references cadastros(id_faz),
+    name varchar(50) not null,
+    age integer not null,
+    status varchar(20) not null,
+    id_faz integer references cadastros(id_faz) not null,
     date_person date not null default now()
 );
 
