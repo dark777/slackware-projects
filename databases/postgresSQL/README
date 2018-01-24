@@ -28,7 +28,8 @@ Somente o usuário postgres deve executar um destes comandos:
 
 bash-4.4$ su postgres -c '/usr/bin/initdb -D /var/lib/pgsql/9.6/data'
 ou
-bash-4.4$ su postgres -c '/usr/bin/initdb -D /var/lib/pgsql/9.6/data --locale=en_US.UTF-8 -A md5 -W --data-checksums'
+bash-4.4$ su postgres -c '/usr/bin/initdb -D /var/lib/pgsql/9.6/data \
+--locale=en_US.UTF-8 -A md5 -W --data-checksums'
 
 
 1-6ª) Passo - Inicie o servidor de banco de dados.
@@ -36,7 +37,8 @@ O usuário postgres também deve executar um destes comandos:
 
 bash-4.4$ su - postgres -c '/usr/bin/pg_ctl -D /var/lib/pgsql/9.6/data -l logfile start'
 ou
-bash-4.4$ su - postgres -c '/usr/bin/postmaster -D /var/lib/pgsql/9.6/data > /var/lib/pgsql/9.6/data/logfile 2>&1 &'
+bash-4.4$ su - postgres -c '/usr/bin/postmaster -D /var/lib/pgsql/9.6/data \
+> /var/lib/pgsql/9.6/data/logfile 2>&1 &'
 
 
 1-7ª) Passo - Daremos permissao de execução a rc.postgresql:
