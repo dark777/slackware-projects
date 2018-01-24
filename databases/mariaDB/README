@@ -910,7 +910,7 @@ através de arquivos, como no caso dos arquivos referentes aos sites, salvos na 
 por exemplo.
 
 As bases de dados do MySQL são salvas por padrão dentro da pasta "/var/lib/mysql". Ao criar a base
-de dados "phpbb", por exemplo, será criada a pasta "/var/lib/mysql/phpbb", contendo um conjunto
+de dados "teste", por exemplo, será criada a pasta "/var/lib/mysql/teste", contendo um conjunto
 de arquivos, referentes, às tabelas criadas.
 
 A forma mais simples de fazer backup das bases de dados do MySQL é simplesmente salvar o conteúdo
@@ -979,18 +979,18 @@ uma base de dados específica.
 Nesse caso, em vez de usar a opção "-A", você usaria a opção "-B", seguida
 pela base de dados a ser salva, como em:
 
-bash-4.4$ mysqldump -u root -p -x -e -B phpbb > phpbb.sql
+bash-4.4$ mysqldump -u root -p -x -e -B teste > teste.sql
 
 Na hora de restaurar o backup, deixamos de usar o mysqldump e passamos
 a utilizar o cliente mysql, que se encarrega de ler os comandos e os dados adicionados
 nos arquivos e usá-los para povoar as bases de dados. O comando ficaria então:
 
-bash-4.4$ mysql -u root -p --databases phpbb < phpbb.sql
+bash-4.4$ mysql -u root -p --databases teste < teste.sql
 
 Você pode também especificar a senha diretamente no comando, assim como
 no caso do mysqldump, como em:
 
-bash-4.4$ mysql -u root -p12345 --databases phpbb < phpbb.sql
+bash-4.4$ mysql -u root -p12345 --databases teste < teste.sql
 
 
 Se você tentar restaurar o backup sobre uma base de dados contendo dados,
@@ -1004,22 +1004,22 @@ outra em branco para então fazer a restauração, como em:
 
 bash-4.4$ su -c "mysql -u root -p"
 
-mysql> DROP DATABASE phpbb;
+MariaDB [(none)]> DROP DATABASE teste;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> CREATE DATABASE phpbb;
+MariaDB [(none)]> CREATE DATABASE teste;
 Query OK, 1 row affected (0.00 sec)
 
-mysql> exit
+MariaDB [(none)]> exit
 
-bash-4.4$ mysql -u root -p --databases phpbb < phpbb.sql
+bash-4.4$ mysql -u root -p --databases teste < teste.sql
 
 Outra opção seria adicionar a opção "--add-drop-table" ao gerar o backup
 com o mysqldump. Ela faz com que ele inclua instruções para que as bases sejam
 excluídas e recriadas automaticamente durante a restauração, evitando que
 você precise fazê-lo manualmente. O comando ficaria então:
 
-bash-4.4$ mysqldump --add-drop-table -u root -p -x -e -B phpbb > phpbb.sql
+bash-4.4$ mysqldump --add-drop-table -u root -p -x -e -B teste > teste.sql
 
 O comando para restaurar continua o mesmo, com a diferença de que você não precisa
 mais dar o DROP DATABASE; CREATE DATABASE antes de fazer a restauração.
@@ -1083,7 +1083,6 @@ se o CHARSET da base for ‘Latin1’ escolha o ‘iso-8859-1’.
 ##################################################################################################
 
 Sources:
-http://www.hardware.com.br/dicas/mysql.html
 https://dev.mysql.com/doc/refman/5.7/en/load-data.html
 http://www.sqlines.com/oracle-to-mysql/to_date
 http://pythonclub.com.br/tutorial-postgresql.html
