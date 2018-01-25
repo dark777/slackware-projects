@@ -801,7 +801,7 @@ Altera a idade de geraldo frança que foi inserida de forma errada
 MariaDB [teste]> update person set name = 'Geraldo França', age = age-7 where person_id = 6;
 
 
-Lista a Geraldo França pelo person_id
+Lista Geraldo França pelo person_id
 
 MariaDB [teste]> select *from person where person_id = 6;
 
