@@ -11,7 +11,7 @@ deixando da seguinte forma abaixo:
 ; Medeiros; 2011-06-22;
 
 
-# Os scripts fmt2 e fmt3 com extensao .sed serve para formatar,
+# Os scripts fmt2.sed, fmt3.sed e fmt2.awk serve para formatar,
 exportação de tabelas do mysql, como a seguinte linha acima
 deixando da seguinte forma abaixo:
 
@@ -29,6 +29,10 @@ ou
 bash-4.4$ cat meuarquivo.txt | ./fmt2.sed > formatado.txt
 ou
 bash-4.4$ cat meuarquivo.txt | ./fmt3.sed > formatado.txt
+ou
+bash-4.4$ awk -f fmt1.awk meuarquivo.txt | sed 's/"//g;s/$/;/g' > formatado.txt
+ou
+bash-4.4$ cat meuarquivo.txt | ./fmt2.awk > formatado.txt
 
 Fonte:
 
