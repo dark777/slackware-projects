@@ -34,6 +34,11 @@ bash-4.4$ awk -f fmt1.awk meuarquivo.txt | sed 's/"//g;s/$/;/g' > formatado.txt
 ou
 bash-4.4$ cat meuarquivo.txt | ./fmt2.awk > formatado.txt
 
+
+
+
+
+
 Fonte:
 
 http://terminalroot.com.br/2015/07/30-exemplos-do-comando-sed-com-regex.html
