@@ -113,7 +113,7 @@ MariaDB [mysql]> flush privileges;
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
 
 
-2-6ª.1ª) Passo - Outras formas de alterar a senha do Mysql:
+2-6.1ª) Passo - Outras formas de alterar a senha do Mysql:
 
 bash-4.4$ su -c "mysqladmin -u root -p password 'aqui_a_nova_senha'"
 
