@@ -30,13 +30,7 @@ bash-4.4$ cat meuarquivo.txt | ./fmt2.sed > formatado.txt
 ou
 bash-4.4$ cat meuarquivo.txt | ./fmt3.sed > formatado.txt
 ou
-bash-4.4$ awk -f fmt1.awk meuarquivo.txt | sed 's/"//g;s/$/;/g' > formatado.txt
-ou
-bash-4.4$ cat meuarquivo.txt | ./fmt2.awk > formatado.txt
-
-
-
-
+bash-4.4$ awk -f fmt.awk meuarquivo.txt > formatado.txt
 
 
 Fonte:
