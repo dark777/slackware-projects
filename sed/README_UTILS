@@ -480,7 +480,7 @@ bash-4.3$ wget -nv -c -r -np -A asc http://www.slackware.com/~alien/slackbuilds/
 
 bash-4.3$ wget -r -A asc http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
 
-----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
 ## baixando somente os files *md5
 
 bash-4.3$ wget -nv -c -r -np -A md5 http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/
@@ -711,7 +711,12 @@ bash-4.3$ echo osarch=$(file -e elf /sbin/init | grep -i bit | cut -d ' ' -f2,3,
 osarch=ELF 64-bit LSB x86-64 version (SYSV)
 
 -----------------------------------------------------------------------------------------------------------
-# pega o processador da máquina: 
+## mostra o numero de nucleos do processador
+
+bash-4.4$ echo CORE=${CORE:-$(grep "model name" /proc/cpuinfo | wc -l)}
+CORE=4
+
+# pega o processador da máquina:
 
 bash-4.4$ cc -march=native -E -v - </dev/null 2>&1 | grep cc1
  /usr/libexec/gcc/x86_64-slackware-linux/7.2.0/cc1 -E -quiet -v - -march=ivybridge -mmmx -mno-3dnow -msse \
