@@ -377,19 +377,20 @@ Com encriptação de senha:
 postgres=# create user darkstar with encrypted password 'minhasenha' createdb;
 CREATE ROLE
 
-Criando super usuario sem senha encryptda:
+Criando super usuario sem senha encryptada:
 
 postgres=# create user darkstar password 'minhasenha' superuser inherit createdb createrole;
 CREATE ROLE
 
 
-Criando super usuario com senha encryptda:
+Criando super usuario com senha encryptada:
 
-postgres=# create user darkstar with encrypted password 'minhasenha' superuser inherit createdb createrole;
+postgres=# create user darkstar with encrypted password 'minhasenha' superuser \
+inherit createdb createrole;
 CREATE ROLE
 
 
-Criando usuario comun com senha encryptda:
+Criando usuario comun com senha encryptada:
 
 postgres=# create user darkstar with encrypted password 'minhasenha' createdb createrole;
 CREATE ROLE
@@ -445,7 +446,8 @@ postgres$ psql -d teste -U darkstar -W
 
 postgres$ psql -h localhost -U darkstar -d teste -p 5432
 
-postgres$ psql --command="select *from cadastros" --host=localhost --port=5432 --username=darkstar --dbname=teste
+postgres$ psql --command="select *from cadastros" --host=localhost --port=5432 \
+--username=darkstar --dbname=teste
 
 
 Logando em um banco sem o usuário postgres,
@@ -455,15 +457,20 @@ bash-4.4$ su -c "psql -d teste -U darkstar -W"
 
 bash-4.4$ su -c "psql -h localhost -U darkstar -d teste -p 5432"
 
-bash-4.4$ su -c 'psql --host=localhost --port=5432 --username=darkstar --password --dbname=teste'
+bash-4.4$ su -c 'psql --host=localhost --port=5432 --username=darkstar \
+--password --dbname=teste'
 
-bash-4.4$ su -c 'psql --command="select *from cadastros" --host=localhost --port=5432 --username=darkstar --dbname=teste'
+bash-4.4$ su -c 'psql --command="select *from cadastros" --host=localhost --port=5432 \
+--username=darkstar --dbname=teste'
 
-bash-4.4$ su - postgres -c 'psql --host=localhost --port=5432 --username=darkstar --password --dbname=teste'
+bash-4.4$ su - postgres -c 'psql --host=localhost --port=5432 --username=darkstar \
+--password --dbname=teste'
 
-bash-4.4$ su -c 'psql --command="select *from cadastros" --host=localhost --port=5432 --username=darkstar --dbname=teste'
+bash-4.4$ su -c 'psql --command="select *from cadastros" --host=localhost --port=5432 \
+--username=darkstar --dbname=teste'
 
-bash-4.4$ su - postgres -c 'psql --command="select *from cadastros" --host=localhost --port=5432 --username=darkstar --dbname=teste'
+bash-4.4$ su - postgres -c 'psql --command="select *from cadastros" --host=localhost \
+--port=5432 --username=darkstar --dbname=teste'
 
 
 Backup do banco como "plain":
@@ -473,27 +480,42 @@ bash-4.4$ su -c 'pg_dump -h localhost -p 5432 -U postgres teste > "/tmp/backup.s
 
 Backup de uma tabela especifica:
 
-bash-4.4$ su -c 'pg_dump -h localhost -t cadastros -p 5432 -U postgres teste > "/tmp/backup_cadastros.sql"'
+bash-4.4$ su -c 'pg_dump -h localhost -t cadastros -p 5432 -U postgres \
+teste > "/tmp/backup_cadastros.sql"'
 
 
 Gerar e restaurar backup de apenas uma tabela Postgres
 
+
+Backup de toda database:
+
+bash-4.4$ pg_dump --host=localhost --port=5432 --username=darkstar --password \
+--format custom --blobs --verbose --file=/var/cache/backup/postgres/teste.backup --dbname=teste
+
+
 Gerar backup
-bash-4.4$ pg_dump –host localhost –port 5432 –username "postgres" –format custom –verbose –file "/home/backup_tabela.backup" –table "NOME_SCHEMA.NOME_TABELA" "NOME_BASE"
+
+bash-4.4$ pg_dump --host=localhost --port=5432 --username=darkstar –format custom –verbose \
+–file "/var/cache/backup/postgres/backup_tabela.backup" –table "NOME_SCHEMA.NOME_TABELA" "NOME_BASE"
+
 
 Restaurar:
 
-bash-4.4$ pg_restore –host localhost –port 5432 –username "postgres" –dbname "NOME_BASE" –data-only –jobs 4 –table NOME_TABELA –schema public –verbose "/home/backup_tabela.backup"
+bash-4.4$ pg_restore --host=localhost --port=5432 --username=darkstar –dbname=NOME_BASE" \
+–data-only –jobs 4 –table NOME_TABELA –schema public –verbose "/var/cache/backup/postgres/backup_tabela.backup"
 
 
 Backup de duas tabelas especifica:
 
-bash-4.4$ su -c 'pg_dump -h localhost -t cadastros -t compradores -port 5432 -U darkstar teste > "/tmp/backup_duas_tabelas.sql"'
+bash-4.4$ su -c 'pg_dump -h localhost -t cadastros -t compradores -port 5432 -U \
+darkstar teste > "/tmp/backup_duas_tabelas.sql"'
 
 
 Backup da estrutura de algumas tabelas em uma máquina remota:
 
-bash-4.4$ su -c 'pg_dump -t TABELA1 -t TABELA2 -f /tmp/backup/backup.sql -s -h IP_DA_MAQUINA_REMOTA -U darkstar DBNAME'
+bash-4.4$ su -c 'pg_dump -t TABELA1 -t TABELA2 -f /tmp/backup/backup.sql -s -h \
+IP_DA_MAQUINA_REMOTA -U darkstar DBNAME'
+
 
 ps: O parâmetro"-s" é "schema only".
 
