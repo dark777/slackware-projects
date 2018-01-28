@@ -1,3 +1,20 @@
+# Gravando imagem iso em pendrive:
+
+# Primeiro vamos zerar o pendrive:
+
+bash-4.4# dd if=/dev/zero of=/dev/sdb bs=1M status=progress
+
+
+# Segundo vamos Gravar a imagem iso:
+
+bash-4.4# dd if=/home/user/Downloads/minhaimagem.iso of=/dev/sdb bs=4M
+
+
+# Terceiro se quiser mudar o label do pendrive basta fazer:
+
+bash-4.4# mkdosfs -n <rótulo> <dispositivo>
+
+----------------------------------------------------------------------------------------------------------------
 # usando registradores:
 # \1 para o que está nos parenteses
 # &  para referenciar TODO o conteúdo casado
