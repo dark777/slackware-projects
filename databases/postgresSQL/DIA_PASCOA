@@ -1,0 +1,65 @@
+O dia da Páscoa é o primeiro domingo depois da Lua Cheia que ocorre no dia ou depois de 21 março.
+Entretanto, a data da Lua Cheia não é a real, mas a definida nas Tabelas Eclesiásticas.
+A Quarta-Feira de Cinzas ocorre 46 dias antes da Páscoa, 
+e portanto a Terça-Feira de carnaval ocorre 47 dias antes da Páscoa.
+O dia de Corpus Christi ocorre 60 dias após a Páscoa.Esta função tem por objetivo,
+a partir do ano informado, obter a data da páscoa daquele ano.
+É util para prever os feriádos móveis do ano,
+que são todos em função da data da Páscoa, conforme descrito acima.
+
+
+PL/SQL
+
+FUNCTION data_pascoa (In_ano NUMBER) RETURN DATE IS
+
+/**************************************
+ 
+        Para calcular a data da Páscoa para qualquer ano no calendário Gregoriano
+        (o calendário civil no Brasil), usa-se a seguinte fórmula, com TODAS AS
+        VARIÁVEIS INTEIRAS, com os resíduos das divisões ignorados.
+        Usa-se A para ano, M para mês, e D para dia.
+        c = a/100
+        n = a - 19*(a/19)
+        k = (c - 17)/25
+        i = c - c/4 - (c-k)/3 +19*n + 15
+        i = i - 30*(i/30)
+        i = i - (i/28)*(1-(1/28)*(29/(i+1))*((21-n)/11))
+        j = a + a/4 + i + 2 -c + c/4
+        j = j - 7*(j/7)
+        l = i - j
+        m = 3 + (l+40)/44
+        d = l + 28 - 31*(m/4)
+ 
+        Este algoritmo é de J.-M.Oudin (1940) e impresso no
+        Explanatory Supplement to the Astronomical Almanac, ed. P.K. Seidelmann (1992).
+ 
+        Retirado originalmente de
+        http://www.if.ufrgs.br/~kepler/fis207/pascoa.html
+        e adaptado para PL/SQL por Ricardo Falter
+ 
+        ********************************************************************************/
+ 
+ 
+        A   INTEGER := In_ano; -- unico parametro, o ano a se obter a data da pascoa
+        M   INTEGER; -- variavel para o mes
+        D   INTEGER; -- variavel para o dia
+        C   INTEGER; -- variavel para o seculo
+        I   INTEGER; -- variavel auxiliar
+        J   INTEGER; -- variavel auxiliar
+        K   INTEGER; -- variavel auxiliar
+        L   INTEGER; -- variavel auxiliar
+        N   INTEGER; -- variavel auxiliar
+    BEGIN
+        C      := trunc (A / 100);
+        N      := A - 19 * (trunc (A / 19) );
+        K      := trunc ( (C - 17) / 25);
+        I      := C - trunc (C / 4) - trunc ( (C - K) / 3) + 19 * N + 15;
+        I      := I - 30 * (trunc (I / 30) );
+        I      := I - (trunc (I / 28) ) * (1 - (trunc (1 / 28) ) * (trunc (29 / (I + 1) ) ) * (trunc ( (21 - N) / 11) ) );
+        J      := A + trunc (A / 4) + I + 2 - C + trunc (C / 4);
+        J      := J - 7 * (trunc (J / 7) );
+        L      := I - J;
+        M      := 3 + trunc ( (L + 40) / 44);
+        D      := L + 28 - 31 * (trunc (M / 4) );
+        RETURN (TO_DATE (lpad (D, 2, 0) || lpad (M, 2, 0) || lpad (A, 4, 0), 'DDMMYYYY') );
+    END;
