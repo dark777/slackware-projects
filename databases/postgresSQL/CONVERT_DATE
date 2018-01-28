@@ -1,0 +1,115 @@
+https://pt.stackoverflow.com/questions/207277/convers%c3%a3o-para-tipo-date-postgresql?rq=1
+Conversão para tipo date PostgreSQL:
+
+Se você estiver trabalhando com um banco de dados que tem as informações,
+de data armazenadas em um varchar(50) como no exemplo a seguir abaixo:
+2012 dezembro 2 18:37.
+
+E for preciso fazer pesquisas baseadas em intervalos de tempo.
+Existen em duas formas para resolver seu problema:
+
+
+1- Uma unica função que dá replace no mês e coloca um número no lugar:
+
+CREATE OR REPLACE FUNCTION public.ConverteMesPT (varchar)
+RETURNS varchar AS
+$body$
+SELECT 
+Replace(
+    Replace(
+        Replace(
+            Replace(
+                Replace(
+                    Replace(
+                        Replace(
+                            Replace(
+                                Replace(
+                                    Replace(
+                                        Replace(
+                                            Replace($1,'dezembro','12')
+                                            ,'novembro','11')
+                                            ,'outubro','10')
+                                            ,'setembro','9')
+                                            ,'agosto','8')
+                                            ,'julho','7')
+                                            ,'junho','6')
+                                            ,'maio','5')
+                                            ,'abril','4')
+                                            ,'março','3')
+                                            ,'fevereiro','2')
+                                            ,'janeiro','1')
+$body$
+LANGUAGE 'sql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
+
+
+Exemplo:
+
+select to_date(ConverteMesPT('2012 dezembro 2 18:37'::varchar),'YYYY mm DD')
+
+
+
+2- Duas funções que se encarregam de extrair somente o mês do texto, e traduzi-lo para um número correspondente.
+
+Recebe o texto, e retorna o número do mês:
+
+
+CREATE OR REPLACE FUNCTION public.monthFromName (
+  varchar
+)
+RETURNS int AS
+$body$
+SELECT Case $1
+when 'janeiro'then  1 
+when 'fevereiro'then 2 
+when 'março'then    3 
+when 'abril'then    4 
+when 'maio'then     5 
+when 'junho'then    6 
+when 'julho'then    7 
+when 'agosto'then   8 
+when 'setembro'then 9 
+when 'outubro'then  10
+when 'novembro'then 11
+when 'dezembro'then 12
+else NULL
+end
+$body$
+LANGUAGE 'sql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
+
+
+Limpa os números e pontos que tem na string para permanecer apenas o texto:
+
+CREATE OR REPLACE FUNCTION public.limparString(varchar)
+RETURNS varchar AS
+$body$
+SELECT translate($1, '0123456789: ', '')
+$body$
+LANGUAGE 'sql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
+
+
+Por Fim, basta chamar o comando:
+
+select to_date(replace('2012 dezembro 2 18:37'::varchar,
+         limparString('2012 dezembro 2 18:37'),
+           monthFromName(limparString('2012 dezembro 2 18:37'))::varchar),'YYYY mm DD');
+
+           
+Neste caso:
+
+select 
+to_date(
+    replace(hora,
+            limparString(hora),
+            monthFromName(limparString(hora))::varchar),'YYYY mm DD');      
