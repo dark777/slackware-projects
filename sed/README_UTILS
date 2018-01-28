@@ -361,9 +361,11 @@ Por curiosidade, pedi para listar os arquivos acima de 1 GB no disco rígido de 
 
 /var/lib/mysql/ibdata1: 1,1G
 
+
 O comando utilizado para listar os arquivos acima de 1 GB foi:
 
-find / -type f -size +1G -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+bash-4.3# find / -type f -size +1G -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+
 http://www.rodrigocalado.com.br/como-listar-grandes-arquivos-bytes-kb-mb-gb-em-um-sistema-unixlinux/
 
 -----------------------------------------------------------------------------------------------------
