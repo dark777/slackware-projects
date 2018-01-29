@@ -397,7 +397,7 @@ inherit createdb createrole;
 CREATE ROLE
 
 
-Defineindo direito de acesso ao novo usuário:
+Definindo direito de acesso ao novo usuário:
 
 postgres$ psql darkstar
 
