@@ -377,6 +377,13 @@ Com encriptação de senha:
 postgres=# create user darkstar with encrypted password 'minhasenha' createdb;
 CREATE ROLE
 
+
+Criando usuario comun com senha encryptada:
+
+postgres=# create user darkstar with encrypted password 'minhasenha' createdb createrole;
+CREATE ROLE
+
+
 Criando super usuario sem senha encryptada:
 
 postgres=# create user darkstar password 'minhasenha' superuser inherit createdb createrole;
@@ -387,12 +394,6 @@ Criando super usuario com senha encryptada:
 
 postgres=# create user darkstar with encrypted password 'minhasenha' superuser \
 inherit createdb createrole;
-CREATE ROLE
-
-
-Criando usuario comun com senha encryptada:
-
-postgres=# create user darkstar with encrypted password 'minhasenha' createdb createrole;
 CREATE ROLE
 
 
