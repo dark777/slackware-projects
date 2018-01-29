@@ -482,7 +482,7 @@ bash-4.4$ su -c 'pg_dump -h localhost -p 5432 -U postgres teste > "/tmp/backup.s
 Backup de uma tabela especifica:
 
 bash-4.4$ su -c 'pg_dump -h localhost -t cadastros -p 5432 -U postgres \
-teste > "/tmp/backup_cadastros.sql"'
+--dbname=teste > "/tmp/backup_cadastros.sql"'
 
 
 Gerar e restaurar backup de apenas uma tabela Postgres
@@ -509,7 +509,7 @@ bash-4.4$ pg_restore --host=localhost --port=5432 --username=darkstar –dbname=
 Backup de duas tabelas especifica:
 
 bash-4.4$ su -c 'pg_dump -h localhost -t cadastros -t compradores -port 5432 -U \
-darkstar teste > "/tmp/backup_duas_tabelas.sql"'
+darkstar --dbname=teste > "/tmp/backup_duas_tabelas.sql"'
 
 
 Backup da estrutura de algumas tabelas em uma máquina remota:
@@ -523,12 +523,12 @@ ps: O parâmetro"-s" é "schema only".
 
 Restaurar backup criado como "plain":
 
-bash-4.4$ su -c 'psql -U darkstar -h localhost teste < "/tmp/backup.sql"'
+bash-4.4$ su -c 'psql -U darkstar -h localhost --dbname=teste < "/tmp/backup.sql"'
 
 
 Restaurar backup criado como "plain" que não esteja na porta padrão do postgres (5432):
 
-bash-4.4$ su -c 'psql -U darkstar -h localhost -p 5432 teste < "/tmp/backup.sql"'
+bash-4.4$ su -c 'psql -U darkstar -h localhost -p 5432 --dbname=teste < "/tmp/backup.sql"'
 
 
 Sources:
