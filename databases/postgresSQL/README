@@ -410,6 +410,7 @@ postgres$ psql darkstar
 postgres=# grant all privileges on database <dbname> to darkstar;
 GRANT
 
+
 Logue no psql para criar a senha do usuário:
 
 postgres$ psql
@@ -417,6 +418,16 @@ postgres$ psql
 postgres=# \password darkstar
 Enter new password:
 Enter it again:
+
+
+Listando usuarios:
+
+postgres=# \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of 
+-----------+------------------------------------------------------------+-----------
+ darkstar  | Superuser, Create role, Create DB                          | {}
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
 
 
 Deletando usuario:
@@ -429,6 +440,7 @@ Deletando o banco de dados:
 
 postgres=# drop database teste;
 ERROR:  database "teste" does not exist
+
 
 postgres=# drop database if exists teste;
 NOTICE:  database "teste" does not exist, skipping

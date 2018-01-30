@@ -10,9 +10,22 @@ bash-4.4# dd if=/dev/zero of=/dev/sdb bs=1M status=progress
 bash-4.4# dd if=/home/user/Downloads/minhaimagem.iso of=/dev/sdb bs=4M
 
 
-# Terceiro se quiser mudar o label do pendrive basta fazer:
+# Renomeando dispositivos no linux
 
-bash-4.4# mkdosfs -n <rótulo> <dispositivo>
+# Para mudar o label de sistemas de arquivos fat basta fazer:
+
+bash-4.4# mkdosfs -n SlackwareBoot  /dev/sdb1
+ou
+bash-4.4# e2label /dev/sdb2 SlackwareBoot
+
+onde SlackwareBoot será o novo nome da sua unidade.
+
+
+# Para Renomear uma Partição com NTFS(Formato Universal)
+
+bash-4.4# ntfslabel /dev/sdb3 Windows
+
+onde Windows será o nome de sua partição.
 
 ----------------------------------------------------------------------------------------------------------------
 # usando registradores:
