@@ -244,6 +244,10 @@ sed '/otimiza/,+2 s/^/#/'
 #. /etc/rc.d/rc.otimiza dir
 #fi
 
+# Remove linha espaços em branco:
+
+sed -i 's/[[:space:]]\+/ /g;' myfile.txt
+
 ------------------------------------------------------------------------------------------
 # Adiciona função sleep para executar após 10 minutos em rc.ntpd
 sed '/\/usr\/sbin\/ntpd -g -u ntp:ntp/a  sleep 10m' /etc/rc.d/rc.ntpd
@@ -449,7 +453,7 @@ bash-4.3$ cut -d "\"" -f 2   arquivo-com-tags-urls-html > arquivo-novo-com-urls.
 bash-4.3$ cat arquivo-com-tags-urls-html | sed 's/.*="//; s/">.*//' > arquivo-novo-com-urls.txt
 
 
-## Este comando abaixo cria uma lista de links a ser baixada atravez do mozilla firefox.
+## Este comando abaixo cria uma lista de links a ser baixada atraves do mozilla firefox.
 #1 na pagina onde se encontra os links digite o seguinte comando abaixo:
 #CTRL+SHIFT+K
 #e depois cole no terminal o seguinte comando abaixo:
