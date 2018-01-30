@@ -7,10 +7,10 @@ PKGLANG=${PKGLANG:-"pt-BR"}
 VERSION=${VERSION:-56.0b9}
 
 #pkg name version
-PRGNAM=firefox-$VERSION
+PRGNAM=${PRGNAM:-firefox-$VERSION}
 
 # Automatically determine the architecture we're building on:
-if [ -z "$ARCH" ]; then
+if [ -z "${ARCH}" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i686 ;;
     x86_64) ARCH=x86_64 ;;
@@ -23,19 +23,20 @@ elif [ "$ARCH" = "x86_64" ]; then
   LIBDIRSUFFIX="64"
 fi
 
-CWD=$(pwd)
+CWD=${CWD:-$(pwd)}
 TMP=${TMP:-/tmp}
 MOZ=${MOZ:-${TMP}/firefox}
-PKG=${PKG:-${TMP}/firefox-${VERSION}}
+PKG=${PKG:-${TMP}/${PRGNAM}}
 # Where do we look for sources?
-SRCDIR=$(cd $(dirname $0); pwd)
+SRCDIR=${SRCDIR:-$(cd $(dirname $0); pwd)}
 
 # Automatically determine the architecture we're building on:
 
-SOURCE="${SRCDIR}/${PRGNAM}.tar.bz2"
+SOURCE=${SOURCE:-${SRCDIR}/${PRGNAM}.tar.bz2}
 
-SRCURL="http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2"
-#SRCURL="https://ftp.mozilla.org/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2"
+SRCURL=${SRCURL:-http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
+
+#SRCURL=${SRCURL:-https://ftp.mozilla.org/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
 
 if [ -f ${SOURCE} ]; then 
 
@@ -63,8 +64,8 @@ elif [ ! -f ${SOURCE} ]; then
   fi
 fi
 
-PKGVERSION=$(basename $(ls firefox-*.tar.?z* | cut -d - -f 2 | rev | cut -f 3- -d . | rev))
-RELEASEVER=$(echo $PKGVERSION | cut -f 1 -d r | cut -f 1 -d b | cut -f 1 -d e)
+PKGVERSION=${PKGVERSION:-$(basename $(ls firefox-*.tar.?z* | cut -d - -f 2 | rev | cut -f 3- -d . | rev))}
+RELEASEVER=${RELEASEVER:-$(echo ${PKGVERSION} | cut -f 1 -d r | cut -f 1 -d b | cut -f 1 -d e)}
 BUILD=${BUILD:-1}
 
 mkdir -p ${PKG}
@@ -94,7 +95,7 @@ cp -ar ${MOZ}/* ${PKG}/usr/lib${LIBDIRSUFFIX}/firefox-${PKGVERSION}
 
 mkdir ${PKG}/install
 
-MODIFICA=$(sed  -i '/lib64/ s/firefox-.*/firefox-'"$VERSION"'\/firefox firefox )/g;' doinst.sh)
+MODIFICA=${MODIFICA:-$(sed  -i '/lib64/ s/firefox-.*/firefox-'"$VERSION"'\/firefox firefox )/g;' doinst.sh)}
 
 cp -ar ${CWD}/doinst.sh ${PKG}/install/
 
