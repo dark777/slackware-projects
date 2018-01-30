@@ -1,4 +1,5 @@
 https://pkgs.org/download/phpmyadmin
+
 Download phpmyadmin-4.7.5-noarch-1_slonly.txz
 ou 
 wget -c http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/p/phpPgAdmin-5.1-2.el7.noarch.rpm 
