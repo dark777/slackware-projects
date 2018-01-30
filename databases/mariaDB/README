@@ -1075,6 +1075,7 @@ se o CHARSET da base for ‘Latin1’ escolha o ‘iso-8859-1’.
 ##################################################################################################
 
 Sources:
+https://www.tutorialspoint.com/mysql/index.htm
 https://dev.mysql.com/doc/refman/5.7/en/load-data.html
 http://www.sqlines.com/oracle-to-mysql/to_date
 http://pythonclub.com.br/tutorial-postgresql.html

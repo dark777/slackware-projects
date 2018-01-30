@@ -365,6 +365,11 @@ INSERT 0 1
 
 ##################################################################################################
 
+Create Database Using mysqladmin
+
+bash-4.4$ su -c"mysqladmin -u root -p create <minhadatabase>
+
+
 Outras formas de criar um usuário:
 
 Sem encriptação de senha:
@@ -532,6 +537,7 @@ bash-4.4$ su -c 'psql -U darkstar -h localhost -p 5432 --dbname=teste < "/tmp/ba
 
 
 Sources:
+https://www.tutorialspoint.com/postgresql/index.htm
 http://ribafs.org/portal/index.php
 http://pythonclub.com.br/tutorial-postgresql.html
 https://github.com/ribafs?tab=repositories
