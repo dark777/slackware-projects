@@ -83,6 +83,15 @@ bash-4.4$ su -c "cp server.key /etc/ssl/private/"
 bash-4.4$ su -c "/etc/rc.d/rc.httpd restart"
 
 
+# Agora vamos editar o httpd-ssl.conf
+
+bash-4.4$ su -c "nano /etc/httpd/extra/httpd-ssl.conf"
+
+# ALtere caminho para a pasta que conter o certificados.
+SSLCertificateFile "/etc/ssl/certs/server.crt"
+SSLCertificateKeyFile "/etc/ssl/private/server.key"
+
+
 # Outra forma de gerar as chaves:
 
 bash-4.4$ su -c "openssl genrsa -des3 -out server.key 1024"
