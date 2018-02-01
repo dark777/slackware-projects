@@ -1,0 +1,74 @@
+http://submax.altervista.org/index.php?link=slackware/kernelpkg-en.php 
+submax.altervista.org/getfile.php?file=slackware/kernelpkg-0.9.6.tar.gz
+
+https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.16.tar.xz
+
+Edite a linha 460 que está:
+if [ $(echo $KERNELVERSION | cut -c -3) != "2.4" ] && [ $(echo $KERNELVERSION | cut -c -3) != "2.6" ] && [ $(echo $KERNELVERSION | cut -c -1) != "3" ]; then
+
+
+No meu caso estou usando o kernel 4.14.16 edite,
+para o seu kernel current compilado deixando assim:
+if [ $(echo $KERNELVERSION | cut -c -3) != "4.9" ] && [ $(echo $KERNELVERSION | cut -c -3) != "4.14" ] && [ $(echo $KERNELVERSION | cut -c -1) != "3" ]; then
+
+
+
+bash-4.4# nano /sbin/kernelpkg
+
+bash-4.4# cd /usr/src/linux
+
+bash-4.4# kernelpkg --also-headers --also-source --bootloader detect
+
++------------------------------------------------------------------------------+
+|                               [[[ PROGRESS ]]]                               |
++------------------------------------------------------------------------------+
+Please wait while compiling Linux kernel 4.14.16...
+--> Cleaning: OK
+--> Building kernel: OK
+--> Building modules: OK
+DONE.
+
+Please wait while building packages...
+--> Building kernel-image package: OK
+--> Building kernel-headers package: OK
+--> Building kernel-source package: OK
+DONE.
+
++------------------------------------------------------------------------------+
+|                                [[[ REPORT ]]]                                |
++------------------------------------------------------------------------------+
+Software:
+  Built on Slackware 14.2 with kernelpkg version 0.9.6
+  and gcc version 7.2.0
+
+Time (compiling and building):
+- Started at qui 01 fev 2018 05:22:31 -02
+- Ended at qui 01 fev 2018 06:22:42 -02
+- Duration of process is 1 hours, 0 min and 11 sec
+
+Input resource:
+- KERNEL SOURCES = /usr/src/linux -link-> linux-4.14.16
+- CONFIG FILE = /usr/src/linux/.config
+
+Slackware built packages are located in directory /usr/src/:
+- KERNEL PACKAGE = kernel-image-4.14.16-x86_64-kpkg096.txz - [35M]
+- HEADERS PACKAGE = kernel-headers-4.14.16-x86_64-kpkg096.txz - [4,6M]
+- SOURCE PACKAGE = kernel-source-4.14.16-noarch-kpkg096.txz - [93M]
++------------------------------------------------------------------------------+
+
+
+bash-4.4# ls -al ../
+total 134880
+drwxr-xr-x  3 root root     4096 fev  1 06:22 ./
+drwxr-xr-x 17 root root     4096 jan 28  2012 ../
+-rw-r--r--  1 root root      423 fev  1 06:16 kernel-headers-4.14.16-x86_64-kpkg096.txt
+-rw-r--r--  1 root root  4800160 fev  1 06:16 kernel-headers-4.14.16-x86_64-kpkg096.txz
+-rw-r--r--  1 root root       75 fev  1 06:16 kernel-headers-4.14.16-x86_64-kpkg096.txz.md5
+-rw-r--r--  1 root root      404 fev  1 06:15 kernel-image-4.14.16-x86_64-kpkg096.txt
+-rw-r--r--  1 root root 36564532 fev  1 06:15 kernel-image-4.14.16-x86_64-kpkg096.txz
+-rw-r--r--  1 root root       73 fev  1 06:15 kernel-image-4.14.16-x86_64-kpkg096.txz.md5
+-rw-r--r--  1 root root      470 fev  1 06:22 kernel-source-4.14.16-noarch-kpkg096.txt
+-rw-r--r--  1 root root 96711336 fev  1 06:22 kernel-source-4.14.16-noarch-kpkg096.txz
+-rw-r--r--  1 root root       74 fev  1 06:22 kernel-source-4.14.16-noarch-kpkg096.txz.md5
+lrwxrwxrwx  1 root root       12 jan  4 22:19 linux -> linux-4.14.16/
+drwxr-xr-x 25 root root     4096 fev  1 06:13 linux-4.14.16/
