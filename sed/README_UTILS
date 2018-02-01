@@ -259,7 +259,9 @@ sed '/otimiza/,+2 s/^/#/'
 
 # Remove linha espaços em branco:
 
-sed -i 's/[[:space:]]\+/ /g;' myfile.txt
+bash-4.4$ sed 's/[ \t]*//g;' myfile.txt
+ou
+bash-4.4$ sed -i 's/[[:space:]]\+/ /g;' myfile.txt
 
 ------------------------------------------------------------------------------------------
 # Adiciona função sleep para executar após 10 minutos em rc.ntpd
