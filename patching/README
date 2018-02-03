@@ -115,23 +115,27 @@ Depois, mude para o diretório /usr/src/linux-2.6.9 e faça o seguinte:
 
 /usr/src/linux-2.6.9# bzip2 -dc /usr/src/2.6.9-ac16.bz2 | patch -p1 -s --dry-run
 
-O comando acima faz apenas um teste para ver se o patch seria aplicado sem erro nenhum (não aplicando o patch ainda), 
-o que pode salvar a sua vida, pois pode ser extremamente difícil remover um patch que não foi aplicado por inteiro. 
-Este teste é feito pela opção --dry-run. O output gerado por este comando é mostrado muito rápido para que você consiga 
-ler e ver se alguma coisa saiu errado. Para resolver isto, diga ao patch para que só mostre as mensagens de erro usando a opção -s. 
-Se você tem certeza de que tudo vai sair certo, pode aplicar o patch sem esta opção. 
-A opção -p1 mostra na tela apenas a localização relativa dos arquivos modificados ao invés de mostrar sua localização global.
+O comando acima faz apenas um teste para ver se o patch seria aplicado sem erro, nenhum
+(não aplicando o patch ainda), o que pode salvar a sua vida, pois pode ser extremamente difícil
+remover um patch que não foi aplicado por inteiro. Este teste é feito pela opção --dry-run. 
+O output gerado por este comando é mostrado muito rápido para que você consiga ler e ver se alguma
+coisa saiu errado. Para resolver isto, diga ao patch para que só mostre as mensagens
+de erro usando a opção -s. Se você tem certeza de que tudo vai sair certo,
+pode aplicar o patch sem esta opção. A opção -p1 mostra na tela apenas a localização relativa
+dos arquivos modificados ao invés de mostrar sua localização global.
 
 Agora que você já sabe que o patch vai ser aplicado corretamente, faça o seguinte:
 
 /usr/src/linux-2.6.9# bzip2 -dc ../2.6.9-ac16.bz2 | patch -p1
 
-Este comando vai aplicar o patch "de verdade" no código do kernel. Pronto! Agora o patch já está instalado. 
-Para você usar o kernel com as "melhorias" do patch, é só recompilar. Porém, nem todos os patches são tão 
-fáceis assim de serem aplicados ao kernel. Por exemplo, os prepatches do Linus não são incrementais, 
-então o prepatch 2.6.7-pre2 deve ser aplicado no tarball descompactado do kernel 2.6.6 e não em um kernel 
-com o prepatch 2.6.7-pre1 aplicado. Então, para você poder aplicar o prepatch 2.6.7-pre2, deve remover 
-(como será descrito mais adiante) o patch 2.6.7-pre1 do seu kernel atual. Os patches -ac (lançados por Alan Cox) seguem a mesma lógica. 
+Este comando vai aplicar o patch "de verdade" no código do kernel. 
+Pronto! Agora o patch já está instalado. Para você usar o kernel com as "melhorias" do patch,
+é só recompilar. Porém, nem todos os patches são tão fáceis assim de serem aplicados ao kernel. 
+Por exemplo, os prepatches do Linus não são incrementais, então o prepatch 2.6.7-pre2 deve ser
+aplicado no tarball descompactado do kernel 2.6.6 e não em um kernel com o prepatch
+2.6.7-pre1 aplicado. Então, para você poder aplicar o prepatch 2.6.7-pre2, deve remover 
+(como será descrito mais adiante) o patch 2.6.7-pre1 do seu kernel atual. 
+Os patches -ac (lançados por Alan Cox) seguem a mesma lógica. 
 
 ##################################################################################################
 
