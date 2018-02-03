@@ -561,7 +561,8 @@ Query OK, 5 rows affected (0.04 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 
 
-4-3.4ª) Passo - Precisamos fazer um truncate na nossa tabela cadastros,
+4-3.4ª) Passo - Caso tenha apenas alterado o campo id_faz para auto_increment,
+precisamos fazer um truncate na nossa tabela cadastros,
 simplesmente por que criamos os campos nome_faz como unique, 
 caso contrário, poderíamos fazer apenas a importação,
 novamente pois ficaria com id's auto_increment de 6 a 10. 
@@ -712,7 +713,7 @@ MariaDB [teste]> select * from cadastros where nome_faz like '%a';
 
 
 A função Left retorna os primeiros caracteres à esquerda de uma string.
-Connforme abaixo:
+Conforme abaixo:
 
 MariaDB [teste]> select left(nome_faz,3) from cadastros;
 +------------------+
@@ -746,7 +747,8 @@ MariaDB [teste]> select right(nome_faz,3) from cadastros;
 Importando os dados no banco sem logar
 
 MariaDB [(none)]> load data local infile "cadastros.txt" into table teste.cadastros fields \
-terminated by ';';Query OK, 5 rows affected (0.01 sec)                 
+terminated by ';';
+Query OK, 5 rows affected (0.01 sec)                 
 Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
  
 
