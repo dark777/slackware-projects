@@ -54,7 +54,8 @@ bash-4.4$ su -c "mkdir -p /var/log/mysql"
 bash-4.4$ su -c "chown -R mysql.mysql /var/log/mysql"
 
 
-1-8ª) Passo - Criando senha de primeiro acesso:
+1-8ª) Passo - Criando senha de primeiro acesso.Caso você não tenha criado a senha de
+root no passo 1-5 ou perdido sua senha de root use os passos abaixo para criar ou recriar a senha.
 
 bash-4.4$ su -c "mysqladmin -u root -p password 'aqui_a_nova_senha'"
 
