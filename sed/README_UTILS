@@ -474,6 +474,12 @@ bash-4.3$ cat arquivo-com-tags-urls-html | sed 's/.*="//; s/">.*//' > arquivo-no
 #e depois cole no terminal o seguinte comando abaixo:
 #urls = $$('a'); for (url in urls) console.log(urls[url].href);
 
+
+-----------------------------------------------------------------------------------------------------
+## Criando um novo perfil no mozilla-firefox para abrir 2 logins do mesmo usuario no mesmo site:
+
+bash-4.4$ firefox -p remote
+
 -----------------------------------------------------------------------------------------------------
 ## faz dump da url criando uma lista chamada downloads com links files .txt
 
