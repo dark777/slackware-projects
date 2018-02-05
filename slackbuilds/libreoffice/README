@@ -1,0 +1,34 @@
+#Instalando Libreoffice no Slackware.
+
+bash-4.4$ wget -c http://linorg.usp.br/LibreOffice/libreoffice/stable/5.4.4/rpm/x86_64/LibreOffice_5.4.4_Linux_x86-64_rpm_langpack_pt-BR.tar.gz
+
+bash-4.4$ wget -c http://ftp.unicamp.br/pub/tdf/libreoffice/stable/5.4.4/rpm/x86_64/LibreOffice_5.4.4_Linux_x86-64_rpm_helppack_pt-BR.tar.gz
+ 
+bash-4.4$ wget -c http://ftp.unicamp.br/pub/tdf/libreoffice/stable/5.4.4/rpm/x86_64/LibreOffice_5.4.4_Linux_x86-64_rpm.tar.gz
+
+bash-4.4$ tar -xf *lang*
+
+bash-4.4$ tar -xf *help*
+
+bash-4.4$ tar -xf *rpm.tar*
+
+bash-4.4$ su -c "rpm -Uvh --nodeps Libre*pt-BR/RPMS/*.rpm"
+
+bash-4.4$ su -c "rpm -Uvh --nodeps Libre*rpm/RPMS/*.rpm"
+
+bash-4.4$ rpm2txz Libre*pt-BR/*/*.rpm
+
+bash-4.4$ rpm2txz Libre*rpm/*/*.rpm
+
+bash-4.4$ su -c "installpkg Libre*rpm/TXZ/*txz"
+
+bash-4.4$ su -c "installpkg Libre*pt-BR/TXZ/*txz"
+
+
+#removendo pacotes libreoffice:
+
+bash-4.4$ ls /var/log/packages/libreoffice* | cut -f5 -d '/' > remove;sed -i 's/^/removepkg /g;' remove
+
+
+bash-4.4$ for i in $(ls LibreOffice*/RPMS/*.rpm);do rpm2txz $i; done
+
