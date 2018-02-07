@@ -3,20 +3,6 @@ submax.altervista.org/getfile.php?file=slackware/kernelpkg-0.9.6.tar.gz
 
 https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.16.tar.xz
 
-Edite a linha 460 que está:
-if [ $(echo $KERNELVERSION | cut -c -3) != "2.4" ] && [ $(echo $KERNELVERSION | cut -c -3) != "2.6" ] && [ $(echo $KERNELVERSION | cut -c -1) != "3" ]; then
-
-
-No meu caso estou usando o kernel 4.14.16 edite,
-para o seu kernel current compilado deixando assim:
-if [ $(echo $KERNELVERSION | cut -c -3) != "4.9" ] && [ $(echo $KERNELVERSION | cut -c -3) != "4.14" ] && [ $(echo $KERNELVERSION | cut -c -1) != "3" ]; then
-
-
-
-bash-4.4# nano /sbin/kernelpkg
-
-bash-4.4# cd /usr/src/linux
-
 bash-4.4# kernelpkg --also-headers --also-source --bootloader detect
 
 +------------------------------------------------------------------------------+
