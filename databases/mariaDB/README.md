@@ -1,26 +1,26 @@
-# 1) Configurando o banco de dados MariaDB.
+1) Configurando o banco de dados MariaDB.
 
-# 1-1ª) Passo - Daremos permissao de execução a rc.mysql:
+1-1ª) Passo - Daremos permissao de execução a rc.mysql:
 
 bash-4.4$ su -c "chmod 755 /etc/rc.d/rc.mysqld"
 
 
-# 1-2ª) Passo - Se o mysql estiver executando vamos dar um stop:
+1-2ª) Passo - Se o mysql estiver executando vamos dar um stop:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
 
 
-# 1-3ª) Passo - Criando o banco de dados e o usuário mysql:
+1-3ª) Passo - Criando o banco de dados e o usuário mysql:
 
 bash-4.4$ su -c "mysql_install_db --user=mysql"
 
 
-# 1-4ª) Passo - Agora Inicie o MariaDB:
+1-4ª) Passo - Agora Inicie o MariaDB:
 
 bash-4.4$ su -c "mysqld_safe --user=mysql&"
 
 
-# 1-5ª) Passo - Vamos configurar os parametros de segurança do MariaDB:
+1-5ª) Passo - Vamos configurar os parametros de segurança do MariaDB:
 
 bash-4.4$ su -c "mysql_secure_installation"
 
@@ -44,46 +44,48 @@ Remove test database and access to it? [Y/n] Y
 Reload privilege tables now? [Y/n] Y
 
 
-# 1-6ª) Passo - Vamos criar a pasta mysql em /var/log:
+1-6ª) Passo - Vamos criar a pasta mysql em /var/log:
 
 bash-4.4$ su -c "mkdir -p /var/log/mysql"
 
 
-# 1-7ª) Passo - Diga quem é o dono de /var/log/mysql recursivamente:
+1-7ª) Passo - Diga quem é o dono de /var/log/mysql recursivamente:
 
 bash-4.4$ su -c "chown -R mysql.mysql /var/log/mysql"
 
 
-# 1-8ª) Passo - Criando senha de primeiro acesso.Caso você não tenha criado a senha de root no passo 1-5 ou perdido sua senha de root use os passos abaixo para criar ou recriar a senha.
+1-8ª) Passo - Criando senha de primeiro acesso.Caso você não tenha criado a senha de
+root no passo 1-5 ou perdido sua senha de root use os passos abaixo para criar ou recriar a senha.
 
 bash-4.4$ su -c "mysqladmin -u root -p password 'aqui_a_nova_senha'"
 
 
 ##################################################################################################
 
-# 2) Alterando a senha de root do MySQL no Slackware 14.1. Caso você não tenha criado a senha de root no passo 1-5 ou perdido sua senha de root use os passos abaixo para criar ou recriar a senha.
+2) Alterando a senha de root do MySQL no Slackware 14.1. Caso você não tenha criado a senha de
+root no passo 1-5 ou perdido sua senha de root use os passos abaixo para criar ou recriar a senha.
 
-# 2-1ª) Passo - Se o mysql está executando vamos dar um stop:
+2-1ª) Passo - Se o mysql está executando vamos dar um stop:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
 
 
-# 2-2ª) Passo - Depois de dar stop abra outro terminal e vamos matar o processo:
+2-2ª) Passo - Depois de dar stop abra outro terminal e vamos matar o processo:
 
 bash-4.4$ su -c "killall mysqld"
 
 
-# 2-3ª) Passo - Depois faça:
+2-3ª) Passo - Depois faça:
 
 bash-4.4$ su -c "mysqld_safe --skip-grant-tables"
 
 
-# 2-4ª) Passo - Volte ao terminal do passo 2-1ª, e acesse o banco:
+2-4ª) Passo - Volte ao terminal do passo 2-1ª, e acesse o banco:
 
 bash-4.4$ su -c "mysql --user=root mysql"
 
 
-# 2-5ª) Passo - Estando no console do banco,
+2-5ª) Passo - Estando no console do banco,
 digite o comando para atualizar a senha:
 
 MariaDB [mysql]> set password for 'root'@'localhost' = password('aqui_a_nova_senha');
@@ -93,7 +95,7 @@ MariaDB [mysql]> flush privileges;
 MariaDB [mysql]> exit;
 
 
-# 2-5.1ª) Passo OPCIONAL - Redefinir as permissões
+2-5.1ª) Passo OPCIONAL - Redefinir as permissões
 
 MariaDB [mysql]> grant all privileges on *.* to 'root'@'%';  
 MariaDB [mysql]> grant all privileges on *.* to 'root'@'localhost';  
@@ -101,18 +103,18 @@ MariaDB [mysql]> grant all privileges on *.* to 'root@localhost';
 MariaDB [mysql]> grant all on *.* to 'root'@'%' identified by 'suasenha';
 
 
-# 2-5.2ª) Finalizando:
+2-5.2ª) Finalizando:
 
 MariaDB [mysql]> show grants for'root'@'%';  
 MariaDB [mysql]> flush privileges;
 
 
-# 2-6ª) Passo - Reinicie o mysqld:
+2-6ª) Passo - Reinicie o mysqld:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
 
 
-# 2-7ª) Logando no Mysql
+2-7ª) Logando no Mysql
 
 bash-4.4$ su -c "mysql -p"
 ou
@@ -122,7 +124,8 @@ bash-4.4$ su -c "mysql -h localhost -u root -p"
 
 ##################################################################################################
 
-# 3) Fazendo importação e exportacao de arquivos TXT's, correspondentes a uma tabela para MariaDB(Mysql). Os dados do arquivo TXT serão os dados abaixo:
+3) Fazendo importação e exportacao de arquivos TXT's, correspondentes a uma
+tabela para MariaDB(Mysql). Os dados do arquivo TXT serão os dados abaixo:
 
 01; Boi Preto; 2000-02-29
 02; Sol Nascente; 2009-10-01
@@ -131,7 +134,7 @@ bash-4.4$ su -c "mysql -h localhost -u root -p"
 05; Nossa Senhora; 2011-06-22
 
 
-# 3-1ª) Passo - Vamos criar o arquivo contendo os dados no diretório do seu usuário comum:
+3-1ª) Passo - Vamos criar o arquivo contendo os dados no diretório do seu usuário comum:
 
 bash-4.4$ cat >~/cadastros.txt<<EOF
 01; Boi Preto; 2000-02-29
@@ -142,7 +145,7 @@ bash-4.4$ cat >~/cadastros.txt<<EOF
 EOF
 
 
-# 3-2ª) Passo - Vamos logar no MariaDB:
+3-2ª) Passo - Vamos logar no MariaDB:
 
 bash-4.4$ su -c "mysql -h localhost -u root -p"
 Senha: <digite a senha do admin root>.
@@ -152,7 +155,7 @@ Enter password: <digite a senha do seu MariaDB(Mysql)>
 pressione ENTER
 
 
-# 3-2.1ª) Passo - Caso você tenha o sudo ativado em seu Slackware faça:
+3-2.1ª) Passo - Caso você tenha o sudo ativado em seu Slackware faça:
 
 bash-4.4$ sudo mysql -h localhost -u root -p
 Senha: <digite a senha do admin root>.
@@ -167,13 +170,13 @@ pressione ENTER
 MariaDB [(none)]>
 
 
-# 3-3ª) Passo -  Logado no MariaDB vamos criar o banco  teste:
+3-3ª) Passo -  Logado no MariaDB vamos criar o banco  teste:
 
 MariaDB [(none)]> create database if not exists teste;                                                                                                                       
 Query OK, 1 row affected (0.00 sec)
 
 
-# 3-3.1ª) Passo - Listando o banco de dados criado:
+3-3.1ª) Passo - Listando o banco de dados criado:
 
 MariaDB [(none)]> show databases;
 +--------------------+
@@ -187,7 +190,7 @@ MariaDB [(none)]> show databases;
 4 rows in set (0.00 sec)
 
 
-# 3-4ª) Passo - Entrando no banco teste para criarmos a tabela:
+3-4ª) Passo - Entrando no banco teste para criarmos a tabela:
 
 MariaDB [(none)]> use teste if exists;
 Database changed
@@ -195,7 +198,7 @@ Database changed
 MariaDB [teste]>
 
 
-# 3-5ª) Passo - Criaremos a tabela cadastros:
+3-5ª) Passo - Criaremos a tabela cadastros:
 
 MariaDB [teste]> create table if not exists cadastros( \
      `id_faz` int unique not null primary key, \
@@ -205,7 +208,7 @@ MariaDB [teste]> create table if not exists cadastros( \
 Query OK, 0 rows affected (0.00 sec)
 
 
-# 3-5.1ª) Passo - Listando a tabela criada:
+3-5.1ª) Passo - Listando a tabela criada:
 
 MariaDB [teste]> show tables;
 +-----------------+
@@ -216,7 +219,7 @@ MariaDB [teste]> show tables;
 1 row in set (0.00 sec)
 
 
-# 3-5.2ª) Passo - Listando a estrutura da tabela criada:
+3-5.2ª) Passo - Listando a estrutura da tabela criada:
 
 MariaDB [teste]> show create table cadastros\G
 *************************** 1. row ***************************
@@ -232,7 +235,7 @@ Create Table: CREATE TABLE `cadastros` (
 1 row in set (0.00 sec)
 
 
-# 3-6ª) Passo - Importando o arquivo cadastros.txt para o banco teste:
+3-6ª) Passo - Importando o arquivo cadastros.txt para o banco teste:
 
 MariaDB [teste]> load data local infile "cadastros.txt" into table cadastros fields terminated by ';';
 Query OK, 5 rows affected (0.01 sec)                 
@@ -241,7 +244,7 @@ Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
 Onde terminated by é o separador dos dados dentro do arquivo.
 
 
-# 3-6.1ª) Passo - Importando o arquivo cadastros.txt sem logar no banco teste:
+3-6.1ª) Passo - Importando o arquivo cadastros.txt sem logar no banco teste:
 
 MariaDB [(none)]> load data local infile "cadastros.txt" into table teste.cadastros \
 fields terminated by ';';
@@ -249,7 +252,7 @@ Query OK, 5 rows affected (0.01 sec)
 Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
 
 
-# 3-6.2ª) Passo - Importando o arquivo cadastros.txt sem logar no banco teste ignorando a primeira linha:
+3-6.2ª) Passo - Importando o arquivo cadastros.txt sem logar no banco teste ignorando a primeira linha:
 
 MariaDB [(none)]> load data local infile "cadastros.txt" into table teste.cadastros \ 
 fields terminated by ';' ignore 1 lines;
@@ -257,7 +260,7 @@ Query OK, 4 rows affected (0.00 sec)
 Records: 4  Deleted: 0  Skipped: 0  Warnings: 0
 
 
-# 3-6.3ª) Passo - Listaremos os dados inseridos na tabela:
+3-6.3ª) Passo - Listaremos os dados inseridos na tabela:
 
 MariaDB [(none)]> select * from teste.cadastros;
 +--------+----------------+-------------+
@@ -271,7 +274,7 @@ MariaDB [(none)]> select * from teste.cadastros;
 4 rows in set (0.00 sec)
 
 
-# 3-7ª) Passo - Listaremos os dados inseridos na tabela:
+3-7ª) Passo - Listaremos os dados inseridos na tabela:
 
 MariaDB [teste]> select *from cadastros;
 +--------+----------------+-------------+
@@ -286,7 +289,7 @@ MariaDB [teste]> select *from cadastros;
 5 rows in set (0.00 sec)
 
 
-# 3-7.1ª) Passo - Deletando a linha que contem o id_faz=2 da tabela cadastros:
+3-7.1ª) Passo - Deletando a linha que contem o id_faz=2 da tabela cadastros:
 
 MariaDB [teste]> delete from cadastros where id_faz=2;
 Query OK, 1 row affected (0.00 sec)                                                                            
@@ -303,14 +306,14 @@ MariaDB [teste]> select *from cadastros;
 4 rows in set (0.00 sec)
 
 
-# 3-7.2ª) Passo - Reinserindo o dado excluido:
+3-7.2ª) Passo - Reinserindo o dado excluido:
 
 MariaDB [teste]> insert into cadastros(id_faz,nome_faz,data_compra) \
 values("2", "Sol Nascente", "2009-10-01");
 Query OK, 1 row affected (0.00 sec)
 
 
-# 3-7.3ª) Passo - Listando os dados da tabela:
+3-7.3ª) Passo - Listando os dados da tabela:
 
 MariaDB [teste]> select *from cadastros;
 +--------+---------------+-------------+
@@ -324,14 +327,14 @@ MariaDB [teste]> select *from cadastros;
 +--------+---------------+-------------+
 
 
-# 3-8ª) Passo - Fazendo um update do campo nome_faz na tabela cadastros:
+3-8ª) Passo - Fazendo um update do campo nome_faz na tabela cadastros:
 
 MariaDB [teste]> update cadastros set nome_faz="Agua Bonita" where id_faz=5;
 Query OK, 1 row affected (0.00 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
 
-# 3-8.1ª) Passo - Listando os dados da tabela:
+3-8.1ª) Passo - Listando os dados da tabela:
 
 MariaDB [teste]> select *from cadastros;
 +--------+---------------+-------------+
@@ -356,10 +359,12 @@ nome_faz="Agua Bonita"
 
 ##################################################################################################
 
-# 4ª) Passo - Agora vamos realizar os mesmos passos acima mas com auto_increment. Primeiro vamos exportar os dados importados em nossa tabela cadastros, para um novo arquivo que será salvo em  /tmp chamado exportacao.txt:
+4ª) Passo - Agora vamos realizar os mesmos passos acima mas com auto_increment.
+Primeiro vamos exportar os dados importados em nossa tabela cadastros,
+para um novo arquivo que será salvo em  /tmp chamado exportacao.txt:
 
 
-# 4-1ª) Passo - Exportando os dados da tabela cadastros para a pasta /tmp/ no arquivo exportacao.txt:
+4-1ª) Passo - Exportando os dados da tabela cadastros para a pasta /tmp/ no arquivo exportacao.txt:
 
 MariaDB [teste]> select id_faz, nome_faz, data_compra into outfile "/tmp/exportacao.txt" \
 fields terminated by ';' from cadastros;
@@ -420,7 +425,7 @@ bash-4.4$ cat /tmp/exportacao.txt
 5; Nossa Senhora;2011-06-22;
 
 
-Faça:
+Então faça:
 
 bash-4.4$ su -c "sed -i 's/^.//g;' /tmp/exportacao.txt" && cat /tmp/exportacao.txt"
 ; Boi Preto;2000-02-29;
@@ -459,7 +464,7 @@ Depois que você criou o arquivo format.sed vamos dar permissão de execução:
 
 bash-4.4$ chmod a+x format.sed
 
-Faça:
+Então faça:
 
 bash-4.4$ su -c "cat /tmp/exportacao.txt | ./format.sed > /tmp/formatados.txt \
 && cat /tmp/formatados.txt"
@@ -496,7 +501,11 @@ bash-4.4$ cat /tmp/exportacao.txt
  Nossa Senhora;2011-06-22;
 
 
-# 4-3ª) Passo - Precisamos adicionar os separadores que estariam após os id's, que foi deixado de lado, precisamos colocar os separadores ";", antes dos nomes, pois sem estes separadores todo nosso trabalho, vai por água abaixo quando importar o arquivo para a tabela devolta. Então digite o comando abaixo para formatar o arquivo:
+4-3ª) Passo - Precisamos adicionar os separadores que estariam após os id's,
+que foi deixado de lado, precisamos colocar os separadores ";",
+antes dos nomes, pois sem estes separadores todo nosso trabalho,
+vai por água abaixo quando importar o arquivo para a tabela devolta.
+Então digite o comando abaixo para formatar o arquivo:
 
 bash-4.4$ su -c "sed -i 's/^/;/g;' /tmp/exportacao.txt && cat /tmp/exportacao.txt"
 ; Boi Preto;2000-02-29;
@@ -506,13 +515,14 @@ bash-4.4$ su -c "sed -i 's/^/;/g;' /tmp/exportacao.txt && cat /tmp/exportacao.tx
 ; Nossa Senhora;2011-06-22;
 
 
-# 4-3.1ª) Passo - Vamos deletar nossa tabela cadastros, para recriar novamente mas com auto_increment.
+4-3.1ª) Passo - Vamos deletar nossa tabela cadastros,
+para recriar novamente mas com auto_increment.
 
 MariaDB [teste]> drop table if exists cadastros;
 Query OK, 0 rows affected (0.04 sec)
 
 
-# 4-3.2ª) Passo - Recriando a tabela cadastros com auto_increment:
+4-3.2ª) Passo - Recriando a tabela cadastros com auto_increment:
 
 MariaDB [teste]> create table if not exists cadastros( \
     `id_faz` int auto_increment primary key, \
@@ -522,7 +532,7 @@ MariaDB [teste]> create table if not exists cadastros( \
 Query OK, 0 rows affected (0.01 sec)
 
 
-# 4-3.3ª) Passo - Listando a estrutura da tabela criada:
+4-3.3ª) Passo - Listando a estrutura da tabela criada:
 
 MariaDB [teste]> show create table cadastros\G
 *************************** 1. row ***************************
@@ -546,7 +556,16 @@ Query OK, 5 rows affected (0.04 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 
 
-# 4-3.4ª) Passo - Caso tenha apenas alterado o campo id_faz para auto_increment, precisamos fazer um truncate na nossa tabela cadastros, simplesmente por que criamos os campos nome_faz como unique, caso contrário, poderíamos fazer apenas a importação, novamente pois ficaria com id's auto_increment de 6 a 10. Mas os nomes e datas ficariam redundantes, isso se você esta fazendo, uma reimportação, dos dados que foram exportados da mesma tabela, onde o campo nome seja unique, ou até mesmo de outra tabela que possua, um nome gravado no campo, e seja o mesmo que ja esta gravado na tabela atual, caso contrário tudo se sucederá perfeitamente.
+4-3.4ª) Passo - Caso tenha apenas alterado o campo id_faz para auto_increment,
+precisamos fazer um truncate na nossa tabela cadastros,
+simplesmente por que criamos os campos nome_faz como unique, 
+caso contrário, poderíamos fazer apenas a importação,
+novamente pois ficaria com id's auto_increment de 6 a 10. 
+Mas os nomes e datas ficariam redundantes, isso se você esta fazendo,
+uma reimportação, dos dados que foram exportados da mesma tabela,
+onde o campo nome seja unique, ou até mesmo de outra tabela que possua, 
+um nome gravado no campo, e seja o mesmo que ja esta gravado na tabela atual,
+caso contrário tudo se sucederá perfeitamente.
 
 
 MariaDB [teste]> truncate table cadastros;
@@ -557,7 +576,8 @@ MariaDB [teste]> select * from cadastros;
 Empty set (0.00 sec)
 
 
-# 4-3.5ª) Passo - Importando novamente o arquivo /tmp/exportacao.txt, ja formatado na sessao 3 passo 10.1ª, para o banco teste.
+4-3.5ª) Passo - Importando novamente o arquivo /tmp/exportacao.txt,
+ja formatado na sessao 3 passo 10.1ª, para o banco teste.
 
 
 MariaDB [teste]> load data local infile "/tmp/exportacao.txt" \
@@ -581,9 +601,9 @@ MariaDB [teste]> select *from cadastros;
 
 ##################################################################################################
 
-# Liberar 3306 do MySQL no Slackware:
+Liberar 3306 do MySQL no Slackware:
 
-# 2ª) Passo - No arquivo /etc/rc.d/rc.mysqld comente a linha: 
+2ª) Passo - No arquivo /etc/rc.d/rc.mysqld comente a linha: 
 
 SKIP="--skip-networking"
 
@@ -592,25 +612,27 @@ Deixando-a assim:
 #SKIP="--skip-networking"
 
 
-# 1ª) Passo - Digite uma das duas linhas abaixo no terminal: 
+1ª) Passo - Digite uma das duas linhas abaixo no terminal: 
 
 bash-4.4$ su -c "sed -i '/SKIP/ s/^/#/g;' /etc/rc.d/rc.mysqld"
 ou
 bash-4.4$ su -c "sed -i '32s/^/#/g;' /etc/rc.d/rc.mysqld"
 
 
-# 2ª) Passo - Reinicie o mysqld:
+2ª) Passo - Reinicie o mysqld:
 
 bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
 
 ##################################################################################################
 
-# Limpando o terminal do Mysql:
+Limpando o terminal do Mysql:
 
 MariaDB [teste]> \! clear
 
 
-# Usando o like no Mysql. Primeiro temos que ver como nossos dados estão gravados na tabela:
+Usando o like no Mysql:
+
+Primeiro temos que ver como nossos dados estão gravados na tabela:
 
 MariaDB [teste]> select * from cadastros;
 +--------+----------------+-------------+
@@ -625,7 +647,8 @@ MariaDB [teste]> select * from cadastros;
 5 rows in set (0.00 sec)
 
 
-# Note que a um espaço antes dos ID's e Nomes. O caracter '%' na consulta abaixo indica que estamos procurando nomes que possuem a incial Bo.
+Note que a um espaço antes dos ID's e Nomes.
+O caracter '%' na consulta abaixo indica que estamos procurando nomes que possuem a incial Bo.
 
 MariaDB [teste]> select nome_faz from cadastros where nome_faz like ' Bo%';
 +------------+
@@ -636,7 +659,7 @@ MariaDB [teste]> select nome_faz from cadastros where nome_faz like ' Bo%';
 1 row in set (0.00 sec)
 
 
-# Este comando abaixo lista todas as ocorrencias de nomes onde exista Bo:
+Este comando abaixo lista todas as ocorrencias de nomes onde exista Bo:
 
 MariaDB [teste]> select nome_faz from cadastros where nome_faz like '%Bo%';
 +---------------+
@@ -647,7 +670,7 @@ MariaDB [teste]> select nome_faz from cadastros where nome_faz like '%Bo%';
 +---------------+
 
 
-# Este comando abaixo lista todos os dados cadastrados na ocorencia que começa com Bo:
+Este comando abaixo lista todos os dados cadastrados na ocorencia que começa com Bo:
 
 MariaDB [teste]> select * from cadastros where nome_faz like ' Bo%';
 +--------+------------+-------------+
@@ -658,7 +681,8 @@ MariaDB [teste]> select * from cadastros where nome_faz like ' Bo%';
 1 row in set (0.00 sec)
 
 
-# O caracter '_' na consulta abaixo indica que estamos procurando nomes nos quais a  letra 'o' é a segunda letra do nome.
+O caracter '_' na consulta abaixo indica que estamos procurando
+nomes nos quais a  letra 'o' é a segunda letra do nome.
 
 MariaDB [teste]> select * from cadastros where nome_faz like ' _o%';
 +--------+----------------+-------------+
@@ -671,7 +695,7 @@ MariaDB [teste]> select * from cadastros where nome_faz like ' _o%';
 3 rows in set (0.00 sec)
 
 
-# A consulta abaixo buscou nomes em que a última letra é o caractere 'a'.
+A consulta abaixo buscou nomes em que a última letra é o caractere 'a'.
 
 MariaDB [teste]> select * from cadastros where nome_faz like '%a';
 +--------+----------------+-------------+
@@ -683,7 +707,8 @@ MariaDB [teste]> select * from cadastros where nome_faz like '%a';
 2 rows in set (0.00 sec)
 
 
-# A função Left retorna os primeiros caracteres à esquerda de uma string. Conforme abaixo:
+A função Left retorna os primeiros caracteres à esquerda de uma string.
+Conforme abaixo:
 
 MariaDB [teste]> select left(nome_faz,3) from cadastros;
 +------------------+
@@ -698,7 +723,8 @@ MariaDB [teste]> select left(nome_faz,3) from cadastros;
 5 rows in set (0.00 sec)
 
 
-# A função Right retorna os últimos caracteres à direita de uma string. Conforme abaixo:
+A função Right retorna os últimos caracteres à direita de uma string.
+Conforme abaixo:
 
 MariaDB [teste]> select right(nome_faz,3) from cadastros;
 +-------------------+
@@ -713,7 +739,7 @@ MariaDB [teste]> select right(nome_faz,3) from cadastros;
 5 rows in set (0.00 sec)
 
 
-# Importando os dados no banco sem logar
+Importando os dados no banco sem logar
 
 MariaDB [(none)]> load data local infile "cadastros.txt" into table teste.cadastros fields \
 terminated by ';';
@@ -732,76 +758,77 @@ MariaDB [(none)]> create table if not exists teste.person( \
 Query OK, 0 rows affected (0.03 sec)
 
 
-# Fazendo as inserçoes:
+Fazendo as inserçoes:
 
 bash-4.4$ mysql -u root -p --database teste < personcadastros.sql
 
 
-# Listando nomes em ordem alfabetica:
+Listando nomes em ordem alfabetica:
 
 MariaDB [teste]> select *from person order by name;
 
 
-# Listando todos os contatos com id diferente de 1:
+Listando todos os contatos com id diferente de 1:
 
 MariaDB [teste]> select *from person where id_faz <> 1;
 
 
-# Listando e fazendo junção da tabela pessoa com a tabela cadastros e ordena nome onde id é igual a id:
+Listando e fazendo junção da tabela pessoa com a tabela
+cadastros e ordena nome onde id é igual a id:
 
 MariaDB [teste]> select *from person inner join cadastros on \
 (person.person_id = cadastros.id_faz) order by name;
 
 
-# Listando quantas pessoas trabalham em cada fazenda:
+Listando quantas pessoas trabalham em cada fazenda:
 
 MariaDB [teste]> select person.name, count(person.person_id) as persons from person \
 inner join cadastros on cadastros.id_faz = person.id_faz group by person.name;
 
 
-# Altera a idade de geraldo frança que foi inserida de forma errada
+Altera a idade de geraldo frança que foi inserida de forma errada
 
 MariaDB [teste]> update person set name = 'Geraldo França', age = age-7 where person_id = 6;
 
 
-# Lista Geraldo França pelo person_id
+Lista Geraldo França pelo person_id
 
 MariaDB [teste]> select *from person where person_id = 6;
 
 
-# Lista Geraldo França por select count caso o cadastro alterado seja o ultimo id:
+Lista Geraldo França por select count caso o cadastro alterado seja o ultimo id:
 
 MariaDB [teste]> select *from person where person_id = (select count(*) from person);
 
 
-# Lista Marcelo Nogueira subtraindo pelo ultimo id:
+Lista Marcelo Nogueira subtraindo pelo ultimo id:
 
 MariaDB [teste]> select *from person where person_id = ((select count(*) from person)-3);
 
 
-# Lista pessoa pelo nome na tabela person:
+Lista pessoa pelo nome na tabela person:
 
 MariaDB [teste]> select *from person where name='Marcelo Nogueira';
 
 
-# Lista todos os nomes da tabela person:
+Lista todos os nomes da tabela person:
 
 MariaDB [teste]> select *from person where name like '%';
 
 
-# Retorna ambos os registros exceto registos que começan com Marc:
+Retorna ambos os registros exceto registos que começan com Marc:
 
 MariaDB [teste]> select *from person where name not like 'Marc%';
 ou
 MariaDB [teste]> select *from person where name not like 'marc%';
 
 
-# Conta a quantidade de pessoas cadastradas na tabela person:
+Conta a quantidade de pessoas cadastradas na tabela person:
 
 MariaDB [teste]> select count(*) as total from person;
 
 
-# Conta a quantidade de pessoas listando a data de cadastro:
+Conta a quantidade de pessoas listando a data de cadastro:
 
 MariaDB [teste]> select name,(str_to_date(date_person,'%Y-%m-%d %H:%i:%s')) \
 as data_cad, (select count(*) from person) as total from person;
@@ -810,7 +837,7 @@ MariaDB [teste]> select name,(date_format(date_person,'%Y-%m-%d %H:%i:%s')) \
 as data_cad, (select count(*) from person) as total from person;
 
 
-# Backup do banco com os dados data hora e log:
+Backup do banco com os dados data hora e log:
 
 export data=$(date +%a%H%M%S%d%m%y)
 export sqlname="backup_$data.sql"
@@ -820,35 +847,35 @@ bash-4.4$ mysqldump --databases <dbname> --routines --single-transaction \
 --result-file="$sqlname" -v -h localhost -u root -p -P 3306  2>> $logname
 
 
-# Esportando uma unica tabela sem excluir (create table):
+Esportando uma unica tabela sem excluir (create table):
 
 bash-4.4$ mysqldump -h localhost -u root -p --extended-insert \
 --quick <dbname> <tabela> > mytable.sql
 
 
-# Esportando uma unica tabela excluindo (create table):
+Esportando uma unica tabela excluindo (create table):
 
 bash-4.4$ mysqldump -h localhost -u root -p --extended-insert --quick \
 --no-create-info <dbname> <tabela> > mytable.sql
 
 
-# Backup de uma tabela especifica:
+Backup de uma tabela especifica:
 
 bash-4.4$ mysqldump -u root -p --databases <dbname> <tabela> > mytable.sql
 
 
-# Backup de duas tabelas especifica chamada tabela1 e tabela2:
+Backup de duas tabelas especifica chamada tabela1 e tabela2:
 
 bash-4.4$ mysqldump -u root -p --databases <dbname> tabela1 tabela2 > tab1_tab2.sql
 
 
-# Backup de todas as tabelas com exceção de uma:
+Backup de todas as tabelas com exceção de uma:
 
 bash-4.4$ mysqldump -u root -p --databases <dbname> \
 --ignore-table=<dbname>.<nometabela> > backup.sql
 
 
-# Backup de todas as tabelas com exceção de duas ou mais:
+Backup de todas as tabelas com exceção de duas ou mais:
 
 bash-4.4$ mysqldump -u root -p --databases <dbname> \
 --ignore-table=<dbname>.{tabela1,tabela2,tabela3} > backup.sql
@@ -865,7 +892,7 @@ bash-4.4$ mysqldump --all-databases > ~/mysql_all.sql -v -h localhost -u root -p
 
 ##################################################################################################
 
-# Fazendo backup das bases de dados do MySQL
+Fazendo backup das bases de dados do MySQL
 
 Uma das grandes dúvidas de qualquer administrador iniciante é como fazer backup das bases de dados
 do MySQL, já que os dados são gravados e acessados através do servidor MySQL e não diretamente
@@ -1005,7 +1032,7 @@ precisar parar o servidor é uma grande vantagem em um ambiente de produção.
 
 ##################################################################################################
 
-# Resolvendo problemas de caracteres acentuados no MySQL
+Resolvendo problemas de caracteres acentuados no MySQL
 
 Antes de importar os dados para a sua base MySQL, defina um collation padrão. No Brasil o
 Latin1 é o mais utilizado, então o CHARSET (codificação de caracteres) padrão na
