@@ -2388,4 +2388,3 @@ create_iso ${LIVE_STAGING}
 
 # Clean out the mounts etc:
 cleanup
-
