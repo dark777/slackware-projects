@@ -348,7 +348,7 @@ Altere o diretório /var/log para o qual você deseja saber.
 
 #Listando tamanho de arquivos
 
-bash-4.3# echo filetam=${filetam:-$(ls -lh arquivo1.txt)}
+bash-4.3# echo filetam=${filetam:-$(ls -lh arquivo1.txt | awk '{print $5}')}
 filetam=1.9kb
 
 #Listando tamanho de diretórios
