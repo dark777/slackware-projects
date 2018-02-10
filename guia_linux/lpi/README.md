@@ -11,5 +11,12 @@ http://virtx.com.br/simulado/simulado-lpi-treinamento-linux/lpic-ingles/
 http://virtx.com.br/simulado/simulado-lpi-treinamento-linux/lpic-ingles/simulado-lpic-101-ingles/
 http://virtx.com.br/simulado/simulado-lpi-treinamento-linux/lpic-ingles/simulado-lpic-102-ingles/
 
+# Outros Simulados
+http://www.armbrust.eti.br/
+https://www.udemy.com/simulado-certificacao-lpic-1-e-comptia-linux/?couponCode=MUNDOUNIX
+http://www.penguintutor.com/quiz/index.php
+http://www.penguintutor.com/software/wquiz/0.4.1/wquiz-0.4.1.tar.gz
+
+
 # Simuladores LPI
 https://www.vivaolinux.com.br/script/Programa-Simulado-LPI1
