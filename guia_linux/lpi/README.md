@@ -10,3 +10,6 @@ http://virtx.com.br/simulado/simulado-lpi-treinamento-linux/simulado-online-lpic
 http://virtx.com.br/simulado/simulado-lpi-treinamento-linux/lpic-ingles/
 http://virtx.com.br/simulado/simulado-lpi-treinamento-linux/lpic-ingles/simulado-lpic-101-ingles/
 http://virtx.com.br/simulado/simulado-lpi-treinamento-linux/lpic-ingles/simulado-lpic-102-ingles/
+
+# Simuladores LPI
+https://www.vivaolinux.com.br/script/Programa-Simulado-LPI1
