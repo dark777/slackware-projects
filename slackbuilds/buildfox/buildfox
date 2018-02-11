@@ -1,7 +1,9 @@
 #!/bin/sh
 
+LANG_SYS=${LANG_SYS:-$(locale | grep "^LC_ALL" |cut -f2 -d = | cut -f1 -d.)}
+
 # Substitute your own language:
-PKGLANG=${PKGLANG:-"pt-BR"}
+PKGLANG=${PKGLANG:-${LANG_SYS}}
 
 # Substitute your relese version:
 VERSION=${VERSION:-56.0b9}
