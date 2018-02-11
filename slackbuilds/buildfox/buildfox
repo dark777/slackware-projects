@@ -28,9 +28,9 @@ SRCDIR=${SRCDIR:-$(cd $(dirname $0); pwd)}
 
 SOURCE=${SOURCE:-${SRCDIR}/${PRGNAM}.tar.bz2}
 
-SRCURL=${SRCURL:-http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
+URL_PKG=${URL_PKG:-http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
 
-#SRCURL=${SRCURL:-https://ftp.mozilla.org/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
+#URL_PKG=${URL_PKG:-https://ftp.mozilla.org/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
 
 if [ -f ${SOURCE} ]; then 
 
@@ -42,9 +42,9 @@ elif [ ! -f ${SOURCE} ]; then
   # Check if the $SRCDIR is writable at all - if not, download to $SOURCE
   [ -w "$SRCDIR" ] ||  SOURCE="$SRCDIR/$(basename $SOURCE)"
   
-  if ! [ "x${SRCURL}" == "x" ]; then
+  if ! [ "x${URL_PKG}" == "x" ]; then
    echo "Will download file to $(dirname $SOURCE)"
-    wget -nv -T 20 "${SRCURL}" || true
+    wget -nv -T 20 "${URL_PKG}" || true
      echo "Download complete."
     
     if [ $? -ne 0 -o ! -s "${SOURCE}" ]; then
