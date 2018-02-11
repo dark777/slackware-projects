@@ -1,6 +1,6 @@
 #!/bin/sh
 
-LANG_SYS=${LANG_SYS:-$(locale | grep "^LC_ALL" |cut -f2 -d = | cut -f1 -d.)}
+LANG_SYS=${LANG_SYS:-$(locale | grep "^LC_ALL" |cut -f2 -d = | cut -f1 -d. | sed 's/_/-/g')}
 
 # Substitute your own language:
 PKGLANG=${PKGLANG:-${LANG_SYS}}
