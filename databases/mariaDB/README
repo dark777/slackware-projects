@@ -890,6 +890,26 @@ Backup de todas as bases de dados:
 
 bash-4.4$ mysqldump --all-databases > ~/mysql_all.sql -v -h localhost -u root -p -P 3306
 
+
+Backup de todas as tabelas convertendo para postgresql.
+
+# Exporta apenas os inserts de um banco de dados mysql compatível com postgresql
+bash-4.4$ mysqldump -h localhost -u root -p --compact -c -e -n -t \
+--compatible=postgresql teste > mysqlpg1.sql
+
+
+# Exporta inserts e create tables de um banco de dados mysql compatível com postgresql
+bash-4.4$ mysqldump -h localhost -u root -p --compact -c -e -n \
+--compatible=postgresql <dbname> > mysqlpg2.sql
+
+
+bash-4.4# mkdir -p /tmp/dbteste/CSV; chown -R mysql.mysql /tmp/dbteste; \
+for i in `find /var/lib/mysql/<dbname>/ -type f | \
+ sed 's/\....$//' | sort | uniq | sed 's#/var/lib/mysql/<dbname>/##'`; do \
+   mysqldump -u root -p --compact -c -e -n -t --compatible=postgresql <dbname> $i > $i.sql ; \
+   mysqldump -u root -p -t -T/tmp/dbteste/CSV <dbname> $i --fields-terminated-by=';' ; \
+done
+
 ##################################################################################################
 
 Fazendo backup das bases de dados do MySQL
@@ -1074,6 +1094,7 @@ se o CHARSET da base for ‘Latin1’ escolha o ‘iso-8859-1’.
 
 Sources:
 https://www.tutorialspoint.com/mysql/index.htm
+https://jsosic.wordpress.com/tag/mysql2pgsql/
 https://dev.mysql.com/doc/refman/5.7/en/load-data.html
 http://www.sqlines.com/oracle-to-mysql/to_date
 http://pythonclub.com.br/tutorial-postgresql.html
