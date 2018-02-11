@@ -2,7 +2,7 @@
 
 1-1ª) Passo - Instale o pacote SBo.
 
-bash-4.4$ su -c "installpkg postgresql-9.6.3-x86_64-1_SBo.tgz"
+bash-4.4$ su -c "installpkg postgresql-9.6.7-x86_64-1_SBo.tgz"
 
 
 1-2ª) Passo - Crie um usuário postgres:
