@@ -8,24 +8,26 @@ CWD=${CWD:-$(pwd)}
 
 MOZ=${MOZ:-${TMP}/firefox}
 
-# Substitute your relese version:
-VERSION=${VERSION:-59.0b8}
-
-#pkg name version
-PRGNAM=${PRGNAM:-firefox-${VERSION}}
-
-PKG=${PKG:-${TMP}/${PRGNAM}}
-
 LANG_SYS=${LANG_SYS:-$(locale | grep "^LC_ALL" |cut -f2 -d = | cut -f1 -d. | sed 's/_/-/g')}
 
 # Substitute your own language:
 PKGLANG=${PKGLANG:-${LANG_SYS}}
 
-PKG_NAME=${PKG_NAME:-${CWD}/${PRGNAM}.tar.bz2}
-#PKG_NAME=firefox-59.0b8.tar.bz2
+PKG_NAME=${PKG_NAME:-${CWD}/$(basename firefox-*.tar.bz2)}
+#PKG_NAME=firefox-60.0a1.pt-BR.linux-x86_64.tar.bz2
 
-RELEASEVER=${RELEASEVER:-$(echo ${VERSION} | cut -f 1 -d r | cut -f 1 -d b | cut -f 1 -d e)}
-#RELEASEVER=59.0
+#PKGVERSION=${PKGVERSION:-$(echo ${PKG_NAME} | cut -f2 -d - | cut -f1,2 -d.)}
+#VERSION=60.0a1
+
+# Substitute your relese version:
+VERSION=${VERSION:-60.0a1}
+
+#RELEASEVER=${RELEASEVER:-$(echo ${VERSION} | cut -f 1 -d r | cut -f 1 -d b | cut -f 1 -d e)}
+
+#pkg name version
+PRGNAM=${PRGNAM:-firefox-${VERSION}}
+
+PKG=${PKG:-${TMP}/${PRGNAM}}
 
 # Automatically determine the architecture we're building on:
 if [ -z "${ARCH}" ]; then
@@ -39,10 +41,11 @@ if [ $(id -u) -ne 0 ]; then
     echo -e "\n\e[1;34m Usuário \e[1;31m$USER\e[0m \e[1;34mnão é root\n faça login como root\n para executar o script\e[0m ..!!\n"
       su
     else
+    
+URL_PKG=${URL_PKG:-https://ftp.mozilla.org/pub/firefox/nightly/$(date +%Y)/$(date +%m)/$(date +%Y)-02-11-22-00-56-mozilla-central-l10n/firefox-${VERSION}.${PKGLANG}.linux-${ARCH}.tar.bz2}
+#URL_PKG=${URL_PKG:-https://ftp.mozilla.org/pub/firefox/nightly/$(date +%Y)/$(date +%m)/$(date +%Y)-$(date +%m)-$(date +%d)-$(date +%H)-$(date +%M)-$(date +%S)-mozilla-central-l10n/firefox-${VERSION}.${PKGLANG}.linux-${ARCH}.tar.bz2}
 
-URL_PKG=${URL_PKG:-http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
 
-#URL_PKG=${URL_PKG:-https://ftp.mozilla.org/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
 
 if [ -f ${PKG_NAME} ]; then 
 
@@ -52,7 +55,7 @@ echo "Ah, found it ${PKG_NAME} .!";
 elif [ ! -f ${PKG_NAME} ]; then
   echo "Source '$(basename ${PKG_NAME})' not available yet..."
   # Check if the $CWD is writable at all - if not, download to $PKG_NAME
-  [ -w "${CWD}" ] || ${PKG_NAME}
+  [ -w "$CWD" ] ||  PKG_NAME="$CWD/$(basename $PKG_NAME)"
   
   if ! [ "x${URL_PKG}" == "x" ]; then
    echo "Will download file to $(dirname $PKG_NAME)"
@@ -93,7 +96,7 @@ cp -ar ${CWD}/hicolor ${PKG}/usr/share/icons
 cd ${TMP}
 
 # Extract all packages tar,gz,tgz,tlz,xz,txz,bz2,tbz
-tar xfk $CWD/firefox-${VERSION}.tar.?z* || exit 1
+tar xfk $CWD/${PKG_NAME} || exit 1
 
 cp -ar ${MOZ}/* ${PKG}/usr/lib${LIBDIRSUFFIX}/firefox-${VERSION}
 
@@ -120,7 +123,7 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \;
 
-  makepkg -l y -c n ../mozilla-firefox-${PKGLANG}_${VERSION}-${ARCH}-${BUILD}.txz
+ makepkg -l y -c n ../mozilla-firefox-${PKGLANG}_${VERSION}-${ARCH}-${BUILD}.txz
 
 mv  ../mozilla-firefox-${PKGLANG}_${VERSION}-${ARCH}-${BUILD}.txz ${CWD}
 
