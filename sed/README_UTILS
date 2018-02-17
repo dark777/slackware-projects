@@ -739,7 +739,63 @@ SWP=/dev/zram0
 bash-4.3$ echo SWPKB=$(fdisk -s $SWP)" KB"
 SWPKB=2097152 KB
 
-----------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------
+
+Pegando endereços registrados nas placas de rede:
+
+bash-4.3$ echo IP=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $2}')
+IP=000.000.000.000
+
+bash-4.3$ echo NETMASK=$(ifconfig wlan0 | grep netmask|awk '{print $6}'|cut -d ":" -f2 2> /dev/null)
+bash-4.3$ echo NETMASK=$(ifconfig eth0  | grep mask|awk '{print $4}'|cut -d ":" -f 2)
+NETMASK=000.000.000.000
+
+bash-4.3$ echo BROADCAST=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $6}')
+bash-4.3$ echo BROADCAST=$(ifconfig wlan0|grep broadcast|awk '{print $6 }'|cut -d ":" -f2 2> /dev/null)
+BROADCAST=000.000.000.000
+
+bash-4.3$ echo GATEWAY=$(route | grep -w 'default'| awk '{print echo $2}')
+GATEWAY=saganet
+
+bash-4.3$ ifconfig eth0| grep -i inet| cut -b 2- | sed 's/inet/\ninet->/g;s/ netmask/\nnetmask->/g;s/ broadcast/\nbroadcast->/g;'
+       
+inet-> 000.000.000.000 
+netmask-> 000.000.000.0 
+broadcast-> 000.000.000.000
+
+bash-4.3$ echo NAMESERVER=$(cat /etc/resolv.conf |grep name |awk '{ print $2 }')
+NAMESERVER=000.000.0.0
+
+bash-4.3$ echo VERI_ETH0=$(ifconfig |grep eth0|awk '{print $1}'|wc -l)
+VERI_ETH0=1
+
+
+# Trocar o nome do computador
+# Só é preciso mudar a informação em dois arquivos /etc/hosts e /etc/hostname.
+# Se vc quiser que sua máquina se chame "anonymous" é só usar o comando abaixo:
+
+MUDAHOSTNAME=$(hostname) && sed -i s"|$(echo $a)|anonymous|"g /etc/host{s,name}
+
+# para mudar por outro nome basta trocar a palavra "anonymous" entre os travoes reinicie a máquina.
+#Código: [Selecionar]
+
+
+Pegando Seu IP Externo:
+
+curl ifconfig.me
+curl icanhazip.com
+curl ident.me
+curl ipecho.net/plain
+curl whatismyip.akamai.com
+curl tnx.nl/ip
+curl myip.dnsomatic.com
+curl ip.appspot.com
+curl ip.telize.com
+curl curlmyip.com
+curl -s checkip.dyndns.org | sed 's/.*IP Address: \([0-9\.]*\).*/\1/g'
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
 ## mostra a quantidade de pacotes no slackware
 
 bash-4.3$ echo pkgs=$(ls -1 /var/log/packages | wc -l)
@@ -1006,60 +1062,6 @@ onde o conteudo do arquivo kernel.release:
 4.6.0-999-lowlatency 
 
 --------------------------------------------------------------------------------------------------------------------
-Pegando endereços registrados nas placas de rede:
-
-bash-4.3$ echo IP=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $2}')
-IP=000.000.000.000
-
-bash-4.3$ echo NETMASK=$(ifconfig wlan0 | grep netmask|awk '{print $6}'|cut -d ":" -f2 2> /dev/null)
-bash-4.3$ echo NETMASK=$(ifconfig eth0  | grep mask|awk '{print $4}'|cut -d ":" -f 2)
-NETMASK=000.000.000.000
-
-bash-4.3$ echo BROADCAST=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $6}')
-bash-4.3$ echo BROADCAST=$(ifconfig wlan0|grep broadcast|awk '{print $6 }'|cut -d ":" -f2 2> /dev/null)
-BROADCAST=000.000.000.000
-
-bash-4.3$ echo GATEWAY=$(route | grep -w 'default'| awk '{print echo $2}')
-GATEWAY=saganet
-
-bash-4.3$ ifconfig eth0| grep -i inet| cut -b 2- | sed 's/inet/\ninet->/g;s/ netmask/\nnetmask->/g;s/ broadcast/\nbroadcast->/g;'
-       
-inet-> 000.000.000.000 
-netmask-> 000.000.000.0 
-broadcast-> 000.000.000.000
-
-bash-4.3$ echo NAMESERVER=$(cat /etc/resolv.conf |grep name |awk '{ print $2 }')
-NAMESERVER=000.000.0.0
-
-bash-4.3$ echo VERI_ETH0=$(ifconfig |grep eth0|awk '{print $1}'|wc -l)
-VERI_ETH0=1
-
-
-# Trocar o nome do computador
-# Só é preciso mudar a informação em dois arquivos /etc/hosts e /etc/hostname.
-# Se vc quiser que sua máquina se chame "anonymous" é só usar o comando abaixo:
-
-MUDAHOSTNAME=$(hostname) && sed -i s"|$(echo $a)|anonymous|"g /etc/host{s,name}
-
-# para mudar por outro nome basta trocar a palavra "anonymous" entre os travoes reinicie a máquina.
-#Código: [Selecionar]
-
-
-Pegando Seu IP Externo:
-
-curl ifconfig.me
-curl icanhazip.com
-curl ident.me
-curl ipecho.net/plain
-curl whatismyip.akamai.com
-curl tnx.nl/ip
-curl myip.dnsomatic.com
-curl ip.appspot.com
-curl ip.telize.com
-curl curlmyip.com
-curl -s checkip.dyndns.org | sed 's/.*IP Address: \([0-9\.]*\).*/\1/g'
-
---------------------------------------------------------------------------------------------------------------------------------------
 
 sed formatando CPF, CNPJ e datas
 
