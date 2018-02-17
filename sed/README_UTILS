@@ -942,28 +942,38 @@ UTSVERSION= Thu Aug 11 10:28:29 CDT 2016
 bash-4.3$ echo COMPILEBY=$(grep "LINUX_COMPILE_BY" /usr/src/linux/include/generated/compile.h|awk '{print $3}'|sed 's/\"//g')
 COMPILEBY=root
 
-#pega numero da versao do pacote do kernel 4.9.40
-bash-4.3$ echo KVERSION=${KVERSION:-$(echo /var/log/packages/kernel-generic-* | rev | cut -f 3 -d - | rev )}
+
+#pega numero da versao do pacote do kernel 4.9.44
+bash-4.3$ echo KVERSION=${KVERSION:-$(echo /var/log/packages/kernel-generic-* | cut -f 3 -d -)}
 KVERSION=4.9.44
 
+
 #pega a arquitetura do pacote em /var/log/packages
-bash-4.3$ echo ARCHKERNEL=${BKERNEL:-$(echo /var/log/packages/kernel-generic-* | rev | cut -f 2 -d - | rev)}
+
+bash-4.3$ echo ARCHKERNEL=${ARCHKERNEL:-$(echo /var/log/packages/kernel-generic-* | cut -f 4 -d -)}
 ARCHKERNEL=x86_64
 
+
 #pega a versao do firmware do pacote em /var/log/packages
+
 bash-4.3$ echo FIRMWARE=${FIRMWARE:-$(echo /var/log/packages/kernel-firmware-* | rev | cut -f 3 -d - | rev )}
 FIRMWARE=20170626git
 
+
 #pega a arquitetura do firmware do pacote em /var/log/packages
-bash-4.3$ echo ARCHFIRM=${ARCHFIRM:-$(echo /var/log/packages/kernel-firmware-* | rev | cut -f 2 -d - | rev)}
+
+bash-4.3$ echo ARCHFIRM=${ARCHFIRM:-$(echo /var/log/packages/kernel-firmware-* | cut -f 4 -d -)}
 ARCHFIRM=noarch
 
+
 #pega a arquitetura do kernel source em /var/log/packages
-bash-4.3$ echo SKERNEL=${SKERNEL:-$(echo /var/log/packages/kernel-source-* | rev | cut -f 2 -d - | rev)}
+
+bash-4.3$ echo SKERNEL=${SKERNEL:-$(echo /var/log/packages/kernel-source-* | cut -f 4 -d -)}
 SKERNEL=noarch
 
 
 #pega o nome e a extensao do pacote.
+
 bash-4.3$ echo NAME=$(echo php* |sed -re "s/(.*\/)(.*.t[blxg]z)$/\2/")
 NAME=phpmyadmin-4.7.5-noarch-1_slonly.txz
 
