@@ -33,16 +33,28 @@ quantas pessoas trabalham em cada fazenda.
 */
 select person.name, count(person.person_id) as persons from person inner join cadastros on cadastros.id_faz = person.id_faz group by person.name; 
 
-/* altera a idade de geraldo frança que foi inserida de forma errada */
+/* altera a idade de geraldo frança que foi inserida de forma errada*/
 update person set name = 'Geraldo França', age = age-7 where person_id = 6;
 
 /*lista a Geraldo França pelo person_id*/
 select *from person where person_id = 6;
 
+/*Lista ultimo id da tabela*/
+select max(person_id) from person;
+
+/* Lista primeiro id da tabela*/
+select min(person_id) from person;
+
+/*Lista primeiro usuario da tabela*/
+select * from person order by person_id asc limit 1;
+
+/*Lista ultimo usuario da tabela*/
+select * from person order by person_id desc limit 1;
+
 /*lista Geraldo França por select count caso o cadastro alterado seja o ultimo id*/
 select *from person where person_id = (select count(*) from person);
 
-/*lista Marcelo Nogueira subtraindo pelo ultimo id */
+/*lista Marcelo Nogueira subtraindo pelo ultimo id*/
 select *from person where person_id = ((select count(*) from person)-3);
 
 /*lista pessoa pelo nome*/
