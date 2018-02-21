@@ -1093,6 +1093,7 @@ se o CHARSET da base for ‘Latin1’ escolha o ‘iso-8859-1’.
 ##################################################################################################
 
 Sources:
+http://rra.etc.br/MyWorks/2010/09/07/configurar-o-mysql-no-slackware-2/
 https://linuxrede.wordpress.com/2013/06/02/permitir-conexao-remota-ao-banco-mysql/
 https://www.tutorialspoint.com/mysql/index.htm
 https://jsosic.wordpress.com/tag/mysql2pgsql/
