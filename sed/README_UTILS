@@ -254,7 +254,7 @@ sed '/id/ s/3/*/g;' /etc/inittab
 # Comenta da linha 53 a 57 e modifica tty1 em inittab
 sed '53,57s/^/#/g;/--noclear/ s/ --noclear.* / tty1 /g;' /etc/inittab
 
-# Comenta as linhas onde se encontra a teg otmiza
+# Comenta as linhas onde se encontra a tag otmiza
 sed '/otimiza/,+2 s/^/#/'
 #if [ -x /etc/rc.d/rc.otimiza ]; then
 #. /etc/rc.d/rc.otimiza dir
