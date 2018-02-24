@@ -260,7 +260,7 @@ sed '/otimiza/,+2 s/^/#/'
 #. /etc/rc.d/rc.otimiza dir
 #fi
 
-# Remove linha espaços em branco:
+# Remove espaços em branco no inicio da linha:
 
 bash-4.4$ sed 's/[ \t]*//g;' myfile.txt
 ou
