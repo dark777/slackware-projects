@@ -134,9 +134,8 @@ tar xfk nome_do_arquivo.tlz
 tar xfk nome_do_arquivo.tbz
 tar xfk nome_do_arquivo.tar.gz
 tar xfk nome_do_arquivo.tar.xz
-tar xfk nome_do_arquivo.tar.bz2
 
-# Extract all packages  tar,tgz,txz,tlz,tbz,tar.{gz,xz,bz2}
+# Extract all packages  tar,tgz,txz,tlz,tbz,tar.{gz,xz}
 
 for f in *.t*; do tar xfk $f; done
 
