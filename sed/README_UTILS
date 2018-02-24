@@ -27,7 +27,6 @@ bash-4.4# ntfslabel /dev/sdb3 Windows
 
 onde Windows será o nome de sua partição.
 
-
 # Formatando unidade para NTFS
 
 bash-4.4# mkfs.ntfs -f /dev/sdb1
