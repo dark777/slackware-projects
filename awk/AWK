@@ -48,7 +48,7 @@ f='/path/to/complex/file.1.0.1.tar.gz'
     echo "$f" | grep -q '^[/]\|^~/'
  
 ------------------------------------------------------------------------------------------------
-# Comenta as linhas onde se encontra a teg otmiza
+# Comenta as linhas onde se encontra a tag otmiza
 
 bash-4.4$ awk -i inplace '/otimiza/ {f=2} f && f-- {$0="#"$0}1' arquivo
 #if [ -x /etc/rc.d/rc.otimiza ]; then
