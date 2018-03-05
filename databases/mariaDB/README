@@ -847,13 +847,13 @@ bash-4.4$ mysqldump --databases <dbname> --routines --single-transaction \
 --result-file="$sqlname" -v -h localhost -u root -p -P 3306  2>> $logname
 
 
-Esportando uma unica tabela sem excluir (create table):
+Exportando uma unica tabela sem excluir (create table):
 
 bash-4.4$ mysqldump -h localhost -u root -p --extended-insert \
 --quick <dbname> <tabela> > mytable.sql
 
 
-Esportando uma unica tabela excluindo (create table):
+Exportando uma unica tabela excluindo (create table):
 
 bash-4.4$ mysqldump -h localhost -u root -p --extended-insert --quick \
 --no-create-info <dbname> <tabela> > mytable.sql
