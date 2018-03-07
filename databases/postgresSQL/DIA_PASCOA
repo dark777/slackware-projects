@@ -43,23 +43,23 @@ FUNCTION data_pascoa (In_ano NUMBER) RETURN DATE IS
         A   INTEGER := In_ano; -- unico parametro, o ano a se obter a data da pascoa
         M   INTEGER; -- variavel para o mes
         D   INTEGER; -- variavel para o dia
-        C   INTEGER; -- variavel para o seculo
+        S   INTEGER; -- variavel para o seculo
         I   INTEGER; -- variavel auxiliar
         J   INTEGER; -- variavel auxiliar
         K   INTEGER; -- variavel auxiliar
         L   INTEGER; -- variavel auxiliar
         N   INTEGER; -- variavel auxiliar
     BEGIN
-        C      := trunc (A / 100);
+        S      := trunc (A / 100);
         N      := A - 19 * (trunc (A / 19) );
-        K      := trunc ( (C - 17) / 25);
-        I      := C - trunc (C / 4) - trunc ( (C - K) / 3) + 19 * N + 15;
+        K      := trunc ( (S - 17) / 25);
+        I      := S - trunc (S / 4) - trunc ( (S - K) / 3) + 19 * N + 15;
         I      := I - 30 * (trunc (I / 30) );
         I      := I - (trunc (I / 28) ) * (1 - (trunc (1 / 28) ) * (trunc (29 / (I + 1) ) ) * (trunc ( (21 - N) / 11) ) );
-        J      := A + trunc (A / 4) + I + 2 - C + trunc (C / 4);
+        J      := A + trunc (A / 4) + I + 2 - S + trunc (S / 4);
         J      := J - 7 * (trunc (J / 7) );
         L      := I - J;
         M      := 3 + trunc ( (L + 40) / 44);
         D      := L + 28 - 31 * (trunc (M / 4) );
-        RETURN (TO_DATE (lpad (D, 2, 0) || lpad (M, 2, 0) || lpad (A, 4, 0), 'DDMMYYYY') );
+    RETURN (TO_DATE (lpad (D, 2, 0) || lpad (M, 2, 0) || lpad (A, 4, 0), 'DDMMYYYY') );
     END;
