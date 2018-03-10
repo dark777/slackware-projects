@@ -607,7 +607,7 @@ option is used: -vr verbose and replace
 1ª) Vamos exportar a tabela cadastros para tmp para um arquivo com o mesmo nome da tabela.
 
 MariaDB [teste]> select * into outfile "/tmp/cadastros.txt" fields terminated by ';' \
-enclosed by '"' lines terminated by '' from cadastros;
+enclosed by '"' lines terminated by ';' from cadastros;
 
 
 2ª) Vamos fazer um truncate na tabela cadastrados.
