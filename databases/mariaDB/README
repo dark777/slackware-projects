@@ -601,7 +601,7 @@ MariaDB [teste]> select *from cadastros;
 
 ##################################################################################################
 
-Importando o arquivo como plain sem fazer edições do arquivo exportado do banco de dados teste.
+Importando o arquivo exportado como plain do banco de dados teste sem fazer edições acima.
 option is used: -vr verbose and replace
 
 1ª) Vamos exportar a tabela cadastros para tmp para um arquivo com o mesmo nome da tabela.
