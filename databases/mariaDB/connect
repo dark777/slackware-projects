@@ -6,12 +6,14 @@ echo
 
 dbaccess="denied"
 until [[ $dbaccess = "success" ]]; do
+:<<CONNECT
 read -p "Digite o nome de usuario: " usuario
-read -p "Diite a senha do banco de dados: " senha
+read -p "Digite a senha do banco de dados: " senha
 
 mysql --user="$usuario" --password="$senha" 2>/dev/null
+CONNECT
 
-#mysql --user="$1" --password="$2" -e exit 2>/dev/null
+mysql --user="$1" --password="$2" -e exit 2>/dev/null
 dbstatus=`echo $?`
 if [ $dbstatus -ne 0 ]; then
 echo
