@@ -610,6 +610,13 @@ MariaDB [teste]> select * into outfile "/tmp/cadastros.txt" fields terminated by
 enclosed by '"' lines terminated by ';' from cadastros;
 
 
+Este comando acima salvaria os dados neste formato abaixo:
+
+bash-4.4$ cat /tmp/cadastros.txt
+"1";"Boi Preto";"2000-02-29";"2";"Sol Nascente";"2009-10-01";"3";"Parque Belo";"2007-03-15"; \
+"4";"Pedras Bonitas";"2017-12-12";"5";"Medeiros";"2011-06-22";
+
+
 2ª) Vamos fazer um truncate na tabela cadastrados.
 
 MariaDB [teste]> truncate table cadastros;
@@ -622,6 +629,47 @@ bash-4.4$ mysqlimport -u root -p -vr --fields-enclosed-by='\"' \
 --fields-terminated-by=';' \
 --lines-terminated-by=';' \
 teste /tmp/cadastros.txt
+
+Enter password: 
+Connecting to localhost
+Selecting database teste
+Loading data from SERVER file: /tmp/cadastros.txt into cadastros
+teste.cadastros: Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
+Disconnecting from localhost
+
+
+Realizaremos o mesmos passos acima mas agora com quebra de linha na exportação
+
+1ª) Vamos exportar a tabela cadastros para tmp para um arquivo com o mesmo nome da tabela.
+
+MariaDB [teste]> select * into outfile "/tmp/cadastros.txt" fields terminated by ';'  \
+enclosed by '"' lines terminated by '\n' from cadastros;
+Query OK, 5 rows affected (0.00 sec)
+
+
+Este comando acima salvaria os dados neste formato abaixo:
+
+bash-4.4$ cat /tmp/cadastros.txt
+"1";"Boi Preto";"2000-02-29"
+"2";"Sol Nascente";"2009-10-01"
+"3";"Parque Belo";"2007-03-15"
+"4";"Pedra Bonita";"2001-08-25"
+"5";"Nossa Senhora";"2011-06-22"
+
+
+2ª) Vamos fazer um truncate na tabela cadastrados.
+
+MariaDB [teste]> truncate table cadastros;
+Query OK, 0 rows affected (0.03 sec)
+
+
+3ª) Vamos importar como plain sem fazer alteraçoes apenas especificando os separadores.
+
+bash-4.4$ mysqlimport -u root -p -vr --fields-enclosed-by='\"' \
+--fields-terminated-by=';' \
+--lines-terminated-by='\n' \
+teste /tmp/cadastros.txt
+
 
 Enter password: 
 Connecting to localhost
