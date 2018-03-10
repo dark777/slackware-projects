@@ -670,11 +670,22 @@ bash-4.4$ mysqlimport -u root -p -vr --fields-enclosed-by='\"' \
 --lines-terminated-by='\n' \
 teste /tmp/cadastros.txt
 
+ou
+
+bash-4.4$ mysqlimport -u root -p \
+--columns=id_faz,nome_faz,data_compra --compress \
+--delete --fields-optionally-enclosed-by='"' \
+--fields-terminated-by=';' --fields-escaped-by='' \
+--lines-terminated-by='\n' --local \
+--lock-tables --verbose \
+teste /tmp/cadastros.txt
 
 Enter password: 
 Connecting to localhost
 Selecting database teste
-Loading data from SERVER file: /tmp/cadastros.txt into cadastros
+Locking tables for write
+Deleting the old data from table cadastros
+Loading data from LOCAL file: /tmp/cadastros.txt into cadastros
 teste.cadastros: Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
 Disconnecting from localhost
 
