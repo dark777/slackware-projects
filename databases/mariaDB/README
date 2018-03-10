@@ -618,16 +618,16 @@ Query OK, 0 rows affected (0.03 sec)
 
 3ª) Vamos importar como plain sem fazer alteraçoes apenas especificando os separadores.
 
-bash-4.4$ mysqlimport -u root -p -vr \
---fields-enclosed-by='\"' \
+bash-4.4$ mysqlimport -u root -p -vr --fields-enclosed-by='\"' \
 --fields-terminated-by=';' \
---lines-terminated-by='\n' teste /tmp/cadastros.txt
+--lines-terminated-by=';' \
+teste /tmp/cadastros.txt
 
 Enter password: 
 Connecting to localhost
 Selecting database teste
 Loading data from SERVER file: /tmp/cadastros.txt into cadastros
-teste.cadastros: Records: 1  Deleted: 0  Skipped: 0  Warnings: 0
+teste.cadastros: Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
 Disconnecting from localhost
 
 ##################################################################################################
