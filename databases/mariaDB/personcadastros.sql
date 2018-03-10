@@ -1,4 +1,4 @@
-/*
+
 drop table if exists person;
 
 create table if not exists teste.person(
@@ -6,10 +6,10 @@ create table if not exists teste.person(
     name varchar(50) not null,
     age integer not null,
     status varchar(20) not null,
-    id_faz integer references cadastros(id_faz) not null,
+    id_faz integer references cadastros(id_faz),
     date_person datetime not null default now()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-*/
+
 insert into person(person_id,name,age,status,id_faz) VALUES ('01', 'Geraldo França', 35, 'Comprador', '01');
 insert into person(person_id,name,age,status,id_faz) VALUES ('02', 'Agnaldo Ramos', 31, 'Vendedor', '02');
 insert into person(person_id,name,age,status,id_faz) VALUES ('03', 'Marcelo Nogueira', 42, 'Administrador', '03');

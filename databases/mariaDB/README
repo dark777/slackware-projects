@@ -752,7 +752,7 @@ MariaDB [(none)]> create table if not exists teste.person( \
     name varchar(50) not null, \
     age integer not null, \
     status varchar(20) not null, \
-    id_faz integer references cadastros(id_faz) not null, \
+    id_faz integer references cadastros(id_faz), \
     date_person datetime not null default now() \
 );
 Query OK, 0 rows affected (0.03 sec)
@@ -909,6 +909,18 @@ for i in `find /var/lib/mysql/<dbname>/ -type f | \
    mysqldump -u root -p --compact -c -e -n -t --compatible=postgresql <dbname> $i > $i.sql ; \
    mysqldump -u root -p -t -T/tmp/dbteste/CSV <dbname> $i --fields-terminated-by=';' ; \
 done
+
+##################################################################################################
+
+Outra forma mais simples de se fazer tudo isso é criar 
+um script chamado fazcadastros.sql e personcadastros.sql:
+
+MariaDB [teste]> source fazcadastros.sql
+ou
+MariaDB [teste]> \. personcadastros.sql
+
+para isso vc tem que abrir o terminal bash dentro da pasta onde se encontra os scripts sql
+e logar no seu banco de dados para fazer as importaçoes dos scripts.
 
 ##################################################################################################
 
