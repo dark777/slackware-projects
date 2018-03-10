@@ -1,10 +1,12 @@
-/*
-create table cadastros(
+
+drop table if exists cadastros;
+
+create table if not exists cadastros(
 id_faz integer primary key not null,
 nome_faz varchar(25) not null,
 data_compra date not null
 );
-*/
+
 insert into cadastros(id_faz,nome_faz,data_compra) values ('01', 'Boi Preto', '2000-02-29');
 insert into cadastros(id_faz,nome_faz,data_compra) values ('02', 'Sol Nascente', '2009-10-01');
 insert into cadastros(id_faz,nome_faz,data_compra) values ('03', 'Parque Belo', '2007-03-15');
