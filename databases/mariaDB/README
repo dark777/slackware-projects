@@ -601,6 +601,37 @@ MariaDB [teste]> select *from cadastros;
 
 ##################################################################################################
 
+Importando o arquivo como plain sem fazer edições do arquivo exportado do banco de dados teste.
+option is used: -vr verbose and replace
+
+1ª) Vamos exportar a tabela cadastros para tmp para um arquivo com o mesmo nome da tabela.
+
+MariaDB [teste]> select * into outfile "/tmp/cadastros.txt" fields terminated by ';' \
+enclosed by '"' lines terminated by '' from cadastros;
+
+
+2ª) Vamos fazer um truncate na tabela cadastrados.
+
+MariaDB [teste]> truncate table cadastros;
+Query OK, 0 rows affected (0.03 sec)
+
+
+3ª) Vamos importar como plain sem fazer alteraçoes apenas especificando os separadores.
+
+bash-4.4$ mysqlimport -u root -p -vr \
+--fields-enclosed-by='\"' \
+--fields-terminated-by=';' \
+--lines-terminated-by='\n' teste /tmp/cadastros.txt
+
+Enter password: 
+Connecting to localhost
+Selecting database teste
+Loading data from SERVER file: /tmp/cadastros.txt into cadastros
+teste.cadastros: Records: 1  Deleted: 0  Skipped: 0  Warnings: 0
+Disconnecting from localhost
+
+##################################################################################################
+
 Liberar 3306 do MySQL no Slackware:
 
 2ª) Passo - No arquivo /etc/rc.d/rc.mysqld comente a linha: 
@@ -903,7 +934,7 @@ bash-4.4$ mysqldump -h localhost -u root -p --compact -c -e -n \
 --compatible=postgresql <dbname> > mysqlpg2.sql
 
 
-bash-4.4# mkdir -p /tmp/dbteste/CSV; chown -R mysql.mysql /tmp/dbteste; \
+bash-4.4# mkdir -p /tmp/dbteste/CSV; chown -R mysql.mysql /tmp/db<dbname>; \
 for i in `find /var/lib/mysql/<dbname>/ -type f | \
  sed 's/\....$//' | sort | uniq | sed 's#/var/lib/mysql/<dbname>/##'`; do \
    mysqldump -u root -p --compact -c -e -n -t --compatible=postgresql <dbname> $i > $i.sql ; \
