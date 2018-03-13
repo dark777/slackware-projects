@@ -15,7 +15,7 @@ bash-4.4$ git init
 Initialized empty Git repository in /home/$USER/Workspace/GitHub/database-backup/.git/
 
 
-bash-4.4$ git remote add origin https://dark777@github.com:dark777/slackware-projects.git
+bash-4.4$ git remote add origin https://git@github.com:dark777/slackware-projects.git
 
 bash-4.4$ git add .
 
@@ -25,4 +25,5 @@ bash-4.4$ git commit -m "Backup MariaDB(Mysql) $COMMIT_COUNT"
 bash-4.4$ git push -u origin master
 
 
+https://medium.com/@adammacias/configurando-um-repositorio-git-privado-em-hospedagem-compartilhada-via-ssh-c354f6720634
 Source: https://www.webdevbr.com.br/backup-automatico-de-bancos-de-dados-mysql-em-repositorios-git-no-ubuntu
