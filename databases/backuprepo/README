@@ -1,0 +1,28 @@
+
+Criei um diretório para guardar meus backups e dentro um arquivo
+chamado run.sh com permição de execução, pra isso rodei os comandos a seguir:
+
+bash-4.4$ mkdir database-backup
+
+bash-4.4$ cd database-backup
+
+
+Enviando para o repositório Git
+Para criar o repositório local e
+informar qual o remoto usar, rode os comandos a seguir:
+
+bash-4.4$ git init
+Initialized empty Git repository in /home/$USER/Workspace/GitHub/database-backup/.git/
+
+
+bash-4.4$ git remote add origin https://dark777@github.com:dark777/slackware-projects.git
+
+bash-4.4$ git add .
+
+bash-4.4$ git commit -m "Backup MariaDB(Mysql) $COMMIT_COUNT"
+
+
+bash-4.4$ git push -u origin master
+
+
+Source: https://www.webdevbr.com.br/backup-automatico-de-bancos-de-dados-mysql-em-repositorios-git-no-ubuntu
