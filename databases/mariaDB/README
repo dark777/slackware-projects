@@ -122,6 +122,10 @@ bash-4.4$ su -c "mysql -u root -p"
 ou
 bash-4.4$ su -c "mysql -h localhost -u root -p"
 
+
+# https://www.percona.com/blog/2016/03/16/change-user-password-in-mysql-5-7-with-plugin-auth_socket/
+bash-4.4$ mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY ''"
+
 ##################################################################################################
 
 3) Fazendo importação e exportacao de arquivos TXT's, correspondentes a uma
