@@ -39,13 +39,13 @@ $BODY$
 LANGUAGE plpgsql; 
 
 --
--- TESTANDO A FUNCAO COM TODAS AS DATAS ENTRE 1900 e 2099
+-- TESTANDO A FUNCAO COM TODAS AS DATAS ENTRE 2016 e 2019
 --
 --SELECT
 --    ano,
 --    data_pascoa( ano )
 --FROM
---    generate_series( 2016, 2018 ) AS ano
+--    generate_series( 2016, 2019 ) AS ano
 --ORDER BY
 --    ano;
 
@@ -53,3 +53,4 @@ LANGUAGE plpgsql;
 --2016  2016-03-27
 --2017  2017-04-16
 --2018  2018-04-01
+--2019  2019-04-21
