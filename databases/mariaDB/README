@@ -984,11 +984,13 @@ bash-4.4$ mysqldump --all-databases > ~/mysql_all.sql -v -h localhost -u root -p
 Backup de todas as tabelas convertendo para postgresql.
 
 # Exporta apenas os inserts de um banco de dados mysql compatível com postgresql
+
 bash-4.4$ mysqldump -h localhost -u root -p --compact -c -e -n -t \
 --compatible=postgresql teste > mysqlpg1.sql
 
 
 # Exporta inserts e create tables de um banco de dados mysql compatível com postgresql
+
 bash-4.4$ mysqldump -h localhost -u root -p --compact -c -e -n \
 --compatible=postgresql <dbname> > mysqlpg2.sql
 
