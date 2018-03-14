@@ -57,6 +57,49 @@ PS1='\u.\h:\#:\w\$ '
 \# Conta o numero de comandos digitados no terminal
 
 -----------------------------------------------------------------------------------------
+# Bloqueando arquivo para que nao seja alterado:
+Os atributos são os seguintes:
+A - Não modifica a hora de acesso ao arquivo (somente em kernel 2.2)
+a - Append Only, arquivo pode somente ser gravado em modo incrementado, ou seja,
+pode ser adicionado conteúdo somente no final do arquivo, não pode ser removido ou renomeado.
+c - Permite compactação nos arquivos especificados de forma transparente.
+d - Protege para o dump não fazer backup do arquivo.
+i - Imutáveis. Arquivos Imutáveis não podem ser modificados, gravados, removidos, renomeados.
+Até mesmo o usuário root com pode máximo não pode alterar.
+s - É chamado de apagamento seguro, quando eliminado o arquivo é zerado sem possibilidade de recuperação.
+S - Faz a gravação imediatamente para o arquivo especificado, como sync, ex: igual aos disquetes.
+u - É marcado como recuperável, quando apagado é salvo uma copia para permitir recuperação. 
+
+
+bash-4.4# > meuarquivo.txt && chattr +i meuarquivo.txt
+
+
+# Tente excluir com o usuario root:
+
+bash-4.4# rm -rf meuarquivo.txt
+rm: não foi possível remover 'meuarquivo.txt': Operação não permitida
+
+
+# Desbloqueando para alterar ou excluir o arquivo:
+
+bash-4.4# chattr -i meuarquivo.txt
+
+
+# Com diretorios:
+
+bash-4.4# mkdir diretorio && chattr +id diretorio
+
+bash-4.4# rm -rf diretorio
+rm: não foi possível remover 'diretorio': Operação não permitida
+
+
+# Desbloqueando para alterar ou excluir o diretorio:
+
+bash-4.4# chattr -id diretorio
+
+bash-4.4# rm -rf diretorio
+    
+-----------------------------------------------------------------------------------------
 # Configurando data e hora precisamente pelo terminal linux.
 
 # Mudando a data
@@ -72,6 +115,7 @@ bash-4.3# date --set=mm/dd/yyyy
 bash-4.3# date -s hh:mm:ss
 ou
 bash-4.3# date -set=hh:mm:ss
+
 -----------------------------------------------------------------------------------------
 Lista de parâmetros que podem ser usados:
 
@@ -239,7 +283,6 @@ backup$(date +%Y%m%d).tar.bz2:   OK
 #https://www.linuxdescomplicado.com.br/2015/05/10-exemplos-do-comando-tar-para-comprimirextrair-arquivos-no-linux.html
 
 --------------------------------------------------------------------------------------------------------------------------
-
 # Mostra da linha 11 a linha 14 do arquivo /etc/profile
 sed -n '11,14p' /etc/profile
 # If the user doesn't have a .inputrc, use the one in /etc.
