@@ -84,6 +84,8 @@ rm: não foi possível remover 'meuarquivo.txt': Operação não permitida
 
 bash-4.4# chattr -i meuarquivo.txt
 
+bash-4.4# rm -rf meuarquivo.txt
+
 
 # Com diretorios:
 
