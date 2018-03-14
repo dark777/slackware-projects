@@ -373,7 +373,6 @@ arquivo2.txt
 arquivo3.txt
 
 -----------------------------------------------------------------------------------------
-
 Verificando tamanho de arquivos
 
 Se você utiliza muitos programas que criam logs,
@@ -404,7 +403,6 @@ filetam=1.9kb
 bash-4.3$ ls -lRh home | sort +4n
 
 --------------------------------------------------------------------------------------------------
-
 #Listar arquivos acima de 150 MB.
 
 bash-4.3# find . -type f -size +150000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
@@ -436,7 +434,6 @@ bash-4.3# find / -type f -size +1G -exec ls -lh {} \; | awk '{ print $9 ": " $5 
 http://www.rodrigocalado.com.br/como-listar-grandes-arquivos-bytes-kb-mb-gb-em-um-sistema-unixlinux/
 
 -----------------------------------------------------------------------------------------------------
-
 ## aceita várias substituições, separadas por ponto-e-vírgula ou ENTER
 sed 's/uqe/que/; s/qeu/que/; s/euq/que/'
 
@@ -522,7 +519,6 @@ bash-4.3$ cat arquivo-com-tags-urls-html | sed 's/.*="//; s/">.*//' > arquivo-no
 #e depois cole no terminal o seguinte comando abaixo:
 #urls = $$('a'); for (url in urls) console.log(urls[url].href);
 
-
 -----------------------------------------------------------------------------------------------------
 ## Criando um novo perfil no mozilla-firefox para abrir 2 logins do mesmo usuario no mesmo site:
 
@@ -590,6 +586,7 @@ hostname=darkstar
 
 bash-4.3$ echo nomedir=$(ls -t /opt/ | grep -m 1 jdk | sed s'\/\\g';)
 nomedir=jdk1.8.0_121
+
 -------------------------------------------------------------------------------------
 Gerenciamento do bash_history
 
@@ -757,6 +754,12 @@ sed -r -n '1,10 s/([^:]+).*/\1/p' /etc/passwd
 
 sed -r -n '1,$ s/([^:]+).*/\1/p' /etc/passwd
 
+
+# Pegando hora em que usuario logou:
+
+bash-4.4$ echo LOGADO=$(who | cut -d"(" -f2 | cut -d")" -f2 | awk '{print $1" "$3" "$4}')
+LOGADO=teste 2018-03-13 22:22
+
 -----------------------------------------------------------------------------------------------
 ## mostra o total de memoria RAM do sistema
 
@@ -788,7 +791,6 @@ bash-4.3$ echo SWPKB=$(fdisk -s $SWP)" KB"
 SWPKB=2097152 KB
 
 ------------------------------------------------------------------------------------------------------------------------------------
-
 Pegando endereços registrados nas placas de rede:
 
 bash-4.3$ echo IP=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $2}')
@@ -843,7 +845,6 @@ curl curlmyip.com
 curl -s checkip.dyndns.org | sed 's/.*IP Address: \([0-9\.]*\).*/\1/g'
 
 --------------------------------------------------------------------------------------------------------------------------------------
-
 ## mostra a quantidade de pacotes no slackware
 
 bash-4.3$ echo pkgs=$(ls -1 /var/log/packages | wc -l)
@@ -1113,7 +1114,6 @@ onde o conteudo do arquivo kernel.release:
 4.6.0-999-lowlatency 
 
 --------------------------------------------------------------------------------------------------------------------
-
 sed formatando CPF, CNPJ e datas
 
 
