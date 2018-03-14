@@ -1,0 +1,22 @@
+#!/bin/bash
+#E-mail do adm do servidor
+EMAIL='seuemail@provedor.com'
+#Data Atual
+DATE=`date +%Y%m%d`
+#Diretório do backup
+DIRETORIO=/var/backup
+#Data Retroativa para apagar backup antigo, neste caso com data d-2
+DATEP=`date +%Y%m%d --date="2 days ago"`
+#Opções mysqldump para mais info acesse:
+#http://dev.mysql.com/doc/refman/5.7/en/mysqldump.html#option_mysqldump_all-databases
+#-x bloqueia todas as tabelas
+#-e acelera inserções
+#-A todos os bancos de dados
+mysqldump -u usuarioBackup -pPassword -x -e -A > $DIRETORIO/bd.$DATE.sql
+
+if [ $? -ne 0 ]; then   #envia email se não efetuou backup
+     echo "Backup MySQL falhou em $DATE" | mail -s "Erro no Backup MySQL" $EMAIL
+else
+    #remove o arquivo mais antigo se efetuou o novo backup
+    rm $DIRETORIO/bd.$DATEP.sql
+fi 
