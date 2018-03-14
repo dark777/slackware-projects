@@ -1,0 +1,62 @@
+##https://github.com/zanculmarktum/sbomake
+BSD ports Makefile-like for slackbuilds repository.
+
+Installation:
+  First, clone the slackbuilds repository:
+    $ git clone git://git.slackbuilds.org/slackbuilds.git
+    $ cd slackbuilds
+    $ git reset --hard HEAD
+  
+  Copy the included Makefile into the slackbuilds repository:
+    $ cp /path/to/Makefile .
+  
+  And, install it by issuing:
+    $ make link
+
+Uninstallation:
+  Issue:
+    $ cd slackbuilds
+    $ make delink
+    $ rm -f Makefile
+
+Usage:
+  To search a package:
+    $ make search name=foo
+  or case insensitively:
+    $ make isearch name=foo
+  or the exact name:
+    $ make esearch name=foo
+
+  To list dependencies:
+    $ cd $(make search name=foo)
+    $ make list-depends
+
+  To fetch a package:
+    $ cd $(make search name=foo)
+    $ make fetch
+
+  To verify the downloaded sources via `make fetch`:
+    $ cd $(make search name=foo)
+    $ make md5
+
+  To remove sources that don't exist in `.info` file:
+    $ cd $(make search name=foo)
+    $ make dist-clean
+  or for all packages:
+    $ make dist-clean-all
+
+  To build a package:
+    $ cd $(make search name=foo)
+    $ make
+
+  To clean up after building:
+    $ cd $(make search name=foo)
+    $ make clean
+
+  To install a package:
+    $ cd $(make search name=foo)
+    $ make install
+
+  To remove a package:
+    $ cd $(make search name=foo)
+    $ make deinstall
