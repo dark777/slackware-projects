@@ -294,7 +294,7 @@ sed 's/^  label =.*/  label = SLCKWRLNX/g' /etc/lilo.conf
 
 sed '/root ALL=(ALL) ALL/a darkstar ALL=(ALL) ALL' /etc/sudoers
 
-sed 's/^# %sudo  ALL=(ALL) ALL/ %sudo ALL=(ALL) ALL /g' /etc/sudoers
+sed 's/^# %sudo ALL=(ALL) ALL/%sudo ALL=(ALL) ALL /g' /etc/sudoers
 
 ------------------------------------------------------------------------------------------
 #Eliminando linhas de comentário ou linhas em branco no Linux
