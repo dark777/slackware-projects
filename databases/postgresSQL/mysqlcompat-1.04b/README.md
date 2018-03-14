@@ -161,4 +161,3 @@ looks like this:
 # Download:
 
 http://ftp.unicamp.br/pub/postgresql/projects/pgFoundry/mysqlcompat/mysqlcompat/mysqlcompat-1.0b4/mysqlcompat-1.04b.zip
-
