@@ -37,7 +37,7 @@ select person.name, count(person.person_id) as persons from person inner join ca
 
 
 /* altera a idade de geraldo frança que foi inserida de forma errada */
-update person set name = 'Geraldo França', age = age-7 where person_id = 6;
+update person set age = age-7 where person_id = 6;
 
 /*lista a Geraldo França pelo person_id*/
 select *from person where person_id = 6;

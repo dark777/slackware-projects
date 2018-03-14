@@ -33,6 +33,6 @@ quantas pessoas trabalham em cada fazenda.
 select person.name, count(person.person_id) as persons from person inner join cadastros on cadastros.id_faz = person.person_id group by person.name;
 
 /* altera a idade de geraldo frança que foi inserida de forma errada */
-update person set name = 'Geraldo França', age = age-7 where id_faz = 6;
+update person set age = age-7 where id_faz = 6;
 
 select *from person where id_faz = 6;
