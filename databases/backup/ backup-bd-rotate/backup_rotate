@@ -1,0 +1,131 @@
+#!/bin/bash
+
+#Script para gerar backup do MySQL ou Postgres.
+#Nele você pode definir quantos dias você quer guardar os backups e os logs.
+#Extraia ele no / (raiz) e ele irá criar o diretório /var/bkp-banco-tsm.
+#Qualquer coisa renomeie o diretório para o nome desejado e altere no script.
+#
+#================================================================================#
+#Autor: ELI MARQUES JUNIOR                                                       #
+#Email: eli.marquesjunior@gmail.com                                              #
+#Empresa: TM Solutions                                                           #
+#Lotacao: GITECBR                                                                #
+#Descricao: Gerar dump das bases de dados do PostgreSQL ou MySQL                 #
+#================================================================================#
+
+. /etc/profile
+dir_local=/var/bkp-banco-tsm
+dir_do_BKP=dump_bd
+cd $dir_local/$dir_do_BKP
+
+#==================================================================================
+database=""
+usuario=""
+#Set a variavel abaixo caso utilize POSTGRES com senha
+export PGPASSWORD=""
+#Set a variavel abaixo caso utilize MYSQL com senha
+senha=""
+
+#==================================================================================
+data_atual=`date +%s`
+arquivo_gerado="$database-$data_atual.sql"
+dir_bkp=bkp-SQL
+
+dir_LOG=LOG
+#LOG DE QUANDO DA CERTO
+log_TRUST="$database"_"$data_atual".LOG
+log_dump=$dir_LOG/$log_TRUST
+
+#LOG QUANDO DA ERRO
+errorLOG=error-"$database"_"$data_atual".LOG
+LOG_ERROR=$dir_LOG/$errorLOG
+#==================================================================================
+#QUANTIDADE DE DIAS PARA MANTER OS LOGs
+dias=4
+guarda_Ndias=$(($data_atual -(${dias} * 86400)))
+
+
+function gera_BKP()
+ {
+   mv $dir_bkp/$database-* dias_anteriores/
+   ######## DUMP PARA O MYSQL
+     #mysqldump -u $usuario -p$senha -B $database > $dir_bkp/$arquivo_gerado 2> $LOG_ERROR
+
+   ######## DUMP PARA O POSTGRES
+     pg_dump -Fc -b -U $usuario $database -f $dir_bkp/$arquivo_gerado 2> $LOG_ERROR
+
+   ######## DUMP PARA O POSTGRES com SENHA
+   ######## OPCAO ABORTADA POIS QUANDO COLOCAVA NO CRONTAB NAO FUNCIONAVA
+   #  /usr/bin/expect -c "
+   #    spawn /opt/postgres/9.1/bin/pg_dump -Fc -b -U $usuario -W $database -f $dir_bkp/$arquivo_gerado
+   #    expect "Password:"
+   #    send $senha
+   #    send \r
+   #    interact
+   #  " > $log_dump 2>&1
+
+    ######Parte comentada para o DUMP PARA O POSTGRESS
+     if [ $? -eq 0 ]
+       then
+           echo "==================================================================================================================================" >> $log_dump
+           echo "O backup do banco \"$database\" foi gerado em $(date +%d-%m-%y) e foi salvo no diretorio \"$dir_bkp/$arquivo_gerado\"" >> $log_dump
+           echo "==================================================================================================================================" >> $log_dump
+
+        else
+           rm -f  $dir_bkp/$arquivo_gerado
+           echo "=========================================================================================" >> $log_dump
+           echo  "Nao foi gerado o backup do banco \"$database\" no dia $(date +%d-%m-%y)" >> $log_dump
+           echo  "Verifique o arquivo \"$LOG_ERROR\" para saber o motivo" >> $log_dump
+           echo "=========================================================================================" >> $log_dump
+     fi
+
+}
+
+function limpa_LOG ()
+  {
+    cd $dir_LOG
+
+    for x in $(ls)
+
+        do
+
+           local data=$(echo $x | cut -d "." -f1 | cut -d "_" -f2)
+           if [ $data -le $guarda_Ndias ]
+               then
+                    # echo $data = $guarda_Ndias
+                     rm -f $x
+               else
+
+                     echo Arquivo recente
+                    # echo data do arquivo $data \> $guarda_Ndias data atual
+           fi
+
+    done
+  }
+
+function limpa_BANCO ()
+  {
+    cd ../dias_anteriores
+
+    for x in $(ls)
+
+        do
+
+           local data=$(echo $x | cut -d "." -f1 | cut -d "-" -f2)
+           if [ $data -le $guarda_Ndias ]
+               then
+                    # echo $data = $guarda_Ndias
+                     rm -f $x
+               else
+
+                     echo BKP do banco $database recente
+                     #echo data do arquivo $data \> $guarda_Ndias data atual
+           fi
+
+    done
+  }
+
+gera_BKP
+limpa_LOG
+limpa_BANCO
+unset PGPASSWORD
