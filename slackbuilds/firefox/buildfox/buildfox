@@ -21,7 +21,7 @@ if [ -z "${ARCH}" ]; then
   esac
 fi
 
-VERSION=${VERSION:-$(lftp -c "open http://download-installer.cdn.mozilla.net/ ; cd pub/firefox/releases/ ; ls" 2>/dev/null | grep "60" | sed -n '$p' | awk '{print $3}')}
+VERSION=${VERSION:-$(lftp -c "open http://download-installer.cdn.mozilla.net/ ; cd pub/firefox/releases/ ; ls" 2>/dev/null |  egrep '50|60|70|80|90$' | sed -n '$p' | awk '{print $3}')}
 
 #MOZILLA_URL=http://download-installer.cdn.mozilla.net/pub/firefox/releases/59.0b8/linux-x86_64/pt-BR/
 MOZILLA_URL=${MOZILLA_URL:-http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${LANG_SYS}/}
@@ -36,9 +36,6 @@ PKG_NAME=${PKG_NAME:-${CWD}/${FIREFOX_PKG}}
 #PKG_NAME=firefox-59.0b8.tar.bz2
 
 MOZ=${MOZ:-${TMP}/$(echo ${FIREFOX_PKG} | cut -f1 -d-)}
-
-# Substitute your relese version:
-
 
 #pkg name version
 PRGNAM=${PRGNAM:-firefox-${VERSION}}
@@ -126,6 +123,6 @@ find . \
 mv  ../mozilla-firefox-${LANG_SYS}_${VERSION}-${ARCH}-${BUILD}.txz ${CWD}
 
 rm -rf ${MOZ}*
-rm -rf ${PRGNAM}
+rm -rf ${PKG_NAME}
 
 fi
