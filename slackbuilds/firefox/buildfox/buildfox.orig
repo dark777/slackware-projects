@@ -1,17 +1,31 @@
 #!/bin/sh
 
-if [ $(id -u) -ne 0 ]; then
-  echo -e "\n\e[1;34m Usuário \e[1;31m$USER\e[0m \e[1;34mnão é root\n faça login como root\n para executar o script\e[0m ..!!\n"
-   exit
-    else
-
 TMP=${TMP:-/tmp}
 
 BUILD=${BUILD:-1}
 
 CWD=${CWD:-$(pwd)}
 
+MOZ=${MOZ:-${TMP}/firefox}
+
+# Substitute your relese version:
+VERSION=${VERSION:-59.0b8}
+
+#pkg name version
+PRGNAM=${PRGNAM:-firefox-${VERSION}}
+
+PKG=${PKG:-${TMP}/${PRGNAM}}
+
 LANG_SYS=${LANG_SYS:-$(locale | grep "^LC_ALL" |cut -f2 -d = | cut -f1 -d. | sed 's/_/-/g')}
+
+# Substitute your own language:
+PKGLANG=${PKGLANG:-${LANG_SYS}}
+
+PKG_NAME=${PKG_NAME:-${CWD}/${PRGNAM}.tar.bz2}
+#PKG_NAME=firefox-59.0b8.tar.bz2
+
+RELEASEVER=${RELEASEVER:-$(echo ${VERSION} | cut -f 1 -d r | cut -f 1 -d b | cut -f 1 -d e)}
+#RELEASEVER=59.0
 
 # Automatically determine the architecture we're building on:
 if [ -z "${ARCH}" ]; then
@@ -21,29 +35,14 @@ if [ -z "${ARCH}" ]; then
   esac
 fi
 
-VERSION=${VERSION:-$(lftp -c "open http://download-installer.cdn.mozilla.net/ ; cd pub/firefox/releases/ ; ls" 2>/dev/null | grep "60" | sed -n '$p' | awk '{print $3}')}
+if [ $(id -u) -ne 0 ]; then
+    echo -e "\n\e[1;34m Usuário \e[1;31m$USER\e[0m \e[1;34mnão é root\n faça login como root\n para executar o script\e[0m ..!!\n"
+      su
+    else
 
-#MOZILLA_URL=http://download-installer.cdn.mozilla.net/pub/firefox/releases/59.0b8/linux-x86_64/pt-BR/
-MOZILLA_URL=${MOZILLA_URL:-http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${LANG_SYS}/}
+URL_PKG=${URL_PKG:-http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
 
-#FIREFOX_PKG=firefox-59.0b8.tar.bz2
-FIREFOX_PKG=${FIREFOX_PKG:-$(lynx --dump ${MOZILLA_URL} | awk -F'/' '/^[ ]+[0-9]+.*\.tar\.bz2$/ {print $10}')}
-
-#URL_PKG=http://download-installer.cdn.mozilla.net/pub/firefox/releases/59.0b8/linux-x86_64/pt-BR/firefox-59.0b8.tar.bz2
-URL_PKG=${URL_PKG:-${MOZILLA_URL}${FIREFOX_PKG}}
-
-PKG_NAME=${PKG_NAME:-${CWD}/${FIREFOX_PKG}}
-#PKG_NAME=firefox-59.0b8.tar.bz2
-
-MOZ=${MOZ:-${TMP}/$(echo ${FIREFOX_PKG} | cut -f1 -d-)}
-
-# Substitute your relese version:
-
-
-#pkg name version
-PRGNAM=${PRGNAM:-firefox-${VERSION}}
-
-PKG=${PKG:-${TMP}/${PRGNAM}}
+#URL_PKG=${URL_PKG:-https://ftp.mozilla.org/pub/firefox/releases/${VERSION}/linux-${ARCH}/${PKGLANG}/${PRGNAM}.tar.bz2}
 
 if [ -f ${PKG_NAME} ]; then 
 
@@ -52,7 +51,7 @@ echo "Ah, found it ${PKG_NAME} .!";
 # Source file availability:
 elif [ ! -f ${PKG_NAME} ]; then
   echo "Source '$(basename ${PKG_NAME})' not available yet..."
-  # Check if the $CWD is writable at all - if not, download to ${PKG_NAME}
+  # Check if the $CWD is writable at all - if not, download to $PKG_NAME
   [ -w "${CWD}" ] || ${PKG_NAME}
   
   if ! [ "x${URL_PKG}" == "x" ]; then
@@ -121,11 +120,11 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \;
 
-  makepkg -l y -c n ../mozilla-firefox-${LANG_SYS}_${VERSION}-${ARCH}-${BUILD}.txz
+  makepkg -l y -c n ../mozilla-firefox-${PKGLANG}_${VERSION}-${ARCH}-${BUILD}.txz
 
-mv  ../mozilla-firefox-${LANG_SYS}_${VERSION}-${ARCH}-${BUILD}.txz ${CWD}
+mv  ../mozilla-firefox-${PKGLANG}_${VERSION}-${ARCH}-${BUILD}.txz ${CWD}
 
 rm -rf ${MOZ}*
 rm -rf ${PRGNAM}
 
-fi
+fi 
