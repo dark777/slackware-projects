@@ -132,6 +132,16 @@ postgres$ psql
 postgres=# create database teste owner darkstar encoding 'UTF8';
 CREATE DATABASE
 
+
+2-5.1ª) Passo - Para criar bancos em UTF8:
+
+postgres=# CREATE DATABASE nome_do_banco ENCODING 'UTF-8' LC_CTYPE 'pt_BR.UTF-8' TEMPLATE template0;
+
+2-5.2ª) Passo - Para criar bancos em LATIN1:
+
+postgres=# CREATE DATABASE nome_do_banco ENCODING 'ISO8859-1' LC_CTYPE 'pt_BR.ISO8859-1' TEMPLATE template0;
+
+
 Listando databases:
 
 postgres=# \l
@@ -547,6 +557,43 @@ Restaurar backup criado como "plain" que não esteja na porta padrão do postgre
 
 bash-4.4$ su -c 'psql -U darkstar -h localhost -p 5432 --dbname=teste < "/tmp/backup.sql"'
 
+##################################################################################################
+
+PostgreSQL-Bancos-com-diferentes-encodings:
+
+
+Pra quem está enfrentado problemas em relação ao encoding
+dos bancos no SGBD PostgreSQL, aqui vai a solução pra resolver isso:
+
+1) Passo - Faça backup dos seus bancos.
+
+2) Passo - Remova o cluster atual com o comando:
+
+postgres# pg_dropcluster --stop VERSÃO.POSTGRESQL main
+
+3) Passo - Crie um novo cluster com o seguinte comando:
+
+postgres# pg_createcluster --locale=POSIX VERSÃO.POSTGRESQL main
+
+4) Passo - Reinicie o daemon do PostgreSQL.
+
+5) Passo - Acesse o terminal interativo do psql e crie a estrutura 
+para seus bancos da seguinte forma:
+
+6) Passo - Para criar bancos em UTF8:
+
+postgres# CREATE DATABASE nome_do_banco ENCODING 'UTF-8' LC_CTYPE 
+\'pt_BR.UTF-8' TEMPLATE template0;
+
+7) Passo - Para criar bancos em LATIN1:
+
+postgres# CREATE DATABASE nome_do_banco ENCODING 'ISO8859-1' 
+\LC_CTYPE 'pt_BR.ISO8859-1' TEMPLATE template0;
+
+Pronto, agora é só restaurar seus backups numa boa,
+já que seu servidor PostgreSQL agora aceita vários encodings,
+sem que se precise realizar alterações mirabolantes nas configurações de sua distribuição. 
+
 
 Sources:
 http://www.savepoint.blog.br/2012/12/20/brincando-com-algumas-funcoes-com-data-no-postgresql/
@@ -566,3 +613,4 @@ https://devblog.drall.com.br/criar-usuario-no-banco-de-dados-postgresql-via-psql
 http://www.andersonmedeiros.com/criacao-de-usuarios-postgresql/
 https://www.vivaolinux.com.br/artigo/psql-Conheca-o-basico
 https://www.1keydata.com/pt/sql/sql-create-table.php
+https://www.vivaolinux.com.br/dica/PostgreSQL-Bancos-com-diferentes-encodings
