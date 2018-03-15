@@ -1,7 +1,17 @@
 #!/bin/sh
-
+######################################################################################################
+#                                                                                                    #
+# Autor: Jean Zonta                                                                                  #
+# Pseudonym: wiki.anon                                                                               #
+# Script Name: buildfox                                                                              #
+# License: GNU/GPL V3                                                                                #
+# DateTime: qui 15 mar 2018 09:42:13                                                                 #
+# echo "}oqo4gtutF_gnuu4ius4hx" | perl -pe \ 's/(.)/chr(ord($1)-2*3)/ge'                             #
+# echo 'comhttps://slackwarewww' | sed 's@\(com\)\(https://\)\(slackware\)\(www\)@\2\4.\3.\1 ..!!!@' #
+#                                                                                                    #
+######################################################################################################
 if [ $(id -u) -ne 0 ]; then
-  echo -e "\n\e[1;34m Usuário \e[1;31m$USER\e[0m \e[1;34mnão é root\n faça login como root\n para executar o script\e[0m ..!!\n"
+  echo -e "\n\e[1;34m Usuário \e[1;31m${USER}\e[0m \e[1;34mnão é root\n faça login como root\n para executar o script\e[0m ..!!\n"
    exit
     else
 
@@ -21,7 +31,7 @@ if [ -z "${ARCH}" ]; then
   esac
 fi
 
-VERSION=${VERSION:-$(lftp -c "open http://download-installer.cdn.mozilla.net/ ; cd pub/firefox/releases/ ; ls" 2>/dev/null |  egrep '50|60|70|80|90$' | sed -n '$p' | awk '{print $3}')}
+VERSION=${VERSION:-$(lftp -c "open http://download-installer.cdn.mozilla.net/ ; cd pub/firefox/releases/ ; ls" 2>/dev/null | egrep '50|60|70|80|90$' | sed -n '$p' | awk '{print $3}')}
 
 #MOZILLA_URL=http://download-installer.cdn.mozilla.net/pub/firefox/releases/59.0b8/linux-x86_64/pt-BR/
 MOZILLA_URL=${MOZILLA_URL:-http://download-installer.cdn.mozilla.net/pub/firefox/releases/${VERSION}/linux-${ARCH}/${LANG_SYS}/}
@@ -91,21 +101,24 @@ cp -ar ${CWD}/hicolor ${PKG}/usr/share/icons
 cd ${TMP}
 
 # Extract all packages tar,gz,tgz,tlz,xz,txz,bz2,tbz
-tar xfk $CWD/firefox-${VERSION}.tar.?z* || exit 1
+tar xfk ${PKG_NAME} || exit 1
 
 cp -ar ${MOZ}/* ${PKG}/usr/lib${LIBDIRSUFFIX}/firefox-${VERSION}
 
 mkdir ${PKG}/install
 
-MODIFICA=${MODIFICA:-$(sed  -i '/lib64/ s/firefox-.*/firefox-'"$VERSION"'\/firefox firefox )/g;' doinst.sh)}
+MODIFICA=${MODIFICA:-$(sed  -i '/lib64/ s/firefox-.*/firefox-'${VERSION}'\/firefox firefox )/g;' ${CWD}/doinst.sh)}
 
-cp -ar ${CWD}/doinst.sh ${PKG}/install/
 
-cp -ar ${CWD}/slack-desc ${PKG}/install/
+cat ${CWD}/doinst.sh >> ${PKG}/install/doinst.sh
 
-cp -ar ${CWD}/LICENSE  ${PKG}/usr/lib${LIBDIRSUFFIX}/firefox-${VERSION}/
+cat ${CWD}/slack-desc >> ${PKG}/install/slack-desc
 
-cp -ar ${CWD}/mozilla-firefox.desktop  ${PKG}/usr/share/applications/
+cat ${CWD}/buildfox >> ${PKG}/install/firefox.SlackBuild
+
+cat ${CWD}/LICENSE >> ${PKG}/usr/lib${LIBDIRSUFFIX}/firefox-${VERSION}/LICENSE
+
+cat ${CWD}/mozilla-firefox.desktop >> ${PKG}/usr/share/applications/mozilla-firefox.desktop
 
 cp -ar ${MOZ}/browser/chrome/icons/default/default16.png ${PKG}/usr/lib${LIBDIRSUFFIX}/firefox-${VERSION}/chrome/icons/default
 
