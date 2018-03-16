@@ -1102,9 +1102,9 @@ RELEASE=Release: 4.6.0, Abi: 999 , Extra Version: lowlatency
 
 VAR=($(awk -F'-' '{printf "%s %s %s", $1, $2, $3}' /usr/src/linux/include/config/kernel.release))
 
-echo "Relese: "${VAR[0]}
-echo "Abi..: "${VAR[1]}
-echo "Extraversion: " ${VAR[2]}
+echo "Relese: ${VAR[0]}"
+echo "Abi..: ${VAR[1]}"
+echo "Extraversion: ${VAR[2]}"
 
 Release: 4.6.0
 Abi..: 999 
