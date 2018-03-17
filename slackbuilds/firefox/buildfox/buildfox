@@ -1,15 +1,15 @@
 #!/bin/sh
-######################################################################################################
-#                                                                                                    #
-# Autor: Jean Zonta                                                                                  #
-# Pseudonym: wiki.anon                                                                               #
-# Script Name: buildfox                                                                              #
-# License: GNU/GPL V3                                                                                #
-# DateTime: qui 15 mar 2018 09:42:13                                                                 #
-# echo "}oqo4gtutF_gnuu4ius4hx" | perl -pe \ 's/(.)/chr(ord($1)-2*3)/ge'                             #
-# echo 'comhttps://slackwarewww' | sed 's@\(com\)\(https://\)\(slackware\)\(www\)@\2\4.\3.\1 ..!!!@' #
-#                                                                                                    #
-######################################################################################################
+#######################################################################################################
+#                                                                                                      
+# Autor: Jean Zonta                                                                                    
+# Pseudonym: wiki.anon                                                                                 
+# Script Name: buildfox                                                                                
+# License: GNU/GPL V3                                                                                  
+# DateTime: qui 15 mar 2018 09:42:13                                                                   
+# echo "}oqo4gtutF_gnuu4ius4hx" | perl -pe \ 's/(.)/chr(ord($1)-2*3)/ge'                               
+# echo 'comhttps://slackwarewww' | sed 's@\(com\)\(https://\)\(slackware\)\(www\)@\2\4.\3.\1 ..!!!@'   
+#                                                                                                      
+#######################################################################################################
 if [ $(id -u) -ne 0 ]; then
   echo -e "\n\e[1;34m Usuário \e[1;31m${USER}\e[0m \e[1;34mnão é root\n faça login como root\n para executar o script\e[0m ..!!\n"
    exit
