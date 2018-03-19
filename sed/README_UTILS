@@ -313,9 +313,12 @@ bash-4.4$ sed -i 's/[[:space:]]\+/ /g;' myfile.txt
 
 ------------------------------------------------------------------------------------------
 # Adiciona função sleep para executar após 10 minutos em rc.ntpd
-sed '/\/usr\/sbin\/ntpd -g -u ntp:ntp/a  sleep 10m' /etc/rc.d/rc.ntpd
+sed '/\/usr\/sbin\/ntpd -g -u ntp:ntp/a sleep 10m' /etc/rc.d/rc.ntpd
 
 # Retira função sleep e adiciona quebra de linha na linha 7 e 8
+sed '7s/sleep 10m//g;8s/\n//g;' /etc/rc.d/rc.ntpd
+
+# Retira função sleep sem adicionar quebra de linha na linha 7 e 8
 sed '7s/sleep 10m//g;N;8s/\n//g;' /etc/rc.d/rc.ntpd
 
 # Centraliza função sleep na linha 8
@@ -335,7 +338,7 @@ sed 's/^timeout =.*/timeout = 00/g' /etc/lilo.conf
 sed 's/^  label =.*/  label = SLCKWRLNX/g' /etc/lilo.conf
 
 ------------------------------------------------------------------------------------------
-#Poderes de supervaca ao seu usuario darkstar:
+#Poderes de supervaca ao usuario darkstar:
 
 sed '/root ALL=(ALL) ALL/a darkstar ALL=(ALL) ALL' /etc/sudoers
 
@@ -588,6 +591,12 @@ bash-4.3$ echo nomedir=$(ls -t /opt/ | grep -m 1 jdk | sed s'\/\\g';)
 nomedir=jdk1.8.0_121
 
 -------------------------------------------------------------------------------------
+## pega somente o numero da versao do pacotes descompactado.
+
+bash-4.3$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/jdk//g;s\/\\g';)
+numerodir=1.8.0_121
+
+-------------------------------------------------------------------------------------
 Gerenciamento do bash_history
 
 # Limpa as variaveis antes de ser usadas:
@@ -660,7 +669,7 @@ SYSARQ=ext4
 bash-4.3$ echo SYSARQ=$(cat /etc/fstab |tr '\t' ' ' |grep -v '^ *#' |tr -s ' ' |grep ' / ' |cut -f3 -d' ')
 SYSARQ=ext4
 
-bash-4.3$ echo PART=$(grep sda /etc/fstab |  cut -d/ -f 3)
+bash-4.3$ echo PART=$(grep sda /etc/fstab |  cut -d/ -f3)
 PART=sda3
 
 bash-4.3$ echo PART=${PART:-$(mount | grep /dev/sda | cut -f3 -d/ | cut -f1 -d ' ')}
@@ -682,12 +691,6 @@ SYSARQ=$(file -s $DISK | awk '{print $5}')
 MKINITRDCOMMAND=${MKINITRDCOMMAND:-"/usr/share/mkinitrd/mkinitrd_command_generator.sh"}
 
 MKINITRD=$($MKINITRDCOMMAND | grep ^mkinitrd | cut -c47-300 | cut -f1 -d ' ')
-
--------------------------------------------------------------------------------------
-## pega somente o numero da versao do pacotes descompactado.
-
-bash-4.3$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/jdk//g;s\/\\g';)
-numerodir=1.8.0_121
 
 --------------------------------------------------------------------------------------
 # Verificando se usuário existe mesmo:
@@ -853,10 +856,10 @@ pkgs=1267
 -------------------------------------------------------------------------------------------------
 ## pega a arquitetura do sistema.
 
-bash-4.3# echo osarch=$(uname -a | cut -d' ' -f1 | file /bin/ls | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g';)
+bash-4.3# echo osarch=$(uname -a | cut -d' ' -f1 | file /bin/ls | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g;')
 osarch=ELF 64-bit LSB x86-64 version (SYSV)
 
-bash-4.3$ echo osarch=$(file -e elf /sbin/init | grep -i bit | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g';)
+bash-4.3$ echo osarch=$(file -e elf /sbin/init | grep -i bit | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g;')
 osarch=ELF 64-bit LSB x86-64 version (SYSV)
 
 -----------------------------------------------------------------------------------------------------------
