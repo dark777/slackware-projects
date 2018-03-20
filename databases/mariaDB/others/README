@@ -1,0 +1,49 @@
+Configurando uma rede com dois servidores ligados na internet para conexao com mysql em ambos.
+
+Situação:
+
+molden ip: 10.1.1.1
+
+servidor1 ip: 10.1.1.2
+
+servidor2 ip: 10.1.1.3
+
+
+Cada um dos servidores tem outra placa de rede:
+
+
+Um é servidor com ip: 192.168.1.254
+rede: 192.168.1.0/24
+
+
+Outro é servidor com ip: 192.168.2.1
+rede: 192.168.2.0/24
+
+
+Nescessidade:
+
+é nescesario que uma maquina da rede 192.168.1.0/24 acesse o banco de dados do servidor 192.168.2.1 .
+
+
+Razão da nescessidade.
+
+No topo da rede esta o moden ip 10.1.1.1
+ele esta ligado em um hub, e junto com ele esta ligado dois servidores: 10.1.1.2 e 10.1.1.3
+
+no servidor 10.1.1.2 tem outra placa de rede com ip 192.168.1.254
+no servidor 10.1.1.3 tem outra placa de rede com ip 192.168.2.1
+
+as maquinas que vao acessar o banco de dados no servidor 2,
+estão ligadas em um swith junto com o servidor1,
+na placa do servidor com ip 192.168.1.254 esse servidor
+so tem um proxy nele e as maquinas acessam a net atraves do proxy squid.
+
+Ou seja: 
+as maquinas da rede 192.168.1.0/255.255.0.0 
+so tem acesso entre si e no servidor 192.168.1.254,
+nao tem acesso em mais nada fora. 
+Nescesito que elas acessem o mysql no ip 192.168.1.254,
+e que isso seja redirecionado para 10.1.1.3
+pois esse servidor tem acesso nesse ip, as maquinas não.
+
+https://www.vivaolinux.com.br/topico/vivaolinux/liberar-porta-mysql-em-rede?

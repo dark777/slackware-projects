@@ -1,0 +1,136 @@
+1) Alterando a senha de root do MySQL no Slackware 14.1. Caso você não tenha criado a senha de
+root no passo 1-5 ou perdido sua senha de root use os passos abaixo para criar ou recriar a senha.
+
+1-1ª) Passo - Se o mysql está executando vamos dar um stop:
+
+bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
+
+
+1-2ª) Passo - Depois de dar stop abra outro terminal e vamos matar o processo:
+
+bash-4.4$ su -c "killall mysqld"
+
+
+1-3ª) Passo - Depois faça:
+
+bash-4.4$ su -c "mysqld_safe --skip-grant-tables"
+
+
+1-4ª) Passo - Volte ao terminal do passo 2-1ª, e acesse o banco:
+
+bash-4.4$ su -c "mysql --user=root mysql"
+
+
+1-5ª) Passo - Estando no console do banco,
+digite o comando para atualizar a senha:
+
+MariaDB [mysql]> set password for 'root'@'localhost' = password('aqui_a_nova_senha');
+ou
+MariaDB [mysql]> update user set password=password('aqui_a_nova_senha') where user='root' and host='localhost';
+MariaDB [mysql]> flush privileges;
+MariaDB [mysql]> exit;
+
+
+1-5.1ª) Passo OPCIONAL - Redefinir as permissões
+
+MariaDB [mysql]> grant all privileges on *.* to 'root'@'%';  
+MariaDB [mysql]> grant all privileges on *.* to 'root'@'localhost';  
+MariaDB [mysql]> grant all privileges on *.* to 'root@localhost';  
+MariaDB [mysql]> grant all on *.* to 'root'@'%' identified by 'suasenha';
+
+
+1-5.2ª) Finalizando:
+
+MariaDB [mysql]> show grants for'root'@'%';  
+MariaDB [mysql]> flush privileges;
+
+
+1-6ª) Passo - Reinicie o mysqld:
+
+bash-4.4$ su -c "/etc/rc.d/rc.mysqld restart"
+
+
+1-7ª) Logando no Mysql
+
+bash-4.4$ su -c "mysql -p"
+ou
+bash-4.4$ su -c "mysql -u root -p"
+ou
+bash-4.4$ su -c "mysql -h localhost -u root -p"
+
+
+
+1-8ª) MySQL - Erro 1045: Access denied for user: 'root@localhost'
+
+Bom, para resolvermos isso, primeiramente temos que alterar a senha de root do MySQL:
+
+1-8.1ª) Passo - Pare novamente o mysql:
+
+bash-4.4$ su -c "/etc/rc.d/rc.mysqld stop"
+
+
+1-8.2ª) Passo - Execute o comando abaixo:
+
+MariaDB [mysql]> set password for root@localhost=password('');
+
+1-8.3ª) Passo - Tente entrar sem a senha no banco de dados, digite:
+
+bash-4.4$ mysql
+
+# https://www.vivaolinux.com.br/dica/MySQL-Erro-1045-Access-denied-for-user-rootlocalhost
+# https://www.percona.com/blog/2016/03/16/change-user-password-in-mysql-5-7-with-plugin-auth_socket/
+bash-4.4$ mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY ''"
+
+################################################################################################## 
+
+Resolvendo erro de conexao com servidor em host remoto:
+MYSQL ERROR 2003 (HY000): Can't connect to MySQL server on 'xx.xx.xx.xx' (111)
+
+2) Login as root on mysql server
+
+bash-4.4$ mysql -u root -p
+
+
+2-2.1ª) Select database and show users.
+
+MariaDB [(none)]> select * from mysql.user\G
+
+Host: localhost
+User: mydbuser
+
+
+2-3º) Allow remote hosts to connect
+
+MariaDB [(none)]> grant select,insert,update,delete,create,drop,index,alter on mydbname.* to mydbuser@'192.168.1.%' identified by 'mydbpassword';
+
+MariaDB [(none)]> flush privileges;
+
+
+2-3.1º) Open MySQL config file
+
+bash-4.4$ su -c "nano /etc/my.cnf"
+
+
+2-4º) Ensure that the following are commented out.
+
+#skip-external-locking
+#skip-networking
+#bind-address = xx.xx.xx.xx
+
+Save and exit
+
+
+2-4.1º) Restart mysql service
+
+bash-4.4$ su -c "/etc/rc.d/rc.mysqld start"
+
+
+2-5º) Login as root on db server
+
+2-5.1º) Add rule to iptables
+
+bash-4.4$ su -c "iptables -A INPUT -i eth0 -s 192.168.1.0/24 -p tcp --destination-port 3306 -j ACCEPT"
+
+
+# http://www.woblag.com/2012/06/mysql-error-2003-hy000-cant-connect-to.html
+###############################################################################################
