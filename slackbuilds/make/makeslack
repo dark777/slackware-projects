@@ -8,7 +8,7 @@ BUILD=${BUILD:-1}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
-  case "$( uname -m )" in
+  case $( uname -m ) in
     i?86) ARCH=i686 ;;
     arm*) ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
@@ -16,13 +16,13 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-SRCURL="https://ftp.gnu.org/gnu/make/make-${VERSION}.tar.bz2"
+SRCURL=${SRCURL:-https://ftp.gnu.org/gnu/make/make-${VERSION}.tar.bz2}
 
      if [[ ! -d ${CWD}/make ]]; then
          mkdir -p ${CWD}/make
          cd ${CWD}/make
          mkdir -p ${PKG}
-          wget -nv -T 20 --no-check-certificate -q "${SRCURL}" || true
+          wget -nv -T 20 --no-check-certificate -q ${SRCURL} || true
             tar xfk make-${VERSION}.tar.bz2
          
            cd make-${VERSION} && mkdir build && cd build
