@@ -1,7 +1,8 @@
 #!/bin/sh
 
-CWD=$(pwd)
+
 TMP=${TMP:-/tmp}
+CWD=${CWD:-$(pwd)}
 VERSION=${VERSION:-3.9.1}
 PKG=${PKG:-${TMP}/cmake-${VERSION}}
 SRCBUILD=${SRCBUILD:-1}
@@ -9,7 +10,7 @@ BINBUILD=${BINBUILD:-2}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
-  case "$( uname -m )" in
+  case $( uname -m ) in
     i?86) ARCH=i686 ;;
     arm*) ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
@@ -17,11 +18,11 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-PKGVERSION=$(echo ${VERSION} | rev | cut -f 2- -d . | rev)
+PKGVERSION=${PKGVERSION:-$(echo ${VERSION} | rev | cut -f 2- -d . | rev)}
 
-URLBIN="https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}-Linux-${ARCH}.sh"
+URLBIN=${URLBIN:-https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}-Linux-${ARCH}.sh}
 
-SRCURL="https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}.tar.gz"
+SRCURL=${SRCURL:-https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}.tar.gz}
 
 read -p "Do you want to compile or compact? [s|S]-Source or [b|B]-Binary: " line
 
