@@ -1,12 +1,10 @@
 #!/bin/sh
 
-
 TMP=${TMP:-/tmp}
 CWD=${CWD:-$(pwd)}
-VERSION=${VERSION:-3.9.1}
-PKG=${PKG:-${TMP}/cmake-${VERSION}}
 SRCBUILD=${SRCBUILD:-1}
 BINBUILD=${BINBUILD:-2}
+HREF_PATTERN=${HREF_PATTERN:-'s/.*href="\([^"]*\).*/\1/p'}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -18,113 +16,128 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-PKGVERSION=${PKGVERSION:-$(echo ${VERSION} | cut -f1,2 -d .)}
+VERSION=${SVERSION:-$(curl -s https://cmake.org/files/ | sed -n ${HREF_PATTERN} | grep "v[0-9]" | sort -V | tail -n 1)}
 
-URLBIN=${URLBIN:-https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}-Linux-${ARCH}.sh}
+PKGVERSION=${PKGVERSION:-${VERSION:0:5}}
 
-SRCURL=${SRCURL:-https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}.tar.gz}
+PKG=${PKG:-${TMP}/cmake-${PKGVERSION}}
+
+CMAKE_URL=${CMAKE_URL:-https://cmake.org/files/${PKGVERSION}}
+
+NUM_URL=${NUM_URL:-$( lynx --dump ${CMAKE_URL} | awk -F'/' '/cmake+-[0-9]+.*\.sh$/ {print $6}' | wc -l)}
+#NUM_URL=4
+
+SH_PKG=${SH_PKG:-$(lynx --dump ${CMAKE_URL} | awk -F'/' '/cmake+-[0-9]+.*\.sh$/ {print $6}' | head -n${NUM_URL} | grep -v "rc[0-$((${NUM_URL}-1))]")}
+#SH_PKG=cmake-3.11.0-rc4-Linux-x86_64.sh
+
+SRC_PKG=${SRC_PKG:-$(lynx --dump ${CMAKE_URL} | awk -F'/' '/'${SH_PKG:0:29}'\.tar\.gz$/ {print $6}' | head -n1)}
+#SRC_PKG=cmake-3.11.0-rc4-Linux-x86_64.tar.gz
+
+SHURL=${SHURL:-${CMAKE_URL}/${SH_PKG}}
+
+SRCURL=${SRCURL:-${CMAKE_URL}/${SRC_PKG}}
+
 
 read -p "Do you want to compile or compact? [s|S]-Source or [b|B]-Binary: " line
 
-    case ${line} in
-      s|S)
+case ${line} in
+   s|S)
      
-       if [ ! -d ${CWD}/cmake ]; then
-        mkdir -p ${CWD}/cmake
-         # from Source
-         cd ${CWD}/cmake
-         mkdir -p ${PKG}
-          wget -nv -T 20 --no-check-certificate -q "${SRCURL}" || true
-           tar xfz cmake-${VERSION}.tar.gz
+   if [ ! -d ${CWD}/cmake ]; then
+    mkdir -p ${CWD}/cmake
+    # from Source
+    cd ${CWD}/cmake
+    mkdir -p ${PKG}
+     wget -nv -T 20 --no-check-certificate -q "${SRCURL}" || true
+      tar xfz ${SRC_PKG}
          
-           cd cmake-${VERSION} && mkdir build && cd build
-           ../configure --prefix=/usr
-           #cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
-           make -j5 
-           make DESTDIR=${PKG} install
-           cd ${PKG}
+      cd cmake-${PKGVERSION} && mkdir build && cd build
+      ../configure --prefix=/usr
+      #cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+      make -j5 
+      make DESTDIR=${PKG} install
+      cd ${PKG}
            
-           chown -R root:root .
-           find . \
-           \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
-           -exec chmod 755 {} \; -o \
-           \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
-           -exec chmod 644 {} \;
-
-           makepkg -l y -c n ../cmake-${VERSION}${ARCH}-${SRCBUILD}.txz
+      chown -R root:root .
+      find . \
+      \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+      -exec chmod 755 {} \; -o \
+      \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+      -exec chmod 644 {} \;
+      
+      makepkg -l y -c n ../cmake-${PKGVERSION}${ARCH}-${SRCBUILD}.txz
            
-           mv ${TMP}/cmake-${VERSION}${ARCH}-${SRCBUILD}.txz ${CWD}
+      mv ${TMP}/cmake-${PKGVERSION}${ARCH}-${SRCBUILD}.txz ${CWD}
                       
-           rm -rf ${PKG}
-           rm -rf ${CWD}/cmake
+      rm -rf ${PKG}
+      rm -rf ${CWD}/cmake
            
-           cd ${CWD}
-           echo "Do you want to upgrade the package $(cmake --version | grep "cmake version")?"
-           read -p "Choice[y|Y]-Yes or [n|N]-No: " resp
+      cd ${CWD}
+      echo "Do you want to upgrade the package $(cmake --version | grep "cmake version")?"
+      read -p "Choice[y|Y]-Yes or [n|N]-No: " resp
            
-           case ${resp} in
+      case ${resp} in
            
-             y|Y)
-              upgradepkg --install-new --reinstall cmake-${VERSION}${ARCH}-${SRCBUILD}.txz
-             ;;
-           
-             n|N)
-              echo "Package successfully compiled good work .."
-              exit 1
-             ;;
-             
-               *)
-             echo "Not option valid. Exiting ..."
-             exit 1;;
-           esac
-           #su -c "make install"
-           #su -c "make uninstall"
-       fi
+       y|Y)
+        upgradepkg --install-new --reinstall cmake-${PKGVERSION}${ARCH}-${SRCBUILD}.txz
        ;;
+           
+       n|N)
+        echo "Package successfully compiled good work .."
+        exit 1
+       ;;
+             
+         *)
+       echo "Not option valid. Exiting ..."
+       exit 1;;
+       esac
+       #su -c "make install"
+       #su -c "make uninstall"
+   fi
+   ;;
         
-      b|B)
+   b|B)
         
-       if [ ! -d ${CWD}/cmake ]; then
-        mkdir -p ${CWD}/cmake
-         # from binary
-         cd ${CWD}/cmake
-          wget -nv -T 20 --no-check-certificate -q "${URLBIN}" || true
-           sh ./cmake-${VERSION}-Linux-${ARCH}.sh --prefix=${CWD}/cmake --skip-license --exclude-subdir
-           rm -rf cmake-${VERSION}-Linux-${ARCH}.sh 
-           chown -R root:root .
-           find . \
-           \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
-           -exec chmod 755 {} \; -o \
-           \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
-           -exec chmod 644 {} \;
+   if [ ! -d ${CWD}/cmake ]; then
+   mkdir -p ${CWD}/cmake
+   # from binary
+   cd ${CWD}/cmake
+   wget -nv -T 20 --no-check-certificate -q ${SHURL} || true
+   sh ./${SH_PKG}--prefix=${CWD}/cmake --skip-license --exclude-subdir
+   rm -rf ${SH_PKG} 
+   chown -R root:root .
+   find . \
+   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+   -exec chmod 755 {} \; -o \
+   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+   -exec chmod 644 {} \;
           
-           /sbin/makepkg -l y -c n ../cmake-${VERSION}-${ARCH}-${BINBUILD}.txz
+   /sbin/makepkg -l y -c n ../cmake-${PKGVERSION}-${ARCH}-${BINBUILD}.txz
                       
-           rm -rf ${PKG}
-           rm -rf ${CWD}/cmake
+   rm -rf ${PKG}
+   rm -rf ${CWD}/cmake
            
-           cd ${CWD}          
-           echo "Do you want to upgrade the package $(make --version | grep "cmake version")?"
-           read -p "Choice[y|Y]-Yes or [n|N]-No: " resp
+   cd ${CWD}          
+   echo "Do you want to upgrade the package $(make --version | grep "cmake version")?"
+   read -p "Choice[y|Y]-Yes or [n|N]-No: " resp
            
-           case ${resp} in
-           
-             y|Y)
-              upgradepkg --install-new --reinstall cmake-${VERSION}-${ARCH}-${BINBUILD}.txz
-             ;;
+   case ${resp} in
+   y|Y)
+    upgradepkg --install-new --reinstall cmake-${PKGVERSION}-${ARCH}-${BINBUILD}.txz
+   ;;
              
-             n|N)
-              echo "Package successfully compiled good work .."
-              exit 1
-             ;;
+   n|N)
+    echo "Package successfully compiled good work .."
+    exit 1
+   ;;
              
-               *)
-             echo "Not option valid. Exiting ..."
-             exit 1;;
-           esac
-        fi 
-        ;;
-      *)
-        echo "Not option valid. Exiting ..."
-        exit 1;;
-    esac
+    *)
+   echo "Not option valid. Exiting ..."
+   exit 1;;
+   esac
+   fi 
+   ;;
+  *)
+   echo "Not option valid. Exiting ..."
+   exit 1;;
+esac
