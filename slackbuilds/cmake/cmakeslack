@@ -18,7 +18,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-PKGVERSION=${PKGVERSION:-$(echo ${VERSION} | rev | cut -f 2- -d . | rev)}
+PKGVERSION=${PKGVERSION:-$(echo ${VERSION} | cut -f1,2 -d .)}
 
 URLBIN=${URLBIN:-https://cmake.org/files/v${PKGVERSION}/cmake-${VERSION}-Linux-${ARCH}.sh}
 
