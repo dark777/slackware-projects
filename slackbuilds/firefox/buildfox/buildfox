@@ -60,20 +60,20 @@ echo "Ah, found it ${PKG_NAME} .!";
 elif [ ! -f ${PKG_NAME} ]; then
   echo "Source '$(basename ${PKG_NAME})' not available yet..."
   # Check if the $CWD is writable at all - if not, download to ${PKG_NAME}
-  [ -w "${CWD}" ] || ${PKG_NAME}
+  [ -w ${CWD} ] || ${PKG_NAME}
   
   if ! [ "x${URL_PKG}" == "x" ]; then
-   echo "Will download file to $(dirname $PKG_NAME)"
-    wget -nv -T 20 "${URL_PKG}" || true
+   echo "Will download file to $(dirname ${PKG_NAME})"
+    wget -nv -T 20 ${URL_PKG} || true
      echo "Download complete."
     
-    if [ $? -ne 0 -o ! -s "${PKG_NAME}" ]; then
-     echo "Downloading '$(basename ${PKG_NAME})' failed... aborting the build."
-      mv -f "${PKG_NAME}" "${PKG_NAME}".FAIL
+    if [ $? -ne 0 -o ! -s ${PKG_NAME} ]; then
+     echo "Downloading $(basename ${PKG_NAME}) failed... aborting the build."
+      mv -f ${PKG_NAME} ${PKG_NAME}.FAIL
        exit 1
     fi
   else
-    echo "File '$(basename ${PKG_NAME})' not available... aborting the build."
+    echo "File $(basename ${PKG_NAME}) not available... aborting the build."
      exit 1
   fi
 fi
