@@ -58,7 +58,7 @@ echo "Ah, found it ${PKG_NAME} .!";
 
 # Source file availability:
 elif [ ! -f ${PKG_NAME} ]; then
-  echo "Source '$(basename ${PKG_NAME})' not available yet..."
+  echo "Source $(basename ${PKG_NAME}) not available yet..."
   # Check if the $CWD is writable at all - if not, download to ${PKG_NAME}
   [ -w ${CWD} ] || ${PKG_NAME}
   
