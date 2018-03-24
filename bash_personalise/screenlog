@@ -1,0 +1,24 @@
+#!/bin/sh
+echo -e "
+\e[1;34m                   :::::::                    \e[0m
+\e[1;34m             :::::::::::::::::::              \e[1;34m wiki\e[1m@\e[0m\e[1;34manon.com.br\e[0m
+\e[1;34m          :::::::::::::::::::::::::           \e[1;34m OS:\e[0m Slackware \e[0m
+\e[1;34m        ::::::::\e[1;37mcllcccccllllllll\e[1;34m::::::        \e[1;34m Kernel:\e[0m x86_64 Linux 4.14.27\e[0m
+\e[1;34m     :::::::::\e[1;37mlc               dc\e[1;34m:::::::      \e[1;34m Uptime:\e[0m 6h 29m\e[0m
+\e[1;34m    ::::::::\e[1;37mcl   clllccllll    oc\e[1;34m:::::::::    \e[1;34m Packages:\e[0m 1319\e[0m
+\e[1;34m   :::::::::\e[1;37mo   lc\e[1;34m::::::::\e[1;37mco   oc\e[1;34m::::::::::   \e[1;34m Shell:\e[0m bash\e[0m
+\e[1;34m  ::::::::::\e[1;37mo    cccclc\e[1;34m:::::\e[1;37mclcc\e[1;34m::::::::::::  \e[1;34m Resolution:\e[0m 1366x768\e[0m
+\e[1;34m  :::::::::::\e[1;37mlc        cclccclc\e[1;34m:::::::::::::  \e[1;34m DE:\e[0m KDE4\e[0m
+\e[1;34m ::::::::::::::\e[1;37mlcclcc          lc\e[1;34m:::::::::::: \e[1;34m WM:\e[0m KWin\e[0m
+\e[1;34m ::::::::::\e[1;37mcclcc\e[1;34m:::::\e[1;37mlccclc     oc\e[1;34m::::::::::: \e[1;34m WM Theme:\e[0m Redmond\e[0m
+\e[1;34m ::::::::::\e[1;37mo    l\e[1;34m::::::::::\e[1;37ml    lc\e[1;34m::::::::::: \e[1;34m CPU:\e[0m Intel Core i5-3230M @ 4x 3.2GHz [60.0°C]\e[0m
+\e[1;34m  :::::\e[1;37mcll\e[1;34m:\e[1;37mo     clcllcccll     o\e[1;34m:::::::::::  \e[1;34m GPU:\e[0m Mesa DRI Intel(R) Ivybridge Mobile \e[0m
+\e[1;34m  :::::\e[1;37mocc\e[1;34m:\e[1;37mo                  clc\e[1;34m:::::::::::  \e[1;34m RAM:\e[0m 1871MiB / 15879MiB\e[0m
+\e[1;34m   ::::\e[1;37mocl\e[1;34m:\e[1;37mccslclccclclccclclc\e[1;34m:::::::::::::   \e[0m
+\e[1;34m    :::\e[1;37moclcccccccccccccllllllllllllll\e[1;34m:::::    \e[0m
+\e[1;34m     ::\e[1;37mlcc1lcccccccccccccccccccccccco\e[1;34m::::     \e[0m
+\e[1;34m       ::::::::::::::::::::::::::::::::       \e[0m
+\e[1;34m         ::::::::::::::::::::::::::::         \e[0m
+\e[1;34m            ::::::::::::::::::::::            \e[0m
+\e[1;34m                 ::::::::::::                 \e[0m
+"
