@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#for s in $(ls *.sql)
+for s in $(ls | egrep '\fazcadastros.sql$|\personcadastros1.sql$|\personcadastros2.sql')
+do
+  echo "===> ${s}"
+  psql -q -e -n $USER < $s >& $s.out;
+  diff $s $s.out;
+done
