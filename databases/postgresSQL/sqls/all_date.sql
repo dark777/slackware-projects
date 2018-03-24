@@ -15,4 +15,4 @@ select * from dd where d <= '05-31-1994';
 select * from dd where d > '05-31-1994';
 select * from dd where d >= '05-31-1994';
 create index dd_ind on dd using btree (d date_ops);
---drop table dd; 
+drop table dd; 
