@@ -35,6 +35,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# Boas Vindas.
+echo '   _ '
+echo '  *v* *** BEM VINDO AO '`hostname`' ***'
+echo ' /(_)\ '
+echo '  ^ ^ ' `date`
+echo ' '
 
 #-------------------------------------------------------------
 # Source global definitions (if any)
