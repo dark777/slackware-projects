@@ -596,6 +596,11 @@ nomedir=jdk1.8.0_121
 bash-4.3$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/jdk//g;s\/\\g';)
 numerodir=1.8.0_121
 
+ou
+
+bash-4.3$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/[a-z]//g;s\/\\g';)
+numerodir=1.8.0_121
+
 -------------------------------------------------------------------------------------
 Gerenciamento do bash_history
 
