@@ -2,8 +2,21 @@
 OS_RELEASE=${OS_RELEASE:-/etc/os-release}
 source ${OS_RELEASE}
 
-reset=${reset:-"\033[0m"}
-six_spc=${six_spc:-"\033[6C"}
+STRD=${STRD:-$(date +%a)}                                               # STRD=dom
+STRM=${STRM:-$(date +%b)}                                               # STRM=mar
+DIA=${DIA:-$(date +%d)}                                                 # DIA=25
+MES=${MES:-$(date +%m)}                                                 # MES=03
+ANO=${ANO:-$(date +%Y)}                                                 # ANO=2018
+HORA=${HORA:-$(date +%H)}                                               # HORA=02
+MIN=${MIN:-$(date +%M)}                                                 # MIN=08
+SEC=${SEC:-$(date +%S)}                                                 # SEC=25
+UPTIME=${UPTIME:-$(uptime | awk '{print $3}' | sed 's/:/h /;s/,/m/g;')} # UPTIME=2h 22m
+
+OS=${OS:-$(uname -s)}              # OS=Linux
+ARCH=${ARCH:-$(uname -m)}          # ARCH=x86_64
+KERNEL=${KERNEL:-$(uname -r)}      # KERNEL=4.14.27
+reset=${reset:-"\033[0m"}          # Reset colors
+six_spc=${six_spc:-"\033[6C"}      # Space chars
 
 # Bold Colors
 b_black=${b_black:-"\033[1;30m"}   # Bold Black
