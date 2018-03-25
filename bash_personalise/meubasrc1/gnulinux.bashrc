@@ -1,4 +1,3 @@
-#!/bin/sh
 IMPORT=${IMPORT:-$(pwd)/commands}
 source ${IMPORT}
 

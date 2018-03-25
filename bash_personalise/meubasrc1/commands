@@ -1,4 +1,3 @@
-#!/bin/sh
 OS_RELEASE=${OS_RELEASE:-/etc/os-release}
 source ${OS_RELEASE}
 
@@ -17,8 +16,7 @@ ARCH=${ARCH:-$(uname -m)}          # ARCH=x86_64
 KERNEL=${KERNEL:-$(uname -r)}      # KERNEL=4.14.27
 reset=${reset:-"\033[0m"}          # Reset colors
 six_spc=${six_spc:-"\033[6C"}      # Space chars
-line=${line:-""}                   # Um espaço entre linha
-newline=${newline:-"\n"}           # Dois espaços entre linha
+
 # Bold Colors
 b_black=${b_black:-"\033[1;30m"}   # Bold Black
 b_red=${b_red:-"\033[1;31m"}       # Bold Red

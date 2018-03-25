@@ -1,4 +1,3 @@
-#!/bin/sh
 IMPORT=${IMPORT:-$(pwd)/commands}
 source ${IMPORT}
 
@@ -25,7 +24,7 @@ ${six_spc}${six_spc}GG0G${l_blue}CCCC${b_yellow}@@${l_blue}CC${b_green}8888${l_b
  ${six_spc}${six_spc}GG0G${l_blue}CCC${b_yellow}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@${l_blue}CCC${b_blue}G0GG
    ${six_spc}${six_spc}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
       ${six_spc}${six_spc}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
-     ${line}
+      
      ${six_spc}${six_spc}${b_yellow}[${b_blue}-> ${b_write}${STRD} ${b_blue}<-> ${b_write}${DIA}${b_blue}/${b_write}${STRM}${b_blue}/${b_write}${ANO} ${b_blue}<-> ${b_write}${HORA}${b_blue}:${b_write}${MIN}${b_blue}:${b_write}${SEC} ${b_blue}<-${b_yellow}]
      ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow} [${b_write}Usuário ${b_blue}${USER}${b_yellow}]
      ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow}  [${b_write}Bem Vindo${b_yellow}]
