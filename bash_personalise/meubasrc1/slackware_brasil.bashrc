@@ -25,9 +25,9 @@ ${six_spc}${six_spc}GG0G${l_blue}CCCC${b_yellow}@@${l_blue}CC${b_green}8888${l_b
    ${six_spc}${six_spc}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
       ${six_spc}${six_spc}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
       
-     ${six_spc}${six_spc}${b_yellow}[${b_blue}-> ${b_write}${STRD} ${b_blue}<-> ${b_write}${DIA}${b_blue}/${b_write}${STRM}${b_blue}/${b_write}${ANO} ${b_blue}<-> ${b_write}${HORA}${b_blue}:${b_write}${MIN}${b_blue}:${b_write}${SEC} ${b_blue}<-${b_yellow}]
-     ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow} [${b_write}Usuário ${b_blue}${USER}${b_yellow}]
+     ${six_spc}${six_spc}${b_yellow}[${l_blue}-> ${b_write}${STRD} ${l_blue}<-> ${b_write}${DIA}${l_blue}/${b_write}${STRM}${l_blue}/${b_write}${ANO} ${l_blue}<-> ${b_write}${HORA}${l_blue}:${b_write}${MIN}${l_blue}:${b_write}${SEC} ${l_blue}<-${b_yellow}]
+     ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow} [${b_write}Usuário ${l_blue}${USER}${b_yellow}]
      ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow}  [${b_write}Bem Vindo${b_yellow}]
     ${six_spc}${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow}[${b_write}ao${b_yellow}]
-    ${six_spc}${six_spc}${b_yellow}[${b_write}${NAME} ${b_purple}GNU${b_red}/${b_blue}${OS} ${b_purple}${VERSION_ID}${b_red}/${b_blue}${KERNEL} ${b_write}${ARCH}${b_yellow}]
+    ${six_spc}${six_spc}${b_yellow}[${b_write}${NAME} ${b_purple}GNU${b_red}/${l_blue}${OS} ${b_purple}${VERSION_ID}${b_red}/${l_blue}${KERNEL} ${b_write}${ARCH}${b_yellow}]
 ${reset}"
