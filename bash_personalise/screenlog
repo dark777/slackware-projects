@@ -1,24 +1,63 @@
-#!/bin/sh
+#!/bin/bash
+
+reset=${reset:-"\033[0m"}
+six_spc=${six_spc:-"\033[6C"}
+
+# Bold Colors
+b_black=${b_black:-"\033[1;30m"}   # Bold Black
+b_red=${b_red:-"\033[1;31m"}       # Bold Red
+b_green=${b_green:-"\033[1;32m"}    # Bold Green
+b_blue=${b_blue:-"\033[1;34m"}     # Bold Blue
+b_yellow=${b_yellow:-"\033[1;33m"} # Bold Yellow
+b_purple=${b_purple:-"\033[1;35m"} # Bold Purple
+b_cyan=${b_cyan:-"\033[1;36m"}     # Bold Cyan
+b_write=${b_write:-"\033[1;37m"}   # Bold Write
+
+# Light Colors
+l_black=${l_black:-"\033[0;30m"}   # Light Black
+l_red=${l_red:-"\033[0;31m"}       # Light Red
+l_green=${l_green:-"\033[0;32m"}   # Light Green
+l_blue=${l_blue:-"\033[0;34m"}     # Light Blue
+l_yellow=${l_yellow:-"\033[0;33m"} # Light Yellow
+l_purple=${l_purple:-"\033[0;35m"} # Light Purple
+l_cyan=${l_cyan:-"\033[0;36m"}     # Light Cyan
+l_write=${l_write:-"\033[0;37m"}   # Light Write
+
+# Background Colors
+bg_black=${bg_black:-"\033[40m"}   # Background Black
+bg_red=${bg_red:-"\033[41m"}       # Background Red
+bg_green=${bg_green:-"\033[42m"}   # Background Green
+bg_yellow=${bg_yellow:-"\033[43m"} # Background Yellow
+bg_blue=${bg_blue:-"\033[44m"}     # Background Blue
+bg_purple=${bg_purple:-"\033[45m"} # Background Purple
+bg_cyan=${bg_cyan:-"\033[46m"}     # Background Cyan
+bg_white=${bg_white:-"\033[47m"}   # Background White
+
 echo -e "
-\e[1;34m                   :::::::                    \e[0m
-\e[1;34m             :::::::::::::::::::              \e[1;34m wiki\e[1m@\e[0m\e[1;34manon.com.br\e[0m
-\e[1;34m          :::::::::::::::::::::::::           \e[1;34m OS:\e[0m Slackware \e[0m
-\e[1;34m        ::::::::\e[1;37mcllcccccllllllll\e[1;34m::::::        \e[1;34m Kernel:\e[0m x86_64 Linux 4.14.27\e[0m
-\e[1;34m     :::::::::\e[1;37mlc               dc\e[1;34m:::::::      \e[1;34m Uptime:\e[0m 6h 29m\e[0m
-\e[1;34m    ::::::::\e[1;37mcl   clllccllll    oc\e[1;34m:::::::::    \e[1;34m Packages:\e[0m 1319\e[0m
-\e[1;34m   :::::::::\e[1;37mo   lc\e[1;34m::::::::\e[1;37mco   oc\e[1;34m::::::::::   \e[1;34m Shell:\e[0m bash\e[0m
-\e[1;34m  ::::::::::\e[1;37mo    cccclc\e[1;34m:::::\e[1;37mclcc\e[1;34m::::::::::::  \e[1;34m Resolution:\e[0m 1366x768\e[0m
-\e[1;34m  :::::::::::\e[1;37mlc        cclccclc\e[1;34m:::::::::::::  \e[1;34m DE:\e[0m KDE4\e[0m
-\e[1;34m ::::::::::::::\e[1;37mlcclcc          lc\e[1;34m:::::::::::: \e[1;34m WM:\e[0m KWin\e[0m
-\e[1;34m ::::::::::\e[1;37mcclcc\e[1;34m:::::\e[1;37mlccclc     oc\e[1;34m::::::::::: \e[1;34m WM Theme:\e[0m Redmond\e[0m
-\e[1;34m ::::::::::\e[1;37mo    l\e[1;34m::::::::::\e[1;37ml    lc\e[1;34m::::::::::: \e[1;34m CPU:\e[0m Intel Core i5-3230M @ 4x 3.2GHz [60.0°C]\e[0m
-\e[1;34m  :::::\e[1;37mcll\e[1;34m:\e[1;37mo     clcllcccll     o\e[1;34m:::::::::::  \e[1;34m GPU:\e[0m Mesa DRI Intel(R) Ivybridge Mobile \e[0m
-\e[1;34m  :::::\e[1;37mocc\e[1;34m:\e[1;37mo                  clc\e[1;34m:::::::::::  \e[1;34m RAM:\e[0m 1871MiB / 15879MiB\e[0m
-\e[1;34m   ::::\e[1;37mocl\e[1;34m:\e[1;37mccslclccclclccclclc\e[1;34m:::::::::::::   \e[0m
-\e[1;34m    :::\e[1;37moclcccccccccccccllllllllllllll\e[1;34m:::::    \e[0m
-\e[1;34m     ::\e[1;37mlcc1lcccccccccccccccccccccccco\e[1;34m::::     \e[0m
-\e[1;34m       ::::::::::::::::::::::::::::::::       \e[0m
-\e[1;34m         ::::::::::::::::::::::::::::         \e[0m
-\e[1;34m            ::::::::::::::::::::::            \e[0m
-\e[1;34m                 ::::::::::::                 \e[0m
+${b_blue}                            ::::::::
+                      ::::::::::::::::::::     
+                   ::::::::::::::::::::::::::
+                 ::::::::${b_write}cllcccccllllllll${b_blue}:::::: 
+              :::::::::${b_write}lc               dc${b_blue}:::::::
+             ::::::::${b_write}cl   clllccllll    oc${b_blue}:::::::::
+            :::::::::${b_write}o   lc${b_blue}::::::::${b_write}co   oc${b_blue}::::::::::
+           ::::::::::${b_write}o    cccclc${b_blue}:::::${b_write}clcc${b_blue}::::::::::::
+           :::::::::::${b_write}lc        cclccclc${b_blue}:::::::::::::
+          ::::::::::::::${b_write}lcclcc          lc${b_blue}::::::::::::
+          ::::::::::${b_write}cclcc${b_blue}:::::${b_write}lccclc     oc${b_blue}:::::::::::
+          ::::::::::${b_write}o    l${b_blue}::::::::::${b_write}l    lc${b_blue}:::::::::::
+           :::::${b_write}cll${b_blue}:${b_write}o     clcllcccll     o${b_blue}:::::::::::
+           :::::${b_write}occ${b_blue}:${b_write}o                  clc${b_blue}:::::::::::
+            ::::${b_write}ocl${b_blue}:${b_write}ccslclccclclccclclc${b_blue}:::::::::::::
+             :::${b_write}oclcccccccccccccllllllllllllll${b_blue}:::::
+              ::${b_write}lcc1lcccccccccccccccccccccccco${b_blue}::::
+                ::::::::::::::::::::::::::::::::
+                  ::::::::::::::::::::::::::::
+                     ::::::::::::::::::::::
+                          ::::::::::::
+                          
+${six_spc}${six_spc}${b_yellow}[${b_write}$(cat /etc/os-release | grep  "^NAME" | cut -f2 -d =) ${b_purple}GNU${b_red}/${b_blue}$(uname -s) ${b_purple}$(cat /etc/os-release | grep  "^VERSION_ID" | cut -f2 -d =)${b_red}/${b_blue}$(uname -r) ${b_write}$(uname -m)${b_yellow}]
+${b_blue}${six_spc}Uptime${b_red}: ${reset}$(uptime | awk '{print $3}' | sed 's/:/h /;s/,/m/g;')
+${b_blue}${six_spc}Kernel${b_red}: ${reset}$(uname -msr)
+${reset}
 "
