@@ -33,4 +33,4 @@ bg_yellow=${bg_yellow:-"\033[43m"} # Background Yellow
 bg_blue=${bg_blue:-"\033[44m"}     # Background Blue
 bg_purple=${bg_purple:-"\033[45m"} # Background Purple
 bg_cyan=${bg_cyan:-"\033[46m"}     # Background Cyan
-bg_white=${bg_white:-"\033[47m"}   # Background White 
+bg_white=${bg_white:-"\033[47m"}   # Background White

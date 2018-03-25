@@ -19,6 +19,6 @@ ${six_spc}${six_spc}${b_yellow}((__-^^-,-^^-__))            ${six_spc}${six_spc}
            ${six_spc}${six_spc}${six_spc}${b_yellow}__[${b_blue}GNU${b_green}+${b_blue}$(uname -s)${b_yellow}]__
           ${six_spc}${six_spc}${six_spc}${six_spc}${b_green} =
 ${six_spc}${six_spc}${b_yellow}[${b_write}${NAME} ${b_purple}GNU${b_red}/${b_blue}$(uname -s) ${b_purple}${VERSION_ID}${b_red}/${b_blue}$(uname -r) ${b_write}$(uname -m)${b_yellow}]
-${six_spc}${six_spc}${b_yellow}[${b_blue}-> ${b_write}$(date +%a) ${b_blue}<-> ${b_write}$(date +%d) $(date +%b)${b_blue}/${b_write}$(date +%Y) ${b_blue}<-> ${b_write}$(date +%H)${b_blue}:${b_write}$(date +%M)${b_blue}:${b_write}$(date +%S) ${b_blue}<-${b_yellow}]                  
- ${reset}                  
+${six_spc}${six_spc}${b_yellow}[${b_blue}-> ${b_write}$(date +%a) ${b_blue}<-> ${b_write}$(date +%d) $(date +%b)${b_blue}/${b_write}$(date +%Y) ${b_blue}<-> ${b_write}$(date +%H)${b_blue}:${b_write}$(date +%M)${b_blue}:${b_write}$(date +%S) ${b_blue}<-${b_yellow}]
+${reset}
 "
