@@ -21,7 +21,7 @@ BUILD=${BUILD:-1}
 
 CWD=${CWD:-$(pwd)}
 
-LANG_SYS=${LANG_SYS:-$(locale | grep "^LC_ALL" |cut -f2 -d = | cut -f1 -d. | sed 's/_/-/g')}
+LANG_SYS=${LANG_SYS:-$(locale | grep "^LANG" |cut -f2 -d = | cut -f1 -d. | sed 's/_/-/g')}
 
 # Automatically determine the architecture we're building on:
 if [ -z "${ARCH}" ]; then
