@@ -26,5 +26,5 @@ ${b_blue}                            ::::::::
 
 ${six_spc}${six_spc}${b_yellow}[${b_write}${NAME} ${b_purple}GNU${b_red}/${l_blue}${OS} ${b_purple}${VERSION_ID}${b_red}/${l_blue}${KERNEL} ${b_write}${ARCH}${b_yellow}]
 ${six_spc}${six_spc}${b_yellow}[${l_blue}-> ${b_write}${STRD} ${l_blue}<-> ${b_write}${DIA}${l_blue}/${b_write}${STRM}${l_blue}/${b_write}${ANO} ${l_blue}<-> ${b_write}${HORA}${l_blue}:${b_write}${MIN}${l_blue}:${b_write}${SEC} ${l_blue}<-${b_yellow}]
-${l_blue}${six_spc}${six_spc}${six_spc}  ${b_yellow}[${l_blue}-> ${b_write}Uptime${b_green}: ${b_red}${UPTIME:0:3}${l_blue}:${b_red}${UPTIME:4:4} ${l_blue}<-${b_yellow}]
+${l_blue}${six_spc}${six_spc}${six_spc}  ${b_yellow}[${l_blue}-> ${b_write}Uptime${b_green}: ${b_red}${UPTIME:7:2}${l_blue}:${b_red}${UPTIME:12:3} ${l_blue}<-${b_yellow}]
 ${reset}"
