@@ -1,18 +1,18 @@
 OS_RELEASE=${OS_RELEASE:-/etc/os-release}
 source ${OS_RELEASE}
-OSTYPE1=${OSTYPE1:-${OSTYPE}}                                         # OSTYPE1=linux-gnu
-OSTYPE2=${OSTYPE2:-${OSTYPE:6:3}/${OSTYPE:0:5}}                       # OSTYPE2=gnu/linux
-STRD=${STRD:-$(date +%a)}                                             # STRD=dom
-STRM=${STRM:-$(date +%b)}                                             # STRM=mar
-DIA=${DIA:-$(date +%d)}                                               # DIA=25
-MES=${MES:-$(date +%m)}                                               # MES=03
-ANO=${ANO:-$(date +%Y)}                                               # ANO=2018
-HORA=${HORA:-$(date +%H)}                                             # HORA=02
-MIN=${MIN:-$(date +%M)}                                               # MIN=08
-SEC=${SEC:-$(date +%S)}                                               # SEC=25
-UP=${UP:-$(uptime | awk '{print $3" "$4}'|sed 's/,//g;')}             # UP=3 days
-TIME=${TIME:-$(uptime | awk '{print $5}' | sed 's/:/h e /;s/,/m/g;')} # TIME=9h e 38m
-UPTIME=${UPTIME:-${UP} ${TIME}}                                       # UPTIME=2h 22m
+OSTYPE1=${OSTYPE1:-${OSTYPE}}                                          # OSTYPE1=linux-gnu
+OSTYPE2=${OSTYPE2:-${OSTYPE:6:3}/${OSTYPE:0:5}}                        # OSTYPE2=gnu/linux
+STRD=${STRD:-$(date +%a)}                                              # STRD=dom
+STRM=${STRM:-$(date +%b)}                                              # STRM=mar
+DIA=${DIA:-$(date +%d)}                                                # DIA=25
+MES=${MES:-$(date +%m)}                                                # MES=03
+ANO=${ANO:-$(date +%Y)}                                                # ANO=2018
+HORA=${HORA:-$(date +%H)}                                              # HORA=02
+MIN=${MIN:-$(date +%M)}                                                # MIN=08
+SEC=${SEC:-$(date +%S)}                                                # SEC=25
+UP=${UP:-$(uptime | awk '{print $3" "$4}'|sed 's/,//g;')}              # UP=3 days
+TIME=${TIME:-$(uptime | awk '{print $5}' | sed 's/:/h e /g;s/,/m/g;')} # TIME=9h e 38m
+UPTIME=${UPTIME:-${UP} ${TIME}}                                        # UPTIME=1 day 7h e 36m
 
 OS=${OS:-$(uname -s)}              # OS=Linux
 ARCH=${ARCH:-$(uname -m)}          # ARCH=x86_64
