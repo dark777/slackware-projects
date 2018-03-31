@@ -20,6 +20,16 @@ KERNEL=${KERNEL:-$(uname -r)}      # KERNEL=4.14.27
 reset=${reset:-"\033[0m"}          # Reset colors
 six_spc=${six_spc:-"\033[6C"}      # Space chars
 
+#Colors
+red=${red:-"\033[31m"}       # Red
+green=${green:-"\033[32m"}   # Green
+blue=${blue:-"\033[34m"}     # Blue
+yellow=${yellow:-"\033[33m"} # Yellow
+purple=${purple:-"\033[35m"} # Purple
+cyan=${cyan:-"\033[36m"}     # Cyan
+write=${write:-"\033[37m"}   # Write
+black=${black:-"\033[30m"}   # Black
+
 # Bold Colors
 b_red=${b_red:-"\033[1;31m"}       # Bold Red
 b_green=${b_green:-"\033[1;32m"}   # Bold Green
