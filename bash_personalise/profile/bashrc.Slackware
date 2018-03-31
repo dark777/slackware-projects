@@ -1,4 +1,24 @@
 
+
+checkhistory()
+{
+ ITEMS="$1"
+ 
+ if [[ -z "$ITEMS" ]];then
+  ITEMS="10"
+   fi
+ 
+ echo -e "\nAll Commands ($ITEMS items):"
+ history | awk '{print $2}' | sort | uniq -c | sort -rn | head -$ITEMS
+ 
+ echo -e "\nSudo Commands ($ITEMS items):"
+ history | grep sudo | awk '{print $3}' | sort | uniq -c | sort -rn | head -$ITEMS
+ echo
+ ## A function to show 10 most used commands,
+ ## On the user's operating system
+}
+
+
 if [ -f /etc/profile ]; then
   . /etc/profile
 fi
