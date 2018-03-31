@@ -1,6 +1,7 @@
 # /etc/profile: This file contains system-wide defaults used by
 # all Bourne (and related) shells.
-
+IMPORT=${IMPORT:-/etc/skel/commands}
+source ${IMPORT}
 # Set the values for some environment variables:
 export MINICOM="-c on"
 export MANPATH=/usr/local/man:/usr/man
@@ -60,11 +61,23 @@ fi
 ## Verifica se é usuário root ou usuário comum
 if [ ${UID} -eq 0 ]; then
 echo -e "
-          _ 
-         °v° ** Bem-vindo ao $(cat /etc/*version) **
-        /(_)\\ 
-         ^ ^ $(date)
-        "
+                                 ${six_spc}${six_spc}${six_spc}${six_spc}${l_black}#####
+                                ${six_spc}${six_spc}${six_spc}${six_spc}${l_black}#######
+                                ${six_spc}${six_spc}${six_spc}${six_spc}${l_black}##${b_write}O${l_black}#${b_write}O${l_black}##
+                                ${six_spc}${six_spc}${six_spc}${six_spc}${l_black}#${b_yellow}lllll${l_black}#
+${six_spc}${six_spc}${l_black}((${b_yellow}__-^^-,-^^-__${l_black}))             ${six_spc}${six_spc}${l_black}#${b_write}101${b_yellow}\l/${b_write}010${l_black}#
+ ${six_spc}${six_spc}${b_yellow}*---*******---*            ${six_spc}${six_spc}${l_black}#${b_write}101010101010${l_black}#
+  ${six_spc}${six_spc}${b_yellow}*--|${b_cyan}o   o${b_yellow}|--*            ${six_spc}${six_spc}${l_black}#${b_write}01010101010101${l_black}#
+     ${six_spc}${six_spc}${b_yellow}\     /     ${six_spc}${b_green}+  ${six_spc}${six_spc}${l_black}##${b_write}10101010101010${l_black}##
+      ${six_spc}${six_spc}${b_yellow})${b_yellow}: :${b_yellow}(               ${six_spc}${six_spc}${l_black}###${b_write}010101010101${l_black}###
+      ${six_spc}${six_spc}${b_yellow}(${b_red}o${b_cyan}_${b_red}o${b_yellow})               ${six_spc}${six_spc}${b_yellow}000${l_black}#${b_write}1010101010${l_black}#${b_yellow}000
+                         ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow}000000${l_black}#${b_write}010101${l_black}#${b_yellow}000000
+                        ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow}0000000${l_black}#${b_write}101010${l_black}#${b_yellow}0000000
+                         ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow}0000000${l_black}######${b_yellow}0000000
+           ${six_spc}${six_spc}${six_spc}${b_yellow}__[${l_blue}GNU${b_green}+${l_blue}${OS}${b_yellow}]__
+          ${six_spc}${six_spc}${six_spc}${six_spc}${b_green} =
+   ${six_spc}${six_spc}${b_yellow}[${b_write}${NAME} ${b_purple}GNU${b_red}/${l_blue}${OS} ${b_purple}${VERSION_ID}${b_red}/${l_blue}${KERNEL} ${b_write}${ARCH}${b_yellow}]
+   ${six_spc}${six_spc}${b_yellow}[${l_blue}-> ${b_write}${STRD} ${l_blue}<-> ${b_write}${DIA} ${STRM}${l_blue}/${b_write}${ANO} ${l_blue}<-> ${b_write}${HORA}${l_blue}:${b_write}${MIN}${l_blue}:${b_write}${SEC} ${l_blue}<-${b_yellow}]${reset}"
 FGNAMES=('▐▐▐' '▐▐▐' '▐▐▐' '▐▐▐' '▐▐▐' '▐▐▐' '▐▐▐' '▐▐▐')
 BGNAMES=('  ')
 
@@ -81,6 +94,36 @@ echo -e "\n"
 done
  PS1='\033[01;31m┌─[\033[01;36m\u\033[01;31m.\033[01;32m${HOSTNAME%%.*}\033[01;31m]-[\033[01;33m\#\033[01;31m]-[\033[1;33m\w\033[1;31m]\n\033[01;31m└──\033[01;92m<<\033[0m '
 else
+echo -e "
+      ${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
+   ${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
+ ${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCCCCC${b_green}8888888888${l_blue}CCCCC${b_green}8888${l_blue}CCCCCCCC${b_blue}G0GG
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCC${b_green}8888888888888888${l_blue}CC${b_green}8888${l_blue}CCCCCCCC${b_blue}G0GG
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCC${b_green}8888888${l_blue}CCCCCCCCC${b_green}88888888${l_blue}CCCCCCCC${b_blue}G0GG
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCC${b_green}888888${l_blue}CCCCCCCCCCCCC${b_green}888888${l_blue}CCCCCCCC${b_blue}G0GG   ${l_black}#####${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCC${b_green}888888${l_blue}CCCCCCCCCCCCCCC${b_green}88888${l_blue}CCCCCCCC${b_blue}G0GG  ${l_black}#######${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCC${b_green}888888${l_blue}CCCCCCCCCCCCCCCC${b_green}8888${l_blue}CCCCCCCC${b_blue}G0GG  ${l_black}##${b_write}O${l_black}#${b_write}O${l_black}##${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCC${b_green}8888888${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG  ${l_black}#${b_yellow}lllll${l_black}#${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCC${b_green}8888888888888888888${l_blue}CCCCCCCCCCCCC${b_blue}G0GG${l_black}#${b_write}101${b_yellow}\l/${b_write}010${l_black}#${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCCC${b_green}8888888888888888888${l_blue}CCCCCCCCCC${b_blue}G0G${l_black}#${b_write}101010101010${l_black}#${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCC${b_green}8888888${l_blue}CCCCCCCCC${b_blue}G0${l_black}#${b_write}01010101010101${l_black}#${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCC${b_green}8888${l_blue}CCCCCCCCCCCCCCCC${b_green}888888${l_blue}CCCCCCCC${b_blue}G${l_black}##${b_write}10101010101010${l_black}##${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCC${b_green}88888${l_blue}CCCCCCCCCCCCCCC${b_green}888888${l_blue}CCCCCCCC${b_blue}G${l_black}##${b_write}10101010101010${l_black}##${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCC${b_green}888888${l_blue}CCCCCCCCCCCCC${b_green}888888${l_blue}CCCCCCCCC${b_blue}G${l_black}###${b_write}010101010101${l_black}###${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCC${b_green}88888888${l_blue}CCCCCCCCC${b_green}8888888${l_blue}CCCCCCCCCC${b_blue}G${b_yellow}000${l_black}#${b_write}1010101010${l_black}#${b_yellow}000${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCC${b_yellow}@@${l_blue}CC${b_green}8888${l_blue}CC${b_green}8888888888888888${l_blue}CCCCCCCCCCCC${b_yellow}000000${l_black}#${b_write}010101${l_black}#${b_yellow}000000${reset}
+${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCC${b_yellow}@@${l_blue}CC${b_green}8888${l_blue}CCCCC${b_green}8888888888${l_blue}CCCCCCCCCCCCCC${b_yellow}0000000${l_black}#${b_write}101010${l_black}#${b_yellow}0000000${reset}
+ ${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCC${b_yellow}@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@${l_blue}CCCC${b_yellow}0000000${l_black}######${b_yellow}0000000${reset}
+   ${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
+      ${six_spc}${six_spc}${b_blue}GG0G${l_blue}CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${b_blue}G0GG
+      
+     ${six_spc}${six_spc}${b_yellow}[${l_blue}-> ${b_write}${STRD} ${l_blue}<-> ${b_write}${DIA}${l_blue}/${b_write}${STRM}${l_blue}/${b_write}${ANO} ${l_blue}<-> ${b_write}${HORA}${l_blue}:${b_write}${MIN}${l_blue}:${b_write}${SEC} ${l_blue}<-${b_yellow}]
+     ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow} [${b_write}Usuário ${l_blue}${USER}${b_yellow}]
+     ${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow}  [${b_write}Bem Vindo${b_yellow}]
+    ${six_spc}${six_spc}${six_spc}${six_spc}${six_spc}${b_yellow}[${b_write}ao${b_yellow}]
+    ${six_spc}${six_spc}${b_yellow}[${b_write}${NAME} ${b_purple}GNU${b_red}/${l_blue}${OS} ${b_purple}${VERSION_ID}${b_red}/${l_blue}${KERNEL} ${b_write}${ARCH}${b_yellow}]
+${reset}"
  PS1='\033[01;31m┌─[\033[01;36m\u\033[01;31m.\033[01;32m${HOSTNAME%%.*}\033[01;31m]-[\033[01;33m\#\033[01;31m]-[\033[1;33m\w\033[1;31m]\n\033[01;31m└──\033[01;92m>>\033[0m '
 fi
 

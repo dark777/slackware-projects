@@ -35,12 +35,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# Boas Vindas.
-echo '   _ '
-echo '  *v* *** BEM VINDO AO '`hostname`' ***'
-echo ' /(_)\ '
-echo '  ^ ^ ' `date`
-echo ' '
+#echo -e "
+#          _ 
+#         °v° ** Bem-vindo ao $(cat /etc/*version) **
+#        /(_)\\ 
+#         ^ ^ $(date)
+#        "
 
 #-------------------------------------------------------------
 # Source global definitions (if any)
