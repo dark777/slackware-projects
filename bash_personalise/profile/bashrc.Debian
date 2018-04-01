@@ -1,0 +1,571 @@
+ # ~/.bashrc: executed by bash(1) for non-login shells.
+ # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+ # for examples
+
+ #
+ ## Mensagem inicial.
+ #
+ ## Info: http://www.vivaolinux.com.br/artigo/Desktop-Debian-Ubuntu/
+ ## Info: http://www.vivaolinux.com.br/dica/Dicas-no-terminal-para-Debian-Ubuntu-e-distros-derivadas/
+ #
+ setterm -foreground red -bold on -term linux 
+
+ echo ' _ '
+ echo ' °v° ** Welcome to '`hostname`' **'
+ echo ' /(_)\ '
+ echo ' ^ ^ ' `date`
+ echo ' '
+
+ #
+ ## Meu bash_prompt padrão.
+ #
+ ## Info: http://gnu2all.blogspot.com/2011/10/estilos-de-bash-prompts.html
+ #
+
+ function elite()
+ {
+ local GRAY="\[\033[1;30m\]"
+ local LIGHT_GRAY="\[\033[0;37m\]"
+ local CYAN="\[\033[0;36m\]"
+ local LIGHT_CYAN="\[\033[1;36m\]"
+ case $TERM in
+ xterm*)
+ local TITLEBAR='\[\033]0;\u@\h:\w\007\]'
+ ;;
+ *)
+ local TITLEBAR=""
+ ;;
+ esac
+ local GRAD1=$(tty|cut -d/ -f3)
+ PS1="$TITLEBAR\
+ $GRAY-$CYAN-$LIGHT_CYAN(\
+ $CYAN\u$GRAY@$CYAN\h\
+ $LIGHT_CYAN)$CYAN-$LIGHT_CYAN(\
+ $CYAN\#$GRAY/$CYAN$GRAD1\
+ $LIGHT_CYAN)$CYAN-$LIGHT_CYAN(\
+ $CYAN\$(date +%H%M)$GRAY/$CYAN\$(date +%d-%b-%y)\
+ $LIGHT_CYAN)$CYAN-$GRAY-\
+ $LIGHT_GRAY\n\
+ $GRAY-$CYAN-$LIGHT_CYAN(\
+ $CYAN\$$GRAY:$CYAN\w\
+ $LIGHT_CYAN)$CYAN-$GRAY-$LIGHT_GRAY "
+ PS2="$LIGHT_CYAN-$CYAN-$GRAY-$LIGHT_GRAY "
+ }
+ PROMPT_COMMAND=elite
+
+ #
+ ## Info: http://gnu2all.blogspot.com/2011/10/estilos-de-bash-prompts.html
+ #
+ ## Meu bash_prompt padrão.
+ #
+
+ #
+ ## Opções para o bash_history, aliases e autocomplete.
+ #
+ ## Info: http://dan-scientia.blogspot.com/2010/05/usando-o-historico-do-bash-com.html
+ #
+
+ #
+ # caso queiram descomentem as 3 linhas abaixo, crie o arquivo ~/.bash_aliases e ponham.
+ # os aliases nele, essas linhas estão comentadas pois os coloquei diretamente no ~/.bashrc
+ #
+ #if [ -f ~/.bash_aliases ]; then
+ # . ~/.bash_aliases
+ #fi
+
+ if [ -x /usr/bin/dircolors ]; then
+ test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+ alias ls='ls --color=auto'
+ #alias dir='dir --color=auto'
+ #alias vdir='vdir --color=auto'
+
+ #alias grep='grep --color=auto'
+ #alias fgrep='fgrep --color=auto'
+ #alias egrep='egrep --color=auto'
+ fi
+
+ complete -cf sudo
+
+ shopt -s cdspell
+ shopt -s checkwinsize
+ shopt -s cmdhist
+ shopt -s dotglob
+ shopt -s expand_aliases
+ shopt -s extglob
+ shopt -s histappend
+ shopt -s hostcomplete
+ shopt -s nocaseglob
+
+ export HISTSIZE=10000
+ export HISTFILESIZE=${HISTSIZE}
+ export HISTIGNORE="pwd:ls:ls -la:exit:bash:clear:cd:./configure:make:sudo make install:conectar:desconectar:google:"
+ export HISTCONTROL=ignoredups
+ export HISTCONTROL=ignorespace
+ export HISTCONTROL=erasedups
+ #export HISTCONTROL=ignoreboth
+
+ #
+ ## Bash Completion. ( requer: bash_completion )
+ #
+ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+ . /etc/bash_completion
+ fi
+
+ #
+ ## Editor padrão. ( requer: nano )
+ #
+ export EDITOR=nano
+ export VISUAL=nano
+ alias editor=nano
+ alias vi=nano
+
+ #
+ ## Opções para o Teclado ( ABNT2 e Ctrl+Alt+Backspace )
+ #
+ setxkbmap -model abnt2 br
+ setxkbmap -option terminate:ctrl_alt_bksp
+
+
+ #
+ ## Gestão de Debian, Ubuntu e derivados ( INÍCIO ).
+ #
+
+ # debdelta.
+ alias debdelta='sudo debdelta-upgrade'
+
+ # editar sources.list.
+ alias lists='sudo nano /etc/apt/sources.list'
+
+ # atualizar listas de pacotes.
+ alias upd='sudo apt-get update'
+
+ # atualização básica do sistema.
+ alias upgrd='sudo apt-get upgrade'
+
+ # atualização completa do sistema.
+ alias dupgrd='sudo apt-get dist-upgrade'
+
+ # instalar pacote com o APT.
+ alias aptinst='sudo apt-get install'
+
+ # descarta a instalação de pacotes recomendados ou sugeridos.
+ alias aptinst2='sudo apt-get --no-install-recommends install'
+
+ # descarta a instalação de pacotes recomendados ou sugeridos.
+ alias apttinst='sudo aptitude install'
+
+ # descarta a instalação de pacotes recomendados ou sugeridos.
+ alias apttinst2='sudo aptitude --without-recommends install'
+
+ # instalar pacote com o DPKG.
+ alias debinstall='sudo dpkg -i'
+ alias debinstall-force='sudo dpkg -i --force-overwrite'
+
+ # remover pacote com o APT.
+ alias rmv='sudo apt-get remove'
+
+ # remover pacote e configurações.
+ alias aptprg='sudo apt-get remove --purge'
+
+ # remover pacote com o DPKG.
+ alias dpkgrmv='sudo dpkg -r'
+
+ # remover pacotes órfãos.
+ alias autoremove='sudo apt-get autoremove'
+
+ # remover pacote órfãos e configurações.
+ alias aptautprg='sudo apt-get autoremove --purge'
+
+ # remover pacotes antigos do cache.
+ alias autoclean='sudo apt-get autoclean'
+
+ # procurar pacote.
+ alias aptsearch='apt-cache search'
+
+ # mostrar pacote.
+ alias aptshow='apt-cache show'
+
+ # reparar APT/DPKG.
+ alias aptrepair='sudo apt-get -f install'
+ alias dpkgrepair='sudo dpkg --configure -a'
+
+ # reconfigurar pacote.
+ alias dpkgreconf='sudo dpkg--reconfigure'
+
+ # preligar binários. ( requer: prelink )
+ alias preligar='sudo prelink --all'
+
+ # atualizar índices com o updatedb. ( requer: mlocate ou slocate )
+ alias index='sudo updatedb'
+
+ #
+ ## apt-history ( mostra o histórico do DPKG )
+ #
+ ## USO: apt-history
+ #
+ function apt-history(){
+ case "$1" in
+ install)
+ cat /var/log/dpkg.log | grep 'install '
+ ;;
+ upgrade|remove)
+ cat /var/log/dpkg.log | grep $1
+ ;;
+ rollback)
+ cat /var/log/dpkg.log | grep upgrade | \
+ grep "$2" -A10000000 | \
+ grep "$3" -B10000000 | \
+ awk '{print $4"="$5}'
+ ;;
+ *)
+ cat /var/log/dpkg.log
+ ;;
+ esac
+ }
+
+ #
+ ## Gestão de Debian, Ubuntu e derivados ( FIM ).
+ #
+
+
+ #
+ # ---------- diversos ----------
+ #
+
+ #
+ ## Pings. ( melhorar conexão 3G )
+ #
+ ## Info: http://www.vivaolinux.com.br/dica/Estabilidade-e-continuidade-em-conexoes-3G-usando-o-ping/
+ #
+ alias google='ping -i 3 www.google.com'
+ alias globo='ping -i 3 www.globo.com'
+ alias uol='ping -i 3 www.uol.com.br'
+ alias yahoo='ping -i 3 www.yahoo.com'
+
+ # 
+ ## Cores para manpages.
+ # 
+ alias man="TERMINFO=~/.terminfo TERM=mostlike LESS=C PAGER=less man"
+
+ #
+ ## Compilar com Checkinstall. ( requer: checkinstall )
+ #
+ alias cfg='./configure --prefix=/usr --sysconfdir=/etc && make'
+ alias inst='sudo checkinstall -D --install=no --pkgarch=all --maintainer=email@agumserver.com'
+ alias checkinstall-force='sudo checkinstall --dpkgflags "--force-overwrite"'
+ alias checkinstall-noinstall='sudo checkinstall -y --fstrans=no --install=no'
+ alias checkinstall='sudo checkinstall -y --fstrans=no'
+
+ #
+ ## Controlar o Plymouth. ( requer: plymouth )
+ #
+ ## Info: http://crunchbanglinux.org/forums/topic/10818/plymouth-enabled-in-statler/
+ #
+ alias plylist='sudo /usr/sbin/plymouth-set-default-theme --list' # lista os temas disponíveis.
+ alias plytheme='sudo /usr/sbin/plymouth-set-default-theme' # altera o tema do Plymouth.
+ alias plyupdate='sudo update-initramfs -u' # atualiza o initrd para implementar as mudanças.
+ alias plymouth-details='sudo /usr/sbin/plymouth-set-default-theme details && sudo update-initramfs -u' # escolhe o tema 'details' e atualiza o initrd.
+
+ # 
+ ## Archive extractor. 
+ ## usage: ex <file> 
+ # 
+ extract() { 
+ if [ -f $1 ] ; then
+ case $1 in
+ *.tar.bz2) tar xvjf $1 ;; 
+ *.tar.gz) tar xvzf $1 ;; 
+ *.tar.xz) tar xvJf $1 ;; 
+ *.bz2) bunzip2 $1 ;; 
+ *.rar) unrar x $1 ;; 
+ *.gz) gunzip $1 ;; 
+ *.tar) tar xvf $1 ;; 
+ *.tbz2) tar xvjf $1 ;; 
+ *.tgz) tar xvzf $1 ;; 
+ *.zip) unzip $1 ;; 
+ *.Z) uncompress $1 ;; 
+ *.7z) 7z x $1 ;; 
+ *.xz) unxz $1 ;; 
+ *.exe) cabextract $1 ;; 
+ *) echo "\`$1': unrecognized file compression" ;; 
+ esac 
+ else
+ echo "\`$1' is not a valid file"
+ fi
+ }
+
+ #
+ ## Compactar diretórios.
+ #
+
+ # .tar
+ function mktar() { tar cvf "${1%%/}.tar" "${1%%/}/"; }
+
+ # .tar.bz2
+ function mktbz() { tar cvjf "${1%%/}.tar.bz2" "${1%%/}/"; }
+
+ # .tar.gz
+ function mktgz() { tar cvzf "${1%%/}.tar.gz" "${1%%/}/"; }
+
+ # .tar.xz
+ function mktxz() { tar cvJf "${1%%/}.tar.xz" "${1%%/}/"; }
+
+ #
+ ## Gerar imagem de disco.
+ #
+ ## copyright 2007 - 2010 Christopher Bratusek
+ #
+ function geniso() {
+ if [[ $CD_WRITER ]]; then
+ dd $DD_OPTS if=$CD_WRITER of="$1"
+ else dd $DD_OPTS if=/dev/dvdrw of="$1"
+ fi
+ }
+
+ #
+ ## Gravar imagem de disco
+ #
+ ## copyright 2007 - 2010 Christopher Bratusek
+ #
+ ## USAGE: writeiso path_to_iso
+ function writeiso() {
+ if [[ $CD_WRITER ]]; then
+ cdrecord dev=$CD_WRITER "$1"
+ else cdrecord dev=/dev/dvd "$1"
+ fi
+ }
+
+ # 
+ ## Copiar ou Mover arquivos e seguir para o destino.
+ #
+ cpf() { cp "$@" && goto "$_"; } 
+ mvf() { mv "$@" && goto "$_"; } 
+ goto() { [ -d "$1" ] && cd "$1" || cd "$(dirname "$1")"; } 
+
+ # 
+ ## TimeZone. ( requer: tzdata )
+ #
+ zone() { TZ="$1"/"$2" date; } 
+ zones() { ls /usr/share/zoneinfo/"$1" ;} 
+
+ # 
+ ## Notas simples.
+ #
+ n() { $EDITOR $HOME/.notas/"$*".txt ; } 
+ nls() { tree -CR --noreport $HOME/.notas | awk '{ if ((NR > 1) gsub(/.txt/,"")); if (NF==1) print $1; else if (NF==2) print $2; else if (NF==3) printf " %s\n", $3 }' ;} 
+ nd() { rm $HOME/.notas/"$*".txt ; } 
+
+ # 
+ ## Imprimir ManPages.
+ #
+ manp() { man -t "$@" | lpr -pPrinter; } 
+
+ # 
+ ## Criar PDFs de ManPages ( requer: ghostscript e mimeinfo ).
+ #
+ manpdf() { man -t "$@" | ps2pdf - /tmp/manpdf_$1.pdf && xdg-open /tmp/manpdf_$1.pdf ;} 
+
+ #
+ ## MOC (Music On Console). ( requer: moc moc-ffmpeg-plugin )
+ #
+ ## Info: http://www.vivaolinux.com.br/artigo/MOC-O-player-de-audio-para-consoles
+ #
+ alias music='mocp -m /media/sda1/MULTIMIDIA/MUSIC/'
+ alias killmoc='killall mocp'
+
+ #
+ ## Opera Tweaks. ( melhorar a performance do Flash no Opera )
+ #
+ export BROWSER="opera"
+ export OPERAPLUGINWRAPPER_PRIORITY=0
+ export OPERA_KEEP_BLOCKED_PLUGIN=1
+
+ #
+ ## Speedometer. ( requer: speedometer )
+ #
+ alias speed='speedometer -rx ppp0 -tx ppp0'
+
+ #
+ ## Máquinas Virtuais do VirtualBox.
+ #
+ ## Info: http://www.vivaolinux.com.br/artigo/Executando-maquinas-virtuais-diretamente-no-GDM/
+ #
+ alias parabola='VBoxSDL -vm parabola'
+
+ #
+ ## Conversão de vídeos em 2 passos com o Mencoder. (dica ainda a fazer!).
+ #
+ #alias menc1='mencoder -profile xvid-pass1 '
+ #alias menc2='mencoder -profile xvid-pass2 '
+
+ #
+ ## Converter WMA para WAV. ( requer: mplayer )
+ #
+ alias wma2wav='for i in *.wma; do mplayer -vo null -vc dummy -af resample=44100 -ao pcm:waveheader:file="${i%.wma}.wav" "$i" ; done'
+
+ #
+ ## Ripar audio de vídeo
+ #
+ ## Info: http://gnome-look.org/content/show.php/Ultimate+Bashrc+File?content=129746
+ #
+ ## USO: audioextract <arquivo-de-video> novo-arquivo.ac3
+ #
+ function audioextract()
+ {
+ mplayer -ao pcm -vo null -vc dummy -dumpaudio -dumpfile "$1" "$2"
+ }
+
+ #
+ ## Ripar audio de DVD.
+ #
+ ## Info: http://gnome-look.org/content/show.php/Ultimate+Bashrc+File?content=129746
+ #
+ ## USO: audioextract_dvd <arquivo-de-video.VOB> novo-arquivo.ac3
+ #
+ function audioextract_dvd()
+ {
+ mplayer "$1" -aid 128 -dumpaudio -dumpfile "$2"
+ }
+
+ # 
+ ## Top 10 ( mostra os 10 comandos mais utilizados ).
+ # 
+ ## copyright 2007 - 2010 Christopher Bratusek 
+ #
+ function top10() { 
+ history | awk '{a[$2]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head
+ } 
+
+ # 
+ ## RTFM (Read The Fucking Manual!). ( requer: lynx )
+ #
+ function rtfm() 
+ { help $@ || man $@ || lynx "http://www.google.com/search?q=$@"; } 
+
+ #
+ ## Theme Info.
+ #
+ function themeinfo() {
+ if [ `pgrep emerald` ]; then
+ echo " Emerald: `cat $HOME/.emerald/theme/theme.ini | grep description | awk -F= '{print $2}'`"
+ else
+ echo " Metacity: `gconftool-2 -g /apps/metacity/general/theme`"
+ fi
+ echo " GTK: `gconftool-2 -g /desktop/gnome/interface/gtk_theme`"
+ echo " Icons: `gconftool-2 -g /desktop/gnome/interface/icon_theme`"
+ echo " Cursor: `gconftool-2 -g /desktop/gnome/peripherals/mouse/cursor_theme`"
+ echo " Font: `gconftool-2 -g /desktop/gnome/interface/font_name`"
+ echo " Wallpaper: `gconftool-2 -g /desktop/gnome/background/picture_filename | xargs basename | cut -d. -f 1`"
+ echo
+ }
+
+ # 
+ ## Screenshot.
+ # 
+ function shot() 
+ { 
+ import -frame -strip -quality 75 "$HOME/$(date +%s).png"
+ } 
+
+ #
+ ## LinuxLOGO. ( requer: linuxlogo )
+ #
+ ## Info: http://www.vivaolinux.com.br/artigo/Instalando-o-Linuxlogo-no-titulo-do-console-TTY-do-Debian
+ #
+ if [ -x /usr/bin/xterm ]; then
+ /usr/bin/linux_logo
+ fi
+
+ # 
+ ## Zipar arquivos ou diretórios.
+ # 
+ function zipf() { zip -r "$1".zip "$1" ; } 
+
+ # 
+ ## Processos.
+ # 
+ alias processos='ps -aux | grep ' ### USE: processo <programa>
+ alias matar='sudo kill -9 ' ### USE: matar <PID do programa>
+ alias finalizar='sudo killall ' ### USE: finalizar <programa>
+
+ # 
+ ## Rádios OnLine.
+ #
+ ## Info: http://www.vivaolinux.com.br/dica/Ouca-a-KissFM-Radio-Rock-diretamente-de-seu-terminal/
+ #
+ alias kissfm='mplayer -playlist "http://www.crosshost.com.br/cbs/kiss/ouvir.m3u"'
+ alias kissfm2='mplayer -playlist http://www.crosshost.com.br/cbs/kiss/radio.asx'
+ alias metalmilitia='mplayer -playlist "http://www.server1.bouncestream.com.br/tunein.php/metal/playlist.pls"'
+ alias globoamsp='mplayer http://wm-sgr-live.globo.com/sgr_off_globoamsp_live.wma'
+ alias cbnfmsp='mplayer http://wm-sgr-live.globo.com/sgr_off_cbnfmsp_live.wma'
+ alias bandamsp='mplayer http://servidor25.crossdigital.com.br:8000/bandeirantesam'
+
+ # 
+ ## Shred. (comentado por precaução!).
+ #
+ ## Maiores Informações: man shred
+ #
+ #alias shred-sda-r='sudo shred -v -z -n 1 /dev/sda' 
+ #alias shred-sda='sudo shred -v -z -n 0 /dev/sda' 
+ #alias shred-sdb-r='sudo shred -v -z -n 1 /dev/sdb' 
+ #alias shred-sdb='sudo shred -v -z -n 0 /dev/sdb' 
+ #alias shred-sdc-r='sudo shred -v -z -n 1 /dev/sdc' 
+ #alias shred-sdc='sudo shred -v -z -n 0 /dev/sdc' 
+
+ # 
+ ## Xterm e Aterm. 
+ #
+ alias aterm='xterm -ls -fg gray -bg black'
+ alias termr='xterm -bg AntiqueWhite -fg DarkRed &'
+ alias xsu='xterm -fn 7x14 -bg Red -fg white -e su &'
+ alias xtop='xterm -fn 6x13 -bg LightSlateGray -fg black -e top &'
+
+
+ # 
+ ## Ejetar Modem 3G. 
+ #
+ alias ejetar='sudo eject /dev/sr1'
+
+ # 
+ ## Image Shadow.
+ #
+ ## Info: http://www.dicas-l.com.br/arquivo/acrescentar_sombras_e_bordas_a_imagens_com_imagemagick.php
+ #
+ image-shadow () { 
+ out=${1%.*}-shadow.${1#*.} 
+ in=$1 
+ echo "Converted file : $out"
+ if [ ! -z $2 ] ; then 
+ convert $in -frame $2 $out 
+ in=$out 
+ fi
+ convert $in \( +clone -background black -shadow 60x5+10+10 \) \ 
+ +swap -background white -layers merge +repage $out 
+ }
+
+ #
+ ## Nautilus 'light'.
+ #
+ alias nautilus-light='gconftool-2 -s -t bool /apps/nautilus/preferences/show_desktop false & gconftool-2 -s -t bool /desktop/gnome/background/draw_background false & gconftool-2 -s -t bool /apps/nautilus/preferences/always_use_browser true & gconftool-2 -s -t bool /apps/nautilus/preferences/show_advanced_permissions true &'
+
+ #
+ ## Youtub-dl.
+ #
+ ## Info: http://www.vivaolinux.com.br/dica/youtubedl-faca-download-de-videos-do-Youtube-pelo-terminal
+ #
+ ## USO: youtube <link-do-youtube>
+ #
+ alias youtube='youtube-dl -c -t'
+
+ #
+ ## Videodesk. ( requer: xwinwrap )
+ #
+ ## Info: http://www.vivaolinux.com.br/dica/Colocar-um-descanso-de-tela-como-plano-de-fundo-da-area-de-trabalho-(XFCE)
+ #
+ ## USO: videodesk <nome-do-video>
+ #
+ alias videodesk='xwinwrap -ni -o 0.6 -fs -s -st -sp -b -nf -- mplayer -wid WID '
+
+ #
+ ## FIM!
+ #
