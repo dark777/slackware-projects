@@ -1,7 +1,6 @@
 OS_RELEASE=${OS_RELEASE:-/etc/os-release}
 source ${OS_RELEASE}
-OSTYPE1=${OSTYPE1:-${OSTYPE}}                                          # OSTYPE1=linux-gnu
-OSTYPE2=${OSTYPE2:-${OSTYPE:6:3}/${OSTYPE:0:5}}                        # OSTYPE2=gnu/linux
+OS_TYPE=${OS_TYPE:-${OSTYPE:6:3}/${OSTYPE:0:5}}                        # OS_TYPE=gnu/linux
 STRD=${STRD:-$(date +%a)}                                              # STRD=dom
 STRM=${STRM:-$(date +%b)}                                              # STRM=mar
 DIA=${DIA:-$(date +%d)}                                                # DIA=25
