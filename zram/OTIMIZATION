@@ -1,0 +1,51 @@
+How-To :: Otimizando o tempo de compilação no Slackware
+
+Extrair o melhor desempenho possível em nossa máquina é o que desejamos correto?
+então, veremos aqui alguns passos que se destinam a melhorar o desempenho no
+Slackware como um todo, seja utilizando a memória zRAM, partições ou pastas
+montadas em tmps ou utilizando o ccache, sigam-me os bons!
+
+
+#Tmpfs.
+O TMPFS é um sistema de arquivos temporário, pois o mesmo é montado na memória
+RAM ou SWAP, assim sendo, a cada reboot os dados la presentes serão perdidos.
+
+Ele é indicado para agilizar o acesso aos arquivos,
+pois o acesso à memória sempre é mais rápido que aos HDs por exemplo.
+
+Abaixo veremos as duas entradas que utilizo no arquivo /etc/fstab para habilitar o TMPFS:
+/etc/fstab
+
+tmpfs      /dev/shm    tmpfs   defaults               0   0
+SBo        /tmp/SBo    tmpfs   nodev,nosuid,size=5G   0   0
+
+
+Ambas montam os diretórios /dev/shm e /tmp/SBo na RAM,
+sendo este último o local onde são compilados os SlackBuilds.
+
+Tendo inserido as entradas acima em seu arquivo /etc/fstab,
+basta executar o comando abaixo para por o TMPFS em execução:
+
+
+# mount -av
+
+#Observações.
+Em caso da utilização do CCache (que veremos logo a seguir), não fará diferença montar
+o diretório /tmp/SBo utilizando o TMPFS, porque este diretório não será utilizado,
+em vez disso será utilizada a pasta /var/cache/tmp pelo ccache e a pasta /tmp.
+
+Nesse caso experimente montar a partição /tmp com o TMPFS
+(lembrando que desta forma, tudo o que estiver no diretório /tmp será perdido ao reiniciar!),
+para tanto as entradas para configuração no arquivo /etc/fstab serão essas:
+
+tmpfs      /dev/shm         tmpfs   defaults         0   0
+tmpfs      /tmp             tmpfs   rw,nodev,nosuid,size=2G          0  0
+
+Abaixo vejam uma imagem com o sistema recém-iniciado,
+a listagem dos pontos de montagens e do diretório
+/tmp praticamente vazio contendo apenas um arquivo relacionado
+ao pulseaudio e 2 capas do player de música.
+Na outra imagem já se vê criado o diretório SBo após a compilação do Leafpad:
+
+Fonte:
+#https://edpsblog.wordpress.com/2017/11/05/how-to-otimizando-o-tempo-de-compilacao-no-slackware/

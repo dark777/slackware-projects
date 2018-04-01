@@ -1,0 +1,146 @@
+Slackware :: Adicionando outras distribuições ao LILO
+
+Nessa dica veremos como adicionar outras distribuições ao LILO.
+
+Nesse retorno ao Slackware, tive que reaprender muita coisa, 
+uma delas a lidar com as limitações (alguns dizem simplicidade) do LILO, 
+que diferentemente do Grub não adiciona outras distribuições automaticamente, 
+veremos então como acrescentá-las nesse que é o bootloader padrão do Slack desde o início dos tempos (acho) rsrs
+
+Antes de começar demonstro abaixo, o meu esquema de montagem das partições no /etc/fstab, 
+isso será importante para entender o porque de alguns campos no arquivo /etc/lilo.conf.
+
+
+### Slackware Current.
+UUID=5e2f23f4-d09e-4b52-9c2b-a09a7783584f   /           ext4    defaults         1   1
+UUID=19809e36-60e8-42e0-9267-76a9c6484a82   /home       ext4    defaults         1   2
+UUID=2b3bef6d-0388-40ba-95f0-b92d0d75dfdb   none        swap    sw               0   0
+devpts                                      /dev/pts    devpts  gid=5,mode=620   0   0
+proc                                        /proc       proc    defaults         0   0
+tmpfs                                       /dev/shm    tmpfs   defaults         0   0
+/dev/cdrom                                  /mnt/cdrom  auto    noauto,owner,ro  0   0
+ 
+### Debian Wheezy.
+UUID=62062e8b-6f17-4ec1-b421-20343778f243   /mnt/wheezy_rootfs  ext4  defaults   0    2
+UUID=eb2645f9-846e-4362-a25c-83c22a798a36   /mnt/wheezy_home    ext4  defaults   0    2
+
+### Arch Linux.
+UUID=624accee-7798-4aa2-b7b9-32fec4837305   /mnt/arch_rootfs    ext4  defaults   0    2
+UUID=10941c53-4511-47c0-9641-176574530eef   /mnt/arch_home      ext4  defaults   0    2
+
+### Sabayon Linux.
+UUID=4ca8313f-af19-49cf-b329-2839c8576a4c   /mnt/sabayon        ext4  defaults   0    2
+
+### Backups.
+UUID=c5e859bb-1e63-4648-8e1b-d9c672b8505e   /mnt/backup1        ext4  defaults   0    2
+UUID=a10551b5-8926-4830-857b-eab171f84e26   /mnt/backup2        ext4  defaults   0    2
+ 
+### M$ Windows.
+UUID=06B8A2D7B8A2C491   /mnt/win_c   ntfs-3g  fmask=111,dmask=000,locale=pt_BR.UTF-8    0    0
+UUID=9824832B24830C06   /mnt/win_d   ntfs-3g  fmask=111,dmask=000,locale=pt_BR.UTF-8    0    0
+UUID=9234D9AD34D99497   /mnt/win_e   ntfs-3g  fmask=111,dmask=000,locale=pt_BR.UTF-8    0    0
+UUID=18C4E23FC4E21EAE   /mnt/win_f   ntfs-3g  fmask=111,dmask=000,locale=pt_BR.UTF-8    0    0
+
+
+Para o caso da adição das outras distros pesquisando descobri que era necessário
+inserir o caminho da pasta onde as partições são montadas no Slackware, aqui todas
+estão em /mnt, dito isto vemos que diferentemente do padrão /dev/sda, /dev/sdb e
+etc, elas estão indicadas por suas UUIDS, as quais localizam-se em /dev/disk/by-uuid/,
+se entendido prosseguimos com a criação e montagem de uma partição:
+
+#Commands:
+
+# mkdir -p /mnt/nome_qualquer
+
+# mount -t sistema_de_arquivos /mnt/nome_qualquer
+
+
+#E prosseguimos descobrindo o tal UUID da partição com:
+
+# ls -al /dev/disk/by-uuid/
+
+
+#Agora vamos para a inserção dos campos ao arquivo /etc/lilo.conf:
+
+	
+# nano /etc/lilo.conf
+
+Tomemos como exemplo, a entrada do Debian Wheezy…
+
+# Debian Wheezy.
+image = /mnt/wheezy_rootfs/boot/vmlinuz-3.2.0-3-686-pae
+  root = /dev/disk/by-uuid/62062e8b-6f17-4ec1-b421-20343778f243
+  label = Debian
+  initrd = /mnt/wheezy_rootfs/boot/initrd.img-3.2.0-3-686-pae
+  read-only
+
+  
+Onde em:
+
+image = /mnt/wheezy_rootfs/boot/vmlinuz-3.2.0-3-686-pae = vemos o caminho completo do arquivo vmlinuz da partição do Debian.
+
+root = /dev/disk/by-uuid/62062e8b-6f17-4ec1-b421-20343778f243 = a UUID da partição raiz do Debian.
+
+label = Debian = o rótulo apresentado no menu do LILO. Não sabia (ou não lembrava) que existia limitação de caracteres ou espaçamento no LILO.
+
+initrd = /mnt/wheezy_rootfs/boot/initrd.img-3.2.0-3-686-pae = vemos o caminho completo do arquivo initrd.img da partição do Debian.
+
+read-only = opção padrão.
+
+Tendo exposto as informações acima, demonstrarei abaixo a configuração do meu lilo.conf:
+
+
+append=" vt.default_utf8=1"
+boot = /dev/disk/by-id/ata-SAMSUNG_HD400LJ_S0H2J1TP106230
+bitmap = /boot/slack.bmp
+bmp-colors = 255,0,255,0,255,0
+bmp-table = 60,6,1,16
+bmp-timer = 65,27,0,255
+ 
+prompt
+timeout = 100
+change-rules
+  reset
+vga = 791
+ 
+# Slackware Current (kernel padrão).
+image = /boot/vmlinuz
+  root = /dev/sdc7
+  label = Slackware
+  read-only
+ 
+# Slackware Current Kernel 3.5.5 (kernel compilado).
+image = /boot/vmlinuz-huge-3.5.5
+  root = /dev/sdc7
+  label = Slack-3.5.5
+  read-only
+ 
+# Debian Wheezy.
+image = /mnt/wheezy_rootfs/boot/vmlinuz-3.2.0-3-686-pae
+  root = /dev/disk/by-uuid/62062e8b-6f17-4ec1-b421-20343778f243
+  label = Debian
+  initrd = /mnt/wheezy_rootfs/boot/initrd.img-3.2.0-3-686-pae
+  read-only
+ 
+# Arch Linux.
+image = /mnt/arch_rootfs/boot/vmlinuz-linux
+  root = /dev/disk/by-uuid/624accee-7798-4aa2-b7b9-32fec4837305
+  label = ArchLinux
+  initrd = /mnt/arch_rootfs/boot/initramfs-linux.img
+  read-only
+ 
+# Sabayon 10.
+image = /mnt/sabayon/boot/kernel-genkernel-x86-3.5.0-sabayon
+  root = /dev/disk/by-uuid/4ca8313f-af19-49cf-b329-2839c8576a4c
+  label = Sabayon
+  initrd = /mnt/sabayon/boot/initramfs-genkernel-x86-3.5.0-sabayon
+  read-only
+ 
+# Windows XP Professional SP3
+other = /dev/sdb1
+  label = Windows
+  table = /dev/sdb
+  
+Fonte:
+#https://edpsblog.wordpress.com/2012/10/13/slackware-adicionando-outras-distribuicoes-ao-lilo/ 
+www.linuxquestions.org/questions/slackware-14/advice-for-lilo-setup-dual-boot-slackware-ubuntu-613632/
