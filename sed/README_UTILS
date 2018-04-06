@@ -2,34 +2,34 @@
 
 # Primeiro vamos zerar o pendrive:
 
-bash-4.4# dd if=/dev/zero of=/dev/sdb bs=1M status=progress
+bash# dd if=/dev/zero of=/dev/sdb bs=1M status=progress
 
 
 # Segundo vamos Gravar a imagem iso:
 
-bash-4.4# dd if=/home/user/Downloads/minhaimagem.iso of=/dev/sdb bs=4M
+bash# dd if=/home/user/Downloads/minhaimagem.iso of=/dev/sdb bs=4M
 
 
 # Renomeando dispositivos no linux
 
 # Para mudar o label de sistemas de arquivos fat basta fazer:
 
-bash-4.4# mkdosfs -n SlackwareBoot  /dev/sdb1
+bash# mkdosfs -n SlackwareBoot  /dev/sdb1
 ou
-bash-4.4# e2label /dev/sdb2 SlackwareBoot
+bash# e2label /dev/sdb2 SlackwareBoot
 
 onde SlackwareBoot será o novo nome da sua unidade.
 
 
 # Para Renomear uma Partição com NTFS(Formato Universal)
 
-bash-4.4# ntfslabel /dev/sdb3 Windows
+bash# ntfslabel /dev/sdb3 Windows
 
 onde Windows será o nome de sua partição.
 
 # Formatando unidade para NTFS
 
-bash-4.4# mkfs.ntfs -f /dev/sdb1
+bash# mkfs.ntfs -f /dev/sdb1
 
 ----------------------------------------------------------------------------------------------------------------
 ## Verifica se é usuário root ou usuário comum
@@ -54,13 +54,13 @@ sed 's/^abc/#&/'                # comenta a linha que comeca com abc
 sed 's/^/#/'                    # comenta todas as linhas
 sed 's/$/$/'                    # coloca um $ no final de cada linha
 
-bash-4.3$ echo 'https://comslackwarewww' | sed 's@\(https://\)\(com\)\(slackware\)\(www\)@\1\4.\3.\2 ..!!!@'
+bash$ echo 'https://comslackwarewww' | sed 's@\(https://\)\(com\)\(slackware\)\(www\)@\1\4.\3.\2 ..!!!@'
 https://www.slackware.com ..!!!
 
-bash-4.3$ echo 'comslackwarehttps://www' | sed 's@\(com\)\(slackware\)\(https://\)\(www\)@\3\4.\2.\1 ..!!!@'
+bash$ echo 'comslackwarehttps://www' | sed 's@\(com\)\(slackware\)\(https://\)\(www\)@\3\4.\2.\1 ..!!!@'
 https://www.slackware.com ..!!!
 
-bash-4.3$ echo 'comhttps://slackwarewww' | sed 's@\(com\)\(https://\)\(slackware\)\(www\)@\2\4.\3.\1 ..!!!@'
+bash$ echo 'comhttps://slackwarewww' | sed 's@\(com\)\(https://\)\(slackware\)\(www\)@\2\4.\3.\1 ..!!!@'
 https://www.slackware.com ..!!!
 
 -----------------------------------------------------------------------------------------
@@ -84,35 +84,35 @@ S - Faz a gravação imediatamente para o arquivo especificado, como sync, ex: i
 u - É marcado como recuperável, quando apagado é salvo uma copia para permitir recuperação. 
 
 
-bash-4.4# > meuarquivo.txt && chattr +i meuarquivo.txt
+bash# > meuarquivo.txt && chattr +i meuarquivo.txt
 
 
 # Tente excluir com o usuario root:
 
-bash-4.4# rm -rf meuarquivo.txt
+bash# rm -rf meuarquivo.txt
 rm: não foi possível remover 'meuarquivo.txt': Operação não permitida
 
 
 # Desbloqueando para alterar ou excluir o arquivo:
 
-bash-4.4# chattr -i meuarquivo.txt
+bash# chattr -i meuarquivo.txt
 
-bash-4.4# rm -rf meuarquivo.txt
+bash# rm -rf meuarquivo.txt
 
 
 # Com diretorios:
 
-bash-4.4# mkdir diretorio && chattr +id diretorio
+bash# mkdir diretorio && chattr +id diretorio
 
-bash-4.4# rm -rf diretorio
+bash# rm -rf diretorio
 rm: não foi possível remover 'diretorio': Operação não permitida
 
 
 # Desbloqueando para alterar ou excluir o diretorio:
 
-bash-4.4# chattr -id diretorio
+bash# chattr -id diretorio
 
-bash-4.4# rm -rf diretorio
+bash# rm -rf diretorio
     
 -----------------------------------------------------------------------------------------
 # Configurando data e hora precisamente pelo terminal linux.
@@ -120,16 +120,16 @@ bash-4.4# rm -rf diretorio
 # Mudando a data
 # Faça o comando abaixo como root:
 
-bash-4.3# date -s mm/dd/yyyy
+bash# date -s mm/dd/yyyy
 Ou:
-bash-4.3# date --set=mm/dd/yyyy
+bash# date --set=mm/dd/yyyy
 
 # Mudando a hora
 # Faça o comando abaixo como root:
 
-bash-4.3# date -s hh:mm:ss
+bash# date -s hh:mm:ss
 ou
-bash-4.3# date -set=hh:mm:ss
+bash# date -set=hh:mm:ss
 
 -----------------------------------------------------------------------------------------
 Lista de parâmetros que podem ser usados:
@@ -320,9 +320,9 @@ sed '/otimiza/,+2 s/^/#/'
 
 # Remove espaços em branco no inicio da linha:
 
-bash-4.4$ sed 's/[ \t]*//g;' myfile.txt
+bash$ sed 's/[ \t]*//g;' myfile.txt
 ou
-bash-4.4$ sed -i 's/[[:space:]]\+/ /g;' myfile.txt
+bash$ sed -i 's/[[:space:]]\+/ /g;' myfile.txt
 
 ------------------------------------------------------------------------------------------
 # Adiciona função sleep para executar após 10 minutos em rc.ntpd
@@ -359,7 +359,7 @@ sed 's/^# %sudo ALL=(ALL) ALL/%sudo ALL=(ALL) ALL /g' /etc/sudoers
 
 ------------------------------------------------------------------------------------------
 #Eliminando linhas de comentário ou linhas em branco no Linux
-bash-4.3$ grep -v "^#" arquivo | sed '/^$/d' > newarquivo
+bash$ grep -v "^#" arquivo | sed '/^$/d' > newarquivo
 
 #Explicação:
 # O "grep -v "^#" arquivo.bkp" retira as linhas que iniciam com "#";
@@ -371,8 +371,8 @@ bash-4.3$ grep -v "^#" arquivo | sed '/^$/d' > newarquivo
 -----------------------------------------------------------------------------------------
 #Como remover parêntesis dos nomes de arquivos
 
-bash-4.3$ cd ~/files
-bash-4.3$ ls *[\(\)]*
+bash$ cd ~/files
+bash$ ls *[\(\)]*
 
 arquivo(1).txt
 arquivo(2).txt
@@ -380,9 +380,9 @@ arquivo(3).txt
 
 #Então faça:
 
-bash-4.3$ for i in *\(*\)*; do j=`echo $i |sed -e 's/[()]//g'`; mv "$i" "$j"; done
+bash$ for i in *\(*\)*; do j=`echo $i |sed -e 's/[()]//g'`; mv "$i" "$j"; done
 
-bash-4.3$ ls arquivo*
+bash$ ls arquivo*
 
 arquivo1.txt
 arquivo2.txt
@@ -400,28 +400,28 @@ Para resolver este problema, vamos usar a combinação de dois programas: ls e s
 
 Para fazer uma verificação simples, dentro do diretório /, execute o seguinte comando:
 
-bash-4.3# ls -lh | sort +4n
+bash# ls -lh | sort +4n
 
 Este comando mostra o tamanho que cada diretório possui.
 Para saber quais arquivos desses diretórios estão ocupando mais espaço, execute:
 
-bash-4.3# ls -lRh /var/log | sort +4n
+bash# ls -lRh /var/log | sort +4n
 
 Altere o diretório /var/log para o qual você deseja saber. 
 
 #Listando tamanho de arquivos
 
-bash-4.3# echo filetam=${filetam:-$(ls -lh arquivo1.txt | awk '{print $5}')}
+bash# echo filetam=${filetam:-$(ls -lh arquivo1.txt | awk '{print $5}')}
 filetam=1.9kb
 
 #Listando tamanho de diretórios
 
-bash-4.3$ ls -lRh home | sort +4n
+bash$ ls -lRh home | sort +4n
 
 --------------------------------------------------------------------------------------------------
 #Listar arquivos acima de 150 MB.
 
-bash-4.3# find . -type f -size +150000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+bash# find . -type f -size +150000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
 
 #O comando acima vai encontrar e listar,
 a partir da pasta que você está,
@@ -430,12 +430,12 @@ todos os arquivos acima de 150 MB.
 
 Você também pode utilizar 150M, veja:
 
-bash-4.3# find . -type f -size +150M -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+bash# find . -type f -size +150M -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
 
 
 #Caso queira procurar no disco inteiro (apenas troque o . pela /), informe:
 
-bash-4.3# find / -type f -size +150000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+bash# find / -type f -size +150000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
 
 
 Por curiosidade, pedi para listar os arquivos acima de 1 GB no disco rígido de meu cliente e encontrei:
@@ -445,7 +445,7 @@ Por curiosidade, pedi para listar os arquivos acima de 1 GB no disco rígido de 
 
 O comando utilizado para listar os arquivos acima de 1 GB foi:
 
-bash-4.3# find / -type f -size +1G -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+bash# find / -type f -size +1G -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
 
 http://www.rodrigocalado.com.br/como-listar-grandes-arquivos-bytes-kb-mb-gb-em-um-sistema-unixlinux/
 
@@ -454,22 +454,22 @@ http://www.rodrigocalado.com.br/como-listar-grandes-arquivos-bytes-kb-mb-gb-em-u
 sed 's/uqe/que/; s/qeu/que/; s/euq/que/'
 
 # ou
-bash-4.3$ sed 's/uqe/que/
+bash$ sed 's/uqe/que/
      s/qeu/que/
      s/euq/que/'
 
 # ou
-bash-4.3$ sed 's/\(uqe\|qeu\|euq\)/que/'
+bash$ sed 's/\(uqe\|qeu\|euq\)/que/'
 
 --------------------------------------------------------------------------------------------
 Comando seq com saída em hexadecimal
-bash-4.3$ bc <<< "obase = 16 ; `seq 1 255`"
+bash$ bc <<< "obase = 16 ; `seq 1 255`"
 
 Comando seq com saída em octal
-bash-4.3$ bc <<< "obase = 8 ; `seq 1 255`"
+bash$ bc <<< "obase = 8 ; `seq 1 255`"
 
 Comando seq com saída em binária
-bash-4.3$ bc <<< "obase = 2 ; `seq 1 255`"
+bash$ bc <<< "obase = 2 ; `seq 1 255`"
 
 --------------------------------------------------------------------------------------------
 ## diversos
@@ -495,7 +495,7 @@ sed -n 11,$!p
 ------------------------------------------------------------------------------
 alinhamento:
 
-bash-4.3$ echo "direita" | sed -e :a -e 's/^.\{2,79\}$/ &/;ta'
+bash$ echo "direita" | sed -e :a -e 's/^.\{2,79\}$/ &/;ta'
                                                                          direita
 
 faça uma marcação no início da linha e lhe dê o nome "a"
@@ -524,9 +524,9 @@ vertical: sed 's/./&\/g'
 -------------------------------------------------------------------------------------------------
 ## estes comandos abaixo filtra todas as tags html de um site salvo deixando somente as urls
 
-bash-4.3$ cut -d "\"" -f 2   arquivo-com-tags-urls-html > arquivo-novo-com-urls.txt
+bash$ cut -d "\"" -f 2   arquivo-com-tags-urls-html > arquivo-novo-com-urls.txt
 
-bash-4.3$ cat arquivo-com-tags-urls-html | sed 's/.*="//; s/">.*//' > arquivo-novo-com-urls.txt
+bash$ cat arquivo-com-tags-urls-html | sed 's/.*="//; s/">.*//' > arquivo-novo-com-urls.txt
 
 
 ## Este comando abaixo cria uma lista de links a ser baixada atraves do mozilla firefox.
@@ -538,80 +538,80 @@ bash-4.3$ cat arquivo-com-tags-urls-html | sed 's/.*="//; s/">.*//' > arquivo-no
 -----------------------------------------------------------------------------------------------------
 ## Criando um novo perfil no mozilla-firefox para abrir 2 logins do mesmo usuario no mesmo site:
 
-bash-4.4$ firefox -p remote
+bash$ firefox -p remote
 
 -----------------------------------------------------------------------------------------------------
 ## faz dump da url criando uma lista chamada downloads com links files .txt
 
-bash-4.3$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txt$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
+bash$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txt$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## faz dump da url adicionando os links abaixo das urls filtradas no comando acima existentes na lista 
 chamada downloads filtrando as extensões .txz.asc, .txz.md5, .txz 
 
-bash-4.3$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz.asc$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
+bash$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz.asc$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
 
-bash-4.3$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz.md5$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
+bash$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz.md5$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
 
-bash-4.3$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
+bash$ lynx -dump http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ | egrep -i '^\s+[0-9]+\. .+\.txz$' | sed -r 's/^\s+[0-9]+\. //g'  >> downloads
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## faz dump da url criando uma lista com links para downloads dos livros pdf's
 
-bash-4.3$ lynx -dump http://www.tldp.org/HOWTO/pdf/ | egrep -i '^\s+[0-9]+\. .+\.pdf$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
+bash$ lynx -dump http://www.tldp.org/HOWTO/pdf/ | egrep -i '^\s+[0-9]+\. .+\.pdf$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 # fas dump da url criando uma lista com links para downloads dos pacotes rpm's 
 
-bash-4.3$ lynx -dump http://ftp.colocall.net/pub/centos/7/os/x86_64/Packages/ | egrep -i '^\s+[0-9]+\. .+\.rpm$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
+bash$ lynx -dump http://ftp.colocall.net/pub/centos/7/os/x86_64/Packages/ | egrep -i '^\s+[0-9]+\. .+\.rpm$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 # fas dump da url criando uma lista com links para downloads dos pacotes deb's 
 
-bash-4.3$ lynx -dump http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-6/ | egrep -i '^\s+[0-9]+\. .+\.deb$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
+bash$ lynx -dump http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-6/ | egrep -i '^\s+[0-9]+\. .+\.deb$' | sed -r 's/^\s+[0-9]+\. //g'  > downloads
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## baixando somente os pacotes *txz
 
-bash-4.3$ wget -nv -c -r -np -A xz http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
+bash$ wget -nv -c -r -np -A xz http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
 
-bash-4.3$ wget -r -A tgz http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/
+bash$ wget -r -A tgz http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/
 
 --------------------------------------------------------------------------------------------------------------------------
 ## baixando somente os files *asc
 
-bash-4.3$ wget -nv -c -r -np -A asc http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
+bash$ wget -nv -c -r -np -A asc http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
 
-bash-4.3$ wget -r -A asc http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
+bash$ wget -r -A asc http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
 
 ---------------------------------------------------------------------------------------------------------------------------
 ## baixando somente os files *md5
 
-bash-4.3$ wget -nv -c -r -np -A md5 http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/
+bash$ wget -nv -c -r -np -A md5 http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/
 
-bash-4.3$ wget -r -A md5 http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
+bash$ wget -r -A md5 http://www.slackware.com/~alien/slackbuilds/libreoffice/pkg64/current/ 
 
 --------------------------------------------------------------------------------------------------------------------------------
 ## pega o hostname atual da maquina
 
-bash-4.3$ echo hostname=$(cat /etc/HOSTNAME | cut -f1 -d .)
+bash$ echo hostname=$(cat /etc/HOSTNAME | cut -f1 -d .)
 hostname=darkstar
 
 -----------------------------------------------------------------------------------
 ## pega o nome e numero da ultima pasta criada no sistema.
 
-bash-4.3$ echo nomedir=$(ls -t /opt/ | grep -m 1 jdk | sed s'\/\\g';)
+bash$ echo nomedir=$(ls -t /opt/ | grep -m 1 jdk | sed s'\/\\g';)
 nomedir=jdk1.8.0_121
 
 -------------------------------------------------------------------------------------
 ## pega somente o numero da versao do pacotes descompactado.
 
-bash-4.3$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/jdk//g;s\/\\g';)
+bash$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/jdk//g;s\/\\g';)
 numerodir=1.8.0_121
 
 ou
 
-bash-4.3$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/[a-z]//g;s\/\\g';)
+bash$ echo numerodir=$(ls -t /opt/ | grep -m 1 jdk | sed 's/[a-z]//g;s\/\\g';)
 numerodir=1.8.0_121
 
 -------------------------------------------------------------------------------------
@@ -672,28 +672,31 @@ RMFILES=${RMFILES:-$(rm -rf str_history)}
 }
 
 -------------------------------------------------------------------------------------
-bash-4.3$ echo DISK=$(mount | grep /dev/sda | awk  '{print $1}')
+#retira excesso de espaço em fstab
+bash$ sed -i "s/ \{1,\}/ /g" /etc/fstab
+
+bash$ echo DISK=$(mount | grep /dev/sda | awk  '{print $1}')
 DISK=/dev/sda3
 
-bash-4.3$ echo DISK=$(grep -m1 "^/dev/.*[[:blank:]]/[[:blank:]]" /proc/mounts | cut -f1 -d' ')
+bash$ echo DISK=$(grep -m1 "^/dev/.*[[:blank:]]/[[:blank:]]" /proc/mounts | cut -f1 -d' ')
 DISK=/dev/sda3
 
-bash-4.3$ echo DISK=$(cat /etc/fstab |tr '\t' ' ' |grep -v '^ *#' |tr -s ' ' |grep ' / ' |cut -f1 -d' ')
+bash$ echo DISK=$(cat /etc/fstab |tr '\t' ' ' |grep -v '^ *#' |tr -s ' ' |grep ' / ' |cut -f1 -d' ')
 DISK=/dev/sda3
 
-bash-4.3$ echo SYSARQ=$(file -s $DISK | awk '{print $5}')
+bash$ echo SYSARQ=$(file -s $DISK | awk '{print $5}')
 SYSARQ=ext4
 
-bash-4.3$ echo SYSARQ=$(cat /etc/fstab |tr '\t' ' ' |grep -v '^ *#' |tr -s ' ' |grep ' / ' |cut -f3 -d' ')
+bash$ echo SYSARQ=$(cat /etc/fstab |tr '\t' ' ' |grep -v '^ *#' |tr -s ' ' |grep ' / ' |cut -f3 -d' ')
 SYSARQ=ext4
 
-bash-4.3$ echo PART=$(grep sda /etc/fstab |  cut -d/ -f3)
+bash$ echo PART=$(grep sda /etc/fstab |  cut -d/ -f3)
 PART=sda3
 
-bash-4.3$ echo PART=${PART:-$(mount | grep /dev/sda | cut -f3 -d/ | cut -f1 -d ' ')}
+bash$ echo PART=${PART:-$(mount | grep /dev/sda | cut -f3 -d/ | cut -f1 -d ' ')}
 PART=sda3
 
-bash-4.3$ PART=$(mount | grep /dev/sda | awk  '{print $1}' | sed 's/\/dev\/sda/sda/g')
+bash$ PART=$(mount | grep /dev/sda | awk  '{print $1}' | sed 's/\/dev\/sda/sda/g')
 PART=sda3
 
 DEVSDA=${DEVSDA:-"/dev/sda"}
@@ -713,53 +716,53 @@ MKINITRD=$($MKINITRDCOMMAND | grep ^mkinitrd | cut -c47-300 | cut -f1 -d ' ')
 --------------------------------------------------------------------------------------
 # Verificando se usuário existe mesmo:
 
-bash-4.3$ grep teste /etc/passwd
+bash$ grep teste /etc/passwd
 teste:x:1001:1001::/home/teste:/bin/bash
 
-bash-4.3$ echo user=$(grep -w ^teste /etc/passwd | cut -d: -f 1)
+bash$ echo user=$(grep -w ^teste /etc/passwd | cut -d: -f 1)
 user=teste
 
-bash-4.3# useradd -m teste -p `awk -vFS=':' '$1 ~ /^tmp/ {print $2}' /etc/shadow` teste
+bash# useradd -m teste -p `awk -vFS=':' '$1 ~ /^tmp/ {print $2}' /etc/shadow` teste
 useradd: usuário 'teste' já existe
 
-bash-4.3# useradd -m teste -p `awk -vFS=':' '$1 ~ /^tmp/ {print $2}' /etc/group` teste
+bash# useradd -m teste -p `awk -vFS=':' '$1 ~ /^tmp/ {print $2}' /etc/group` teste
 useradd: usuário 'teste' já existe
 
 
 # Verificando usuarios convencionais que possuen um diretório em /home:
 
-bash-4.3$ grep /home/ /etc/passwd
+bash$ grep /home/ /etc/passwd
 ftp:x:14:50::/home/ftp:/bin/false
 teste:x:1001:1001::/home/teste:/bin/bash
 
 
 # Listagem simples trazendo somente os nomes dos usuários
 
-bash-4.3$ grep /home/ /etc/passwd | cut -d: -f1
+bash$ grep /home/ /etc/passwd | cut -d: -f1
 ftp
 teste
 
-bash-4.3$ grep $USER /etc/passwd | cut -d: -f1
+bash$ grep $USER /etc/passwd | cut -d: -f1
 teste
 
 ## pega logname de usuario não logado no sistema
 
-bash-4.3# echo user=$(cat /etc/passwd | grep -vE "nologin|ftp" | grep home | awk -F':' '{ print $1}')
+bash# echo user=$(cat /etc/passwd | grep -vE "nologin|ftp" | grep home | awk -F':' '{ print $1}')
 user=darkstar
 
-bash-4.3# echo user=$(cat /etc/passwd | grep home | awk -F: '$3 > 499 {print $1}')
+bash# echo user=$(cat /etc/passwd | grep home | awk -F: '$3 > 499 {print $1}')
 user=darkstar
 
-bash-4.3# echo user=$(cat /etc/passwd | awk -F: '$3 > 499 {print $1}')
+bash# echo user=$(cat /etc/passwd | awk -F: '$3 > 499 {print $1}')
 user=darkstar postgres
 
 ## pega logname do usuario logado no sistema
 
-bash-4.3$ echo login=$(echo "$USER" | cut -d : -f 1)
+bash$ echo login=$(echo "$USER" | cut -d : -f 1)
 login=darkstar
 
 
-bash-4.3$ echo GET_USER=`su -c "echo \$HOME" | sed 's/\/home\///g'`
+bash$ echo GET_USER=`su -c "echo \$HOME" | sed 's/\/home\///g'`
 GET_USER=darkstar
 
 #3. Restringindo sed por linhas
@@ -778,66 +781,66 @@ sed -r -n '1,$ s/([^:]+).*/\1/p' /etc/passwd
 
 # Pegando hora em que usuario logou:
 
-bash-4.4$ echo LOGADO=$(who | cut -d"(" -f2 | cut -d")" -f2 | awk '{print $1" "$3" "$4}')
+bash$ echo LOGADO=$(who | cut -d"(" -f2 | cut -d")" -f2 | awk '{print $1" "$3" "$4}')
 LOGADO=teste 2018-03-13 22:22
 
 -----------------------------------------------------------------------------------------------
 ## mostra o total de memoria RAM do sistema
 
-bash-4.3$ echo MEMTOTAL=$(egrep MemTotal /proc/meminfo | awk '{print $2/1024 " MB"}')
+bash$ echo MEMTOTAL=$(egrep MemTotal /proc/meminfo | awk '{print $2/1024 " MB"}')
 MEMTOTAL=4999.8 MB
 
-bash-4.3$ echo ramtotal=$(awk '{print "Total: "$2" GB"}' <(sed -u '2!d' <(free -m)))
+bash$ echo ramtotal=$(awk '{print "Total: "$2" GB"}' <(sed -u '2!d' <(free -m)))
 ramtotal=Total: 15877 GB
 
-bash-4.3$ echo ramusada=$(awk '{print "Usada: "$3" GB"}' <(sed -u '2!d' <(free -m)))
+bash$ echo ramusada=$(awk '{print "Usada: "$3" GB"}' <(sed -u '2!d' <(free -m)))
 ramusada=Usada: 1480 GB
 
-bash-4.3$ echo ramlivre=$(awk '{print "Livre: "$4" GB"}' <(sed -u '2!d' <(free -m)))
+bash$ echo ramlivre=$(awk '{print "Livre: "$4" GB"}' <(sed -u '2!d' <(free -m)))
 ramlivre=Livre: 13318 GB
 
-bash-4.3$ echo ramcache=$(awk '{print "Cache: "$6" MB"}' <(sed -u '2!d' <(free -m)))
+bash$ echo ramcache=$(awk '{print "Cache: "$6" MB"}' <(sed -u '2!d' <(free -m)))
 ramcache=Cache: 1067 MB
 
-bash-4.3$ echo FREERAM=$(free -k | grep "^Mem:" | tr -s ' ' | cut -d' ' -f2)
+bash$ echo FREERAM=$(free -k | grep "^Mem:" | tr -s ' ' | cut -d' ' -f2)
 FREERAM=16267136
 
-bash-4.3$ echo FREERAM=$(free -m | grep "^Mem:" | tr -s ' ' | cut -d' ' -f2)
+bash$ echo FREERAM=$(free -m | grep "^Mem:" | tr -s ' ' | cut -d' ' -f2)
 FREERAM=15885
 
-bash-4.3$ echo SWP=$(grep -w swap /etc/fstab | cut -d' ' -f1)
+bash$ echo SWP=$(grep -w swap /etc/fstab | cut -d' ' -f1)
 SWP=/dev/zram0
 
-bash-4.3$ echo SWPKB=$(fdisk -s $SWP)" KB"
+bash$ echo SWPKB=$(fdisk -s $SWP)" KB"
 SWPKB=2097152 KB
 
 ------------------------------------------------------------------------------------------------------------------------------------
 Pegando endereços registrados nas placas de rede:
 
-bash-4.3$ echo IP=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $2}')
+bash$ echo IP=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $2}')
 IP=000.000.000.000
 
-bash-4.3$ echo NETMASK=$(ifconfig wlan0 | grep netmask|awk '{print $6}'|cut -d ":" -f2 2> /dev/null)
-bash-4.3$ echo NETMASK=$(ifconfig eth0  | grep mask|awk '{print $4}'|cut -d ":" -f 2)
+bash$ echo NETMASK=$(ifconfig wlan0 | grep netmask|awk '{print $6}'|cut -d ":" -f2 2> /dev/null)
+bash$ echo NETMASK=$(ifconfig eth0  | grep mask|awk '{print $4}'|cut -d ":" -f 2)
 NETMASK=000.000.000.000
 
-bash-4.3$ echo BROADCAST=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $6}')
-bash-4.3$ echo BROADCAST=$(ifconfig wlan0|grep broadcast|awk '{print $6 }'|cut -d ":" -f2 2> /dev/null)
+bash$ echo BROADCAST=$(ifconfig wlan0 | grep 'inet'| cut -d: -f2 | awk '{ print $6}')
+bash$ echo BROADCAST=$(ifconfig wlan0|grep broadcast|awk '{print $6 }'|cut -d ":" -f2 2> /dev/null)
 BROADCAST=000.000.000.000
 
-bash-4.3$ echo GATEWAY=$(route | grep -w 'default'| awk '{print echo $2}')
+bash$ echo GATEWAY=$(route | grep -w 'default'| awk '{print echo $2}')
 GATEWAY=saganet
 
-bash-4.3$ ifconfig eth0| grep -i inet| cut -b 2- | sed 's/inet/\ninet->/g;s/ netmask/\nnetmask->/g;s/ broadcast/\nbroadcast->/g;'
+bash$ ifconfig eth0| grep -i inet| cut -b 2- | sed 's/inet/\ninet->/g;s/ netmask/\nnetmask->/g;s/ broadcast/\nbroadcast->/g;'
        
 inet-> 000.000.000.000 
 netmask-> 000.000.000.0 
 broadcast-> 000.000.000.000
 
-bash-4.3$ echo NAMESERVER=$(cat /etc/resolv.conf |grep name |awk '{ print $2 }')
+bash$ echo NAMESERVER=$(cat /etc/resolv.conf |grep name |awk '{ print $2 }')
 NAMESERVER=000.000.0.0
 
-bash-4.3$ echo VERI_ETH0=$(ifconfig |grep eth0|awk '{print $1}'|wc -l)
+bash$ echo VERI_ETH0=$(ifconfig |grep eth0|awk '{print $1}'|wc -l)
 VERI_ETH0=1
 
 
@@ -868,27 +871,27 @@ curl -s checkip.dyndns.org | sed 's/.*IP Address: \([0-9\.]*\).*/\1/g'
 --------------------------------------------------------------------------------------------------------------------------------------
 ## mostra a quantidade de pacotes no slackware
 
-bash-4.3$ echo pkgs=$(ls -1 /var/log/packages | wc -l)
+bash$ echo pkgs=$(ls -1 /var/log/packages | wc -l)
 pkgs=1267
 
 -------------------------------------------------------------------------------------------------
 ## pega a arquitetura do sistema.
 
-bash-4.3# echo osarch=$(uname -a | cut -d' ' -f1 | file /bin/ls | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g;')
+bash# echo osarch=$(uname -a | cut -d' ' -f1 | file /bin/ls | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g;')
 osarch=ELF 64-bit LSB x86-64 version (SYSV)
 
-bash-4.3$ echo osarch=$(file -e elf /sbin/init | grep -i bit | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g;')
+bash$ echo osarch=$(file -e elf /sbin/init | grep -i bit | cut -d ' ' -f2,3,4,6,7,9 | sed s'/,//g;')
 osarch=ELF 64-bit LSB x86-64 version (SYSV)
 
 -----------------------------------------------------------------------------------------------------------
 ## mostra o numero de nucleos do processador
 
-bash-4.4$ echo CORE=${CORE:-$(grep "model name" /proc/cpuinfo | wc -l)}
+bash$ echo CORE=${CORE:-$(grep "model name" /proc/cpuinfo | wc -l)}
 CORE=4
 
 # pega o processador da máquina:
 
-bash-4.4$ cc -march=native -E -v - </dev/null 2>&1 | grep cc1
+bash$ cc -march=native -E -v - </dev/null 2>&1 | grep cc1
  /usr/libexec/gcc/x86_64-slackware-linux/7.2.0/cc1 -E -quiet -v - -march=ivybridge -mmmx -mno-3dnow -msse \
  -msse2 -msse3 -mssse3 -mno-sse4a -mcx16 -msahf -mno-movbe -maes -mno-sha -mpclmul -mpopcnt -mno-abm -mno-lwp \
  -mno-fma -mno-fma4 -mno-xop -mno-bmi -mno-sgx -mno-bmi2 -mno-tbm -mavx -mno-avx2 -msse4.2 -msse4.1 -mno-lzcnt \
@@ -901,82 +904,82 @@ bash-4.4$ cc -march=native -E -v - </dev/null 2>&1 | grep cc1
 ------------------------------------------------------------------------------------------------------------
 ## lista todos os users e uids do sistema.
 
-bash-4.3$ echo UIDS="`cat /etc/passwd | sed 's/:/ /g'|awk '{print "User: "$1",","UID: " $3",", "GID: " $4}'`"
+bash$ echo UIDS="`cat /etc/passwd | sed 's/:/ /g'|awk '{print "User: "$1",","UID: " $3",", "GID: " $4}'`"
 UIDS=User: root, UID: 0, GID: 0
 
 ------------------------------------------------------------------------------------------------------------
 Comando uname:
 
-bash-4.3$ echo string=${string:-"$(uname -a)"}
+bash$ echo string=${string:-"$(uname -a)"}
 string=Linux anon 4.9.44 #1 SMP Wed Aug 16 19:21:30 CDT 2017 x86_64 Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz GenuineIntel GNU/Linux
 
 # Kernel Name
-bash-4.3$ echo string=${string:-"$(uname -s)"}
+bash$ echo string=${string:-"$(uname -s)"}
 string=Linux
 
 # Node Name
-bash-4.3$ echo string=${string:-"$(uname -n)"}
+bash$ echo string=${string:-"$(uname -n)"}
 string=anon
 
 # Kernel Release
-bash-4.3$ echo string=${string:-"$(uname -r)"}
+bash$ echo string=${string:-"$(uname -r)"}
 string=4.9.44
 
 # Kernel Version
-bash-4.3$ echo string=${string:-"$(uname -v)"}
+bash$ echo string=${string:-"$(uname -v)"}
 string=#1 SMP Wed Aug 16 19:21:30 CDT 2017
 
 # Machine Hardware
-bash-4.3$ echo string=${string:-"$(uname -m)"}
+bash$ echo string=${string:-"$(uname -m)"}
 string=x86_64
 
 # Print Processor (Non Portable)
-bash-4.3$ echo string=${string:-"$(uname -p)"}
+bash$ echo string=${string:-"$(uname -p)"}
 string=Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz
 
 # Hardware Plataform (Non Portable)
-bash-4.3$ echo string=${string:-"$(uname -i)"}
+bash$ echo string=${string:-"$(uname -i)"}
 string=GenuineIntel
 
 # Operating System
-bash-4.3$ echo string=${string:-"$(uname -o)"}
+bash$ echo string=${string:-"$(uname -o)"}
 string=GNU/Linux
 
 # Combinatio commands
-bash-4.3$ echo string=${string:-"GNU/$(uname -srm)"}
+bash$ echo string=${string:-"GNU/$(uname -srm)"}
 string=GNU/Linux 4.9.44 x86_64
 
 ------------------------------------------------------------------------------------------------------------
 ## filtra versão release do sistema
 
-bash-4.3$ echo os=$(awk -F'=' '/^PRETTY_NAME=/ {print $2}' /etc/os-release)
+bash$ echo os=$(awk -F'=' '/^PRETTY_NAME=/ {print $2}' /etc/os-release)
 os="Slackware 14.2"
 
-bash-4.3$ echo os=$(cat /etc/os-release | grep PRETTY_NAME | cut -c13-27 | sed 's/"//g;')
+bash$ echo os=$(cat /etc/os-release | grep PRETTY_NAME | cut -c13-27 | sed 's/"//g;')
 os=Slackware 14.2
 
-bash-4.3$ echo os=$(cat /etc/os-release | grep 'ID' | cut -d '=' -f 2)
+bash$ echo os=$(cat /etc/os-release | grep 'ID' | cut -d '=' -f 2)
 os=slackware 14.2
 
-bash-4.3$ echo os=$(cat /etc/os-release | grep '^ID' | cut -d '=' -f 2)
+bash$ echo os=$(cat /etc/os-release | grep '^ID' | cut -d '=' -f 2)
 os=slackware
 
-bash-4.3$ echo os=${os:-$(cat /etc/os-release | grep '^NAME' | cut -d '=' -f 2)}
+bash$ echo os=${os:-$(cat /etc/os-release | grep '^NAME' | cut -d '=' -f 2)}
 os = Slackware
 
-bash-4.4$ echo sver=$(cat /etc/os-release | grep 'VERSION_ID' | cut -d '=' -f 2)
+bash$ echo sver=$(cat /etc/os-release | grep 'VERSION_ID' | cut -d '=' -f 2)
 sver=14.2
 
-bash-4.3$ echo sver=$(cat /etc/slackware-version | awk '{print $1}')
+bash$ echo sver=$(cat /etc/slackware-version | awk '{print $1}')
 sver=Slackware
 
-bash-4.4$ echo sver=$(cat /etc/slackware-version | awk '{print $2}')
+bash$ echo sver=$(cat /etc/slackware-version | awk '{print $2}')
 sver=14.2
 
 ----------------------------------------------------------------------------------------------------------
 ## pega a versão atual do gcc
 
-bash-4.3$ echo VERSION_GCC=$(gcc --version | head --lines=1 | cut -d " " -f 3)
+bash$ echo VERSION_GCC=$(gcc --version | head --lines=1 | cut -d " " -f 3)
 VERSION_GCC=7.2.0
 
 # SVERSION pega o nome da ultima pasta gcc-*.*.*  dentro da pasta releases
@@ -995,36 +998,36 @@ PKGVERSION=gcc-7.2.0.tar.gz
 LINK="ftp://gcc.gnu.org/pub/gcc/releases/$SVERSION/$PKGVERSION"
 LINK=ftp://gcc.gnu.org/pub/gcc/releases/gcc-7.2.0/gcc-7.2.0.tar.gz
 
-bash-4.3$ echo VERSION_GCC=$(cat /usr/src/linux/include/generated/compile.h | grep LINUX_COMPILER | cut -c25-48 | sed 's/"//g;')
+bash$ echo VERSION_GCC=$(cat /usr/src/linux/include/generated/compile.h | grep LINUX_COMPILER | cut -c25-48 | sed 's/"//g;')
 VERSION_GCC=gcc version 7.2.0 (GCC)
 
 --------------------------------------------------------------------------------------------------------
 ## filtra o nome do kernel no Makefile
 
-bash-4.3$ echo NAME=$(grep NAME /usr/src/linux/Makefile|awk '{print $3" "$4" "$5" "$6}')
+bash$ echo NAME=$(grep NAME /usr/src/linux/Makefile|awk '{print $3" "$4" "$5" "$6}')
 NAME=Blurry Fish Butt
 
-bash-4.3$ echo $(grep NAME /usr/src/linux/Makefile|cut -d: -f1)
+bash$ echo $(grep NAME /usr/src/linux/Makefile|cut -d: -f1)
 NAME = Blurry Fish Butt
 
-bash-4.3$ echo NAME=$(grep NAME /usr/src/linux/Makefile|cut -d'=' -f2)
+bash$ echo NAME=$(grep NAME /usr/src/linux/Makefile|cut -d'=' -f2)
 NAME= Blurry Fish Butt
 
-bash-4.3$ echo NAME=$(grep NAME /usr/src/linux/Makefile| cut -c7-21)
+bash$ echo NAME=$(grep NAME /usr/src/linux/Makefile| cut -c7-21)
 NAME= Blurry Fish Butt
 
 ---------------------------------------------------------------------------------------------------------
 ## Pegando a versão do kernel em makefile
 
-bash-4.3$ head -1 /usr/src/linux/Makefile | awk '{print $3}'
+bash$ head -1 /usr/src/linux/Makefile | awk '{print $3}'
 4
 
-bash-4.3$ head -3 /usr/src/linux/Makefile | awk '{print $3}'
+bash$ head -3 /usr/src/linux/Makefile | awk '{print $3}'
  4
  9
  44
  
-bash-4.3$ head -3 /usr/src/linux/Makefile | cut -d= -f2
+bash$ head -3 /usr/src/linux/Makefile | cut -d= -f2
  4
  9
  44
@@ -1032,90 +1035,90 @@ bash-4.3$ head -3 /usr/src/linux/Makefile | cut -d= -f2
 ---------------------------------------------------------------------------------------------------------
 ## filtra a extraversion do kernel caso esteja configurada no Makefile
 
-bash-4.3$ echo EXTRAVERSION=$(cat /usr/src/linux/Makefile|grep "^EXTRAVERSION"|sed 's/EXTRAVERSION =-//g;s/EXTRAVERSION = -//g;s/EXTRAVERSION= -//g')
+bash$ echo EXTRAVERSION=$(cat /usr/src/linux/Makefile|grep "^EXTRAVERSION"|sed 's/EXTRAVERSION =-//g;s/EXTRAVERSION = -//g;s/EXTRAVERSION= -//g')
 EXTRAVERSION=lowlatency
 
 -----------------------------------------------------------------------------------------------------------
 ## pega o numero da VERSION do kernel no Makefile
 
-bash-4.3$ echo VERSION=$(grep "^VERSION" /usr/src/linux/Makefile|awk '{print $3}')
+bash$ echo VERSION=$(grep "^VERSION" /usr/src/linux/Makefile|awk '{print $3}')
 VERSION=4
 
 -----------------------------------------------------------------------------------------------------------
 ## filtra a versão do PATCHLEVEL no Makefile
 
-bash-4.3$ echo PATCHLEVEL=$(grep "^PATCHLEVEL" /usr/src/linux/Makefile|awk '{print $3}')
+bash$ echo PATCHLEVEL=$(grep "^PATCHLEVEL" /usr/src/linux/Makefile|awk '{print $3}')
 PATCHLEVEL=4
 
 -----------------------------------------------------------------------------------------------------------
 ## filtra a versão do SUBLEVEL no Makefile
 
-bash-4.3$ echo SUBLEVEL=$(grep "^SUBLEVEL" /usr/src/linux/Makefile|awk '{print $3}')
+bash$ echo SUBLEVEL=$(grep "^SUBLEVEL" /usr/src/linux/Makefile|awk '{print $3}')
 SUBLEVEL=17
 
 -------------------------------------------------------------------------------------------------------------
 ## filtra o nome da maquina onde supostamente o kernel foi modificado, compilado ou empacotado antes de ser baixado.
 
-bash-4.3$ echo LINUXCOMPILEHOST=$(cat /usr/src/linux/include/generated/compile.h|grep "LINUX_COMPILE_HOST"|sed 's/#define//g;s/LINUX_COMPILE_HOST//g;s/\"//g')
+bash$ echo LINUXCOMPILEHOST=$(cat /usr/src/linux/include/generated/compile.h|grep "LINUX_COMPILE_HOST"|sed 's/#define//g;s/LINUX_COMPILE_HOST//g;s/\"//g')
 LINUXCOMPILEHOST= hive64
 
 ---------------------------------------------------------------------------------------------------------------------------------
 ## filtra a data e a hora em que o kernel foi supostamente levantado para o repositório
 
-bash-4.3$ echo UTSVERSION=$(cat /usr/src/linux/include/generated/compile.h|grep "UTS_VERSION"|sed 's/#define//g;s/#1 SMP//g;s/UTS_VERSION//g;s/\"//g')
+bash$ echo UTSVERSION=$(cat /usr/src/linux/include/generated/compile.h|grep "UTS_VERSION"|sed 's/#define//g;s/#1 SMP//g;s/UTS_VERSION//g;s/\"//g')
 UTSVERSION= Thu Aug 11 10:28:29 CDT 2016
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 ## filtra o nome do usuario que compilou e compactou o kernel
 
-bash-4.3$ echo COMPILEBY=$(grep "LINUX_COMPILE_BY" /usr/src/linux/include/generated/compile.h|awk '{print $3}'|sed 's/\"//g')
+bash$ echo COMPILEBY=$(grep "LINUX_COMPILE_BY" /usr/src/linux/include/generated/compile.h|awk '{print $3}'|sed 's/\"//g')
 COMPILEBY=root
 
 
 #pega numero da versao do pacote do kernel 4.9.44
-bash-4.3$ echo KVERSION=${KVERSION:-$(echo /var/log/packages/kernel-generic-* | cut -f 3 -d -)}
+bash$ echo KVERSION=${KVERSION:-$(echo /var/log/packages/kernel-generic-* | cut -f 3 -d -)}
 KVERSION=4.9.44
 
 
 #pega a arquitetura do pacote em /var/log/packages
 
-bash-4.3$ echo ARCHKERNEL=${ARCHKERNEL:-$(echo /var/log/packages/kernel-generic-* | cut -f 4 -d -)}
+bash$ echo ARCHKERNEL=${ARCHKERNEL:-$(echo /var/log/packages/kernel-generic-* | cut -f 4 -d -)}
 ARCHKERNEL=x86_64
 
 
 #pega a versao do firmware do pacote em /var/log/packages
 
-bash-4.3$ echo FIRMWARE=${FIRMWARE:-$(echo /var/log/packages/kernel-firmware-* | rev | cut -f 3 -d - | rev )}
+bash$ echo FIRMWARE=${FIRMWARE:-$(echo /var/log/packages/kernel-firmware-* | rev | cut -f 3 -d - | rev )}
 FIRMWARE=20170626git
 
 
 #pega a arquitetura do firmware do pacote em /var/log/packages
 
-bash-4.3$ echo ARCHFIRM=${ARCHFIRM:-$(echo /var/log/packages/kernel-firmware-* | cut -f 4 -d -)}
+bash$ echo ARCHFIRM=${ARCHFIRM:-$(echo /var/log/packages/kernel-firmware-* | cut -f 4 -d -)}
 ARCHFIRM=noarch
 
 
 #pega a arquitetura do kernel source em /var/log/packages
 
-bash-4.3$ echo SKERNEL=${SKERNEL:-$(echo /var/log/packages/kernel-source-* | cut -f 4 -d -)}
+bash$ echo SKERNEL=${SKERNEL:-$(echo /var/log/packages/kernel-source-* | cut -f 4 -d -)}
 SKERNEL=noarch
 
 
 #pega o nome e a extensao do pacote.
 
-bash-4.3$ echo NAME=$(echo php* |sed -re "s/(.*\/)(.*.t[blxg]z)$/\2/")
+bash$ echo NAME=$(echo php* |sed -re "s/(.*\/)(.*.t[blxg]z)$/\2/")
 NAME=phpmyadmin-4.7.5-noarch-1_slonly.txz
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ## filtra a versão do compilador com que o kernel foi compilado e empacotado.
 
-bash-4.3$ echo USEDCOMPILER=$(cat /usr/src/linux/include/generated/compile.h|grep "LINUX_COMPILER"|sed 's/#define//g;s/LINUX_COMPILER//g;s/\"//g')
+bash$ echo USEDCOMPILER=$(cat /usr/src/linux/include/generated/compile.h|grep "LINUX_COMPILER"|sed 's/#define//g;s/LINUX_COMPILER//g;s/\"//g')
 USEDCOMPILER= gcc version 5.4.0 (GCC)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 ## filtra a Release Version, Abi version e Extra version no Kernel debian e Ubuntu.
 
-bash-4.3$  echo RELEASE=$(cat /usr/src/linux-headers-4.6.0-999-lowlatency/include/config/kernel.release | sed 's/-/ /g'|awk -F'-' '{print "Release: "$1",","Abi: " $2",", "Extra Version: " $3}')
+bash$  echo RELEASE=$(cat /usr/src/linux-headers-4.6.0-999-lowlatency/include/config/kernel.release | sed 's/-/ /g'|awk -F'-' '{print "Release: "$1",","Abi: " $2",", "Extra Version: " $3}')
 RELEASE=Release: 4.6.0, Abi: 999 , Extra Version: lowlatency
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
