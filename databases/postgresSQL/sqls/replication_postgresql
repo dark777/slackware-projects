@@ -1,0 +1,70 @@
+#!/bin/bash
+# Objetivo: Sincronizar o banco de dados de producao com o backup (este host)
+# shell script para replicar off-line um BD postgres, como um backup do dia anterior, por exemplo.
+# Autor: Rogerio Reis
+# Data: 20/12/06
+# Dependencias:
+# sendEmail -> Script perl para envio de e-mail em modo texto (basta descompactar)
+# Acesso ao postgres sem senha entre os servidores (utilize ~/.pgpass)
+# Este script deve ser executado no servidor backup
+# Variaveis (Voce DEVE alterar as variaveis para seu ambiente)
+# Obtendo data de ontem
+
+ontem=`date -d yesterday "+%d%m%Y"`
+
+servidor="192.168.0.10"  #Servidor que contem o banco em producao
+usuario="root"
+codificacao="--encoding=SQL_ASCII" #Codificacao de caracteres do banco (deixe em branco em caso de erro)
+arquivo="/tmp/backup.sql"
+banco="erp" # Nome do BD
+mailserver="192.168.0.1"
+remetente="sincroniza-db@seudominio.com.br"
+destinatario="rogerio@seudominio.com.br"
+assunto="Relatorio de sincronizacao $banco" # assunto do email
+sendEmailpath="/usr/local/sendEmail-v1.42" # Caminho onde esta o sendEmail
+relat="/tmp/sincroniza-db"
+
+
+echo "Relatorio de sincronizacao - banco: $banco - data $ontem" > $relat
+echo "-----------------------------------------------------" >> $relat
+echo "" >> $relat
+echo "Fazendo o dumping do banco $banco" >> $relat
+if pg_dump -f $arquivo -Ft $banco -h $servidor -U $usuario
+then
+        echo "Dumping do banco $banco executado com sucesso" >> $relat
+else
+        echo "Erro no dumping" >> $relat
+fi
+
+echo "" >> $relat
+echo "Dropando o banco $banco backup" >> $relat
+if dropdb $banco
+then
+        echo "Banco $banco removido com sucesso" >> $relat
+else
+        echo "Erro na remocao do banco $banco" >> $relat
+fi
+
+echo "" >> $relat
+echo "Recriando o banco $banco" >> $relat
+if createdb $banco $codificacao
+then
+        echo "Banco $banco criado com sucesso" >> $relat
+else
+        echo "Erro na criacao do banco $banco" >> $relat
+fi
+
+echo "" >> $relat
+echo "Populando o banco" >> $relat
+if pg_restore -Ft $arquivo -d $banco
+then
+        echo "Banco $banco populado com sucesso" >> $relat
+else
+        echo "Erro na carga de $banco " >> $relat
+fi
+
+echo "Removendo arquivo de backup"
+rm -f $arquivo
+
+echo "Reportando o ocorrido"
+cat $relat | $sendEmailpath/sendEmail.pl -u "$assunto" -f $remetente -t $destinatario -s $mailserver 
